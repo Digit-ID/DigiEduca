@@ -43,3 +43,23 @@ window.DigitTracker = {
     if (rotulo) rotulo.textContent = "CONFIRMA O TEU NOME (DA TUA CONTA DIGIT)";
   }
 })();
+
+/* Botão fixo de regresso ao portal, em todos os cursos */
+(function () {
+  function criar() {
+    if (document.getElementById("digitVoltar")) return;
+    const a = document.createElement("a");
+    a.id = "digitVoltar";
+    a.href = "index.html";
+    a.textContent = "← Voltar ao portal";
+    a.setAttribute("style", [
+      "position:fixed", "top:14px", "right:16px", "z-index:99999",
+      "background:#fff", "color:#3B5BFF", "border:1.5px solid #3B5BFF",
+      "border-radius:9px", "padding:9px 14px", "font:600 13.5px/1 'Helvetica Neue',Helvetica,Arial,sans-serif",
+      "text-decoration:none", "box-shadow:0 4px 14px rgba(20,35,100,.16)"
+    ].join(";"));
+    document.body.appendChild(a);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", criar);
+  else criar();
+})();

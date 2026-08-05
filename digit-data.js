@@ -7,7 +7,7 @@
 const NOMES_DEMO = ["Amílcar Rengel","Gonçalo Vieira","Karina Marques","Alexandre Oliveira","Ruben Fernandes","Helena Costa","Noah Reis","Diogo Vitorino","Joana Piçarra","Ana Rita Martins","Ricardo Martins","Margarida Garcia","Luís Garcia","Francisco Marques","Hugo Ferreira","Nuno Rodrigues","Tiago Silva","Francisco Pinheiro","Paula Garcia","António Sousa","Marisa Barbosa"];
 const DEPARTAMENTOS = ["Contabilidade","Fiscalidade","Recursos Humanos","Processamento Salarial","Tesouraria","I&D","BPO"];
 const OBRIGATORIOS = ["literacia-ai","rgpd","branqueamento-capitais","seguranca-informacao","sigilo-etica"];
-const CHAVE_DEMO = "digitPortalDemo_v2";
+const CHAVE_DEMO = "digitPortalDemo_v3";
 
 /* Projeto Supabase da Digit (chave publicável — protegida por RLS) */
 const URL_PADRAO = "https://mnmleozehfzqpbipmhne.supabase.co";
@@ -36,7 +36,7 @@ function storeDemo() {
     cursosBase.forEach(c => { if (!areas.some(a => a.nome === c.area)) areas.push({ nome: c.area, icone: c.areaIcon, ordem: areas.length + 1 }); });
     const cursos = cursosBase.map((c, i) => {
       const slug = slugDoFicheiro(c.ficheiro);
-      return { slug, titulo: c.titulo, descricao: c.descricao, area: c.area, icone: c.icon, ficheiro: c.ficheiro, nivel: c.nivel, modulos: 5, duracao_min: 10, ativo: true, obrigatorio: OBRIGATORIOS.includes(slug), ordem: i + 1 };
+      return { slug, titulo: c.titulo, descricao: c.descricao, area: c.area, icone: c.icon, ficheiro: c.ficheiro, nivel: c.nivel, modulos: 5, duracao_min: 10, estado: "disponivel", ativo: true, obrigatorio: OBRIGATORIOS.includes(slug), ordem: i + 1 };
     });
     const perfis = [{ id: "u-admin", email: "id@digit.com.pt", nome: "Administração Digit", departamento: "Direção", papel: "admin", ativo: true, criado_em: diasAtras(120) }];
     NOMES_DEMO.forEach((n, i) => perfis.push({ id: "u" + i, email: emailDe(n), nome: n, departamento: DEPARTAMENTOS[i % DEPARTAMENTOS.length], papel: "colaborador", ativo: true, criado_em: diasAtras(90 - i) }));
@@ -87,9 +87,15 @@ function storeDemo() {
       return p;
     },
     async sair() { registo("sessao_terminada", "perfis", {}); db.sessao = null; gravar(); },
+    recuperacaoAtiva: () => false,
+    async recuperar(email) {
+      if (!db.perfis.some(p => p.email === String(email).trim().toLowerCase())) throw new Error("Não existe conta com esse email.");
+      return "No modo de demonstração não há envio de email. Com o Supabase ligado, recebes a mensagem de recuperação.";
+    },
+    async definirNovaPassword() { throw new Error("Disponível apenas com o Supabase ligado."); },
     async catalogo() {
       const admin = perfil() && perfil().papel === "admin";
-      return { areas: db.areas.slice().sort((a, b) => a.ordem - b.ordem), cursos: db.cursos.filter(c => admin || c.ativo) };
+      return { areas: db.areas.slice().sort((a, b) => a.ordem - b.ordem), cursos: db.cursos.filter(c => admin || (c.estado || "disponivel") !== "oculto") };
     },
     async meuProgresso() {
       const p = perfil(); if (!p) return {};
@@ -128,7 +134,7 @@ function storeDemo() {
       return db.perfis.map(p => {
         const pr = db.progresso.filter(x => x.utilizador_id === p.id);
         const certs = db.certificados.filter(c => c.utilizador_id === p.id && c.valido);
-        const obrig = db.cursos.filter(c => c.obrigatorio && c.ativo);
+        const obrig = db.cursos.filter(c => c.obrigatorio && (c.estado || "disponivel") === "disponivel");
         return {
           ...p,
           cursos_concluidos: pr.filter(x => x.estado === "concluido").length,
@@ -146,8 +152,9 @@ function storeDemo() {
         .sort((a, b) => b.emitido_em.localeCompare(a.emitido_em));
     },
     async auditoria() { return db.auditoria.slice(0, 200); },
-    async alternarCurso(slug, ativo) {
-      const c = db.cursos.find(x => x.slug === slug); if (c) { c.ativo = ativo; registo(ativo ? "curso_ativado" : "curso_desativado", "cursos", { curso: slug }); }
+    async definirEstado(slug, estado) {
+      const c = db.cursos.find(x => x.slug === slug);
+      if (c) { c.estado = estado; c.ativo = estado === "disponivel"; registo("curso_estado", "cursos", { curso: slug, estado }); }
     },
     async alternarObrigatorio(slug, v) {
       const c = db.cursos.find(x => x.slug === slug); if (c) { c.obrigatorio = v; registo("curso_obrigatoriedade", "cursos", { curso: slug, obrigatorio: v }); }
@@ -169,7 +176,7 @@ function storeDemo() {
 
 /* -------------------------------------------------------------- SUPABASE */
 function storeSupabase(url, chave) {
-  let sb = null, meu = null;
+  let sb = null, meu = null, recuperacao = false;
   const erro = r => { if (r.error) throw new Error(r.error.message); return r.data; };
   const audit = (acao, entidade, detalhe) => sb.rpc("registar_auditoria", { p_acao: acao, p_entidade: entidade, p_detalhe: detalhe || {} }).then(() => {}, () => {});
 
@@ -178,8 +185,9 @@ function storeSupabase(url, chave) {
     async init() {
       const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
       sb = createClient(url, chave);
+      recuperacao = /type=recovery/.test(location.hash) || /type=recovery/.test(location.search);
       const { data } = await sb.auth.getSession();
-      if (data && data.session) meu = erro(await sb.from("perfis").select("*").eq("id", data.session.user.id).single());
+      if (data && data.session && !recuperacao) meu = erro(await sb.from("perfis").select("*").eq("id", data.session.user.id).single());
       return this;
     },
     perfilAtual: () => meu,
@@ -198,6 +206,22 @@ function storeSupabase(url, chave) {
       return meu;
     },
     async sair() { await audit("sessao_terminada", "perfis", {}); await sb.auth.signOut(); meu = null; },
+    recuperacaoAtiva: () => recuperacao,
+    async recuperar(email) {
+      email = String(email).trim().toLowerCase();
+      if (!email.endsWith("@digit.com.pt")) throw new Error("Usa o teu endereço @digit.com.pt.");
+      erro(await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname }));
+      return "Enviámos um email para " + email + " com a ligação para definir uma nova palavra-passe. Verifica também o spam.";
+    },
+    async definirNovaPassword(password) {
+      if (!password || password.length < 8) throw new Error("A palavra-passe precisa de 8 caracteres.");
+      const d = erro(await sb.auth.updateUser({ password }));
+      recuperacao = false;
+      if (history.replaceState) history.replaceState(null, "", location.pathname);
+      meu = erro(await sb.from("perfis").select("*").eq("id", d.user.id).single());
+      audit("password_alterada", "perfis", { email: meu.email });
+      return meu;
+    },
     async catalogo() {
       const areas = erro(await sb.from("areas").select("*").order("ordem"));
       const cursos = erro(await sb.from("cursos").select("*").order("ordem"));
@@ -239,7 +263,7 @@ function storeSupabase(url, chave) {
       const pr = erro(await sb.from("progresso").select("*"));
       const av = erro(await sb.from("avaliacoes").select("*"));
       const certs = erro(await sb.from("certificados").select("*").eq("valido", true));
-      const obrig = erro(await sb.from("cursos").select("slug").eq("obrigatorio", true).eq("ativo", true));
+      const obrig = erro(await sb.from("cursos").select("slug").eq("obrigatorio", true).eq("estado", "disponivel"));
       return perfis.map(p => {
         const meus = pr.filter(x => x.utilizador_id === p.id);
         return {
@@ -261,7 +285,7 @@ function storeSupabase(url, chave) {
       return certs.map(c => ({ ...c, nome: (perfis.find(p => p.id === c.utilizador_id) || {}).nome, email: (perfis.find(p => p.id === c.utilizador_id) || {}).email, curso: (cursos.find(x => x.slug === c.curso_slug) || {}).titulo }));
     },
     async auditoria() { return erro(await sb.from("auditoria").select("*").order("criado_em", { ascending: false }).limit(200)); },
-    async alternarCurso(slug, ativo) { erro(await sb.from("cursos").update({ ativo }).eq("slug", slug)); audit(ativo ? "curso_ativado" : "curso_desativado", "cursos", { curso: slug }); },
+    async definirEstado(slug, estado) { erro(await sb.from("cursos").update({ estado }).eq("slug", slug)); audit("curso_estado", "cursos", { curso: slug, estado }); },
     async alternarObrigatorio(slug, obrigatorio) { erro(await sb.from("cursos").update({ obrigatorio }).eq("slug", slug)); audit("curso_obrigatoriedade", "cursos", { curso: slug, obrigatorio }); },
     async definirPapel(id, papel) { erro(await sb.from("perfis").update({ papel }).eq("id", id)); audit("papel_alterado", "perfis", { id, papel }); },
     async removerColaborador(id) { erro(await sb.from("perfis").update({ ativo: false }).eq("id", id)); audit("colaborador_desativado", "perfis", { id }); },
