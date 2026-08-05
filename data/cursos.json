@@ -1,0 +1,272 @@
+[
+  {
+    "area": "Excel & Ferramentas",
+    "areaIcon": "📊",
+    "icon": "📊",
+    "titulo": "Excel para Iniciantes",
+    "descricao": "Aprende a usar o Microsoft Excel do zero — interface, formatação de dados, fórmulas essenciais (SOMA, MÉDIA), filtros, gráficos e os atalhos que aumentam a tua produtividade.",
+    "ficheiro": "Digit-Curso_Excel_para_Iniciantes.html",
+    "nivel": "Recomendado"
+  },
+  {
+    "area": "Excel & Ferramentas",
+    "areaIcon": "📊",
+    "icon": "📈",
+    "titulo": "Excel Intermédio",
+    "descricao": "Dá o próximo passo: funções lógicas (SE, E, OU), PROCV e PROCX, formatação condicional, validação de dados e tabelas dinâmicas — as ferramentas que transformam dados em decisões.",
+    "ficheiro": "Digit-Curso_Excel_Intermedio.html",
+    "nivel": "Recomendado"
+  },
+  {
+    "area": "Excel & Ferramentas",
+    "areaIcon": "📊",
+    "icon": "💼",
+    "titulo": "Excel Avançado",
+    "descricao": "Domina o Excel ao nível profissional. Fórmulas matriciais dinâmicas, ÍNDICE+CORRESP, Power Query, dashboards interativos e introdução a macros (VBA).",
+    "ficheiro": "Digit-Curso_Excel_Avançado.html",
+    "nivel": "Avançado"
+  },
+  {
+    "area": "Excel & Ferramentas",
+    "areaIcon": "📊",
+    "icon": "📊",
+    "titulo": "Power BI — relatórios e dashboards",
+    "descricao": "Aprende a criar dashboards interativos e relatórios visuais com o Power BI — a ferramenta de business intelligence da Microsoft.",
+    "ficheiro": "Digit-Curso_Power_BI.html",
+    "nivel": null
+  },
+  {
+    "area": "Excel & Ferramentas",
+    "areaIcon": "📊",
+    "icon": "💻",
+    "titulo": "Microsoft 365 — Dicas e Produtividade",
+    "descricao": "Tira o máximo partido do Teams, Outlook, OneDrive e SharePoint no teu dia a dia na Digit.",
+    "ficheiro": "Digit-Curso_Microsoft_365.html",
+    "nivel": null
+  },
+  {
+    "area": "Excel & Ferramentas",
+    "areaIcon": "📊",
+    "icon": "⚡",
+    "titulo": "Introdução ao Power Automate",
+    "descricao": "Automatiza tarefas repetitivas com o Power Automate — desde aprovações a notificações automáticas, sem código.",
+    "ficheiro": "Digit-Curso_Power_Automate.html",
+    "nivel": null
+  },
+  {
+    "area": "Fiscal & Contabilidade",
+    "areaIcon": "🧾",
+    "icon": "📋",
+    "titulo": "IVA na prática",
+    "descricao": "Compreende o funcionamento do IVA em Portugal — taxas, isenções, declarações e casos práticos da consultoria financeira.",
+    "ficheiro": "Digit-Curso_IVA.html",
+    "nivel": null
+  },
+  {
+    "area": "Fiscal & Contabilidade",
+    "areaIcon": "🧾",
+    "icon": "🏢",
+    "titulo": "IRC e obrigações declarativas",
+    "descricao": "Os fundamentos do Imposto sobre o Rendimento das Pessoas Coletivas aplicados ao contexto da Digit e dos seus clientes.",
+    "ficheiro": "Digit-Curso_IRC.html",
+    "nivel": null
+  },
+  {
+    "area": "Fiscal & Contabilidade",
+    "areaIcon": "🧾",
+    "icon": "📅",
+    "titulo": "Encerramento de contas",
+    "descricao": "Procedimentos, prazos e boas práticas para o encerramento de contas anual — do balancete ao depósito das contas.",
+    "ficheiro": "Digit-Curso_Encerramento_Contas.html",
+    "nivel": null
+  },
+  {
+    "area": "Fiscal & Contabilidade",
+    "areaIcon": "🧾",
+    "icon": "📅",
+    "titulo": "Calendário fiscal — prazos e coimas",
+    "descricao": "As obrigações fiscais mensais e anuais da Digit, os seus prazos e como nunca falhar uma data. Coimas, juros e métodos práticos para manter tudo em dia.",
+    "ficheiro": "Digit-Curso_Calendario_Fiscal.html",
+    "nivel": null
+  },
+  {
+    "area": "Fiscal & Contabilidade",
+    "areaIcon": "🧾",
+    "icon": "🧾",
+    "titulo": "IRS — Processamento e Entregas",
+    "descricao": "Tudo o que precisas de saber sobre o processamento de IRS, prazos, declarações e casos especiais.",
+    "ficheiro": "Digit-Curso_IRS.html",
+    "nivel": null
+  },
+  {
+    "area": "Fiscal & Contabilidade",
+    "areaIcon": "🧾",
+    "icon": "📚",
+    "titulo": "Contabilidade para Não Contabilistas",
+    "descricao": "Os conceitos essenciais de contabilidade explicados de forma simples para colaboradores de outras áreas da Digit.",
+    "ficheiro": "Digit-Curso_Contabilidade_Nao_Contabilistas.html",
+    "nivel": null
+  },
+  {
+    "area": "Fiscal & Contabilidade",
+    "areaIcon": "🧾",
+    "icon": "🔬",
+    "titulo": "Noções de I&D Fiscal",
+    "descricao": "Os incentivos fiscais à Investigação e Desenvolvimento em Portugal — SIFIDE, elegibilidade e como identificar projetos qualificáveis.",
+    "ficheiro": "Digit-Curso_ID_Fiscal.html",
+    "nivel": null
+  },
+  {
+    "area": "Recursos Humanos",
+    "areaIcon": "👥",
+    "icon": "💼",
+    "titulo": "Processamento salarial",
+    "descricao": "Os conceitos base do processamento de salários em Portugal — remunerações, deduções, subsídios e contribuições.",
+    "ficheiro": "Digit-Curso_Processamento_Salarial.html",
+    "nivel": null
+  },
+  {
+    "area": "Recursos Humanos",
+    "areaIcon": "👥",
+    "icon": "📝",
+    "titulo": "Contratos de trabalho",
+    "descricao": "Os tipos de contrato, os elementos essenciais e as regras práticas. Inclui o salário mínimo de 2026 e a remuneração de gerentes e administradores (IAS).",
+    "ficheiro": "Digit-Curso_Contratos_Trabalho.html",
+    "nivel": null
+  },
+  {
+    "area": "Recursos Humanos",
+    "areaIcon": "👥",
+    "icon": "🏖️",
+    "titulo": "Férias, faltas e licenças",
+    "descricao": "Regras do Código do Trabalho sobre férias, faltas justificadas e injustificadas, e como gerir corretamente os registos.",
+    "ficheiro": "Digit-Curso_Ferias_Faltas_Licencas.html",
+    "nivel": null
+  },
+  {
+    "area": "Recursos Humanos",
+    "areaIcon": "👥",
+    "icon": "📝",
+    "titulo": "Admissões e cessações",
+    "descricao": "Procedimentos legais e administrativos nas admissões, renovações e cessações de contratos de trabalho.",
+    "ficheiro": "Digit-Curso_Admissoes_Cessacoes.html",
+    "nivel": null
+  },
+  {
+    "area": "Recursos Humanos",
+    "areaIcon": "👥",
+    "icon": "🎁",
+    "titulo": "Subsídios e Benefícios — O que deves saber",
+    "descricao": "Subsídio de alimentação, transporte, saúde e outros benefícios — regras, limites fiscais e como processar corretamente.",
+    "ficheiro": "Digit-Curso_Subsidios_Beneficios.html",
+    "nivel": null
+  },
+  {
+    "area": "Compliance & Legal",
+    "areaIcon": "⚖️",
+    "icon": "📑",
+    "titulo": "RGPD no dia a dia",
+    "descricao": "Proteção de dados pessoais no contexto da consultoria financeira — o que podes e não podes fazer com dados de clientes.",
+    "ficheiro": "Digit-Curso_RGPD.html",
+    "nivel": null
+  },
+  {
+    "area": "Compliance & Legal",
+    "areaIcon": "⚖️",
+    "icon": "🛡️",
+    "titulo": "Prevenção do branqueamento de capitais",
+    "descricao": "Obrigações legais de prevenção do branqueamento de capitais e financiamento do terrorismo aplicadas à consultoria financeira.",
+    "ficheiro": "Digit-Curso_Branqueamento_Capitais.html",
+    "nivel": null
+  },
+  {
+    "area": "Compliance & Legal",
+    "areaIcon": "⚖️",
+    "icon": "📜",
+    "titulo": "Sigilo profissional e ética",
+    "descricao": "Os valores, princípios e regras de conduta que orientam o trabalho de todos os colaboradores da Digit.",
+    "ficheiro": "Digit-Curso_Sigilo_Etica.html",
+    "nivel": null
+  },
+  {
+    "area": "Compliance & Legal",
+    "areaIcon": "⚖️",
+    "icon": "🔐",
+    "titulo": "Segurança da Informação",
+    "descricao": "Boas práticas de cibersegurança, proteção de dados e uso seguro dos sistemas de informação na Digit.",
+    "ficheiro": "Digit-Curso_Seguranca_Informacao.html",
+    "nivel": null
+  },
+  {
+    "area": "Soft Skills",
+    "areaIcon": "💬",
+    "icon": "🗣️",
+    "titulo": "Comunicação com o cliente",
+    "descricao": "Técnicas de comunicação eficaz com clientes — presencial, por email e em reuniões — no contexto da consultoria.",
+    "ficheiro": "Digit-Curso_Comunicacao_Cliente.html",
+    "nivel": null
+  },
+  {
+    "area": "Soft Skills",
+    "areaIcon": "💬",
+    "icon": "⏱️",
+    "titulo": "Gestão de tempo e prioridades",
+    "descricao": "Métodos e ferramentas para gerir melhor o tempo, priorizar tarefas e aumentar a produtividade no trabalho.",
+    "ficheiro": "Digit-Curso_Gestao_Tempo.html",
+    "nivel": null
+  },
+  {
+    "area": "Soft Skills",
+    "areaIcon": "💬",
+    "icon": "🤝",
+    "titulo": "Reuniões e e-mails eficazes",
+    "descricao": "Como preparar, conduzir e concluir reuniões produtivas — presenciais e remotas — poupando tempo a toda a equipa.",
+    "ficheiro": "Digit-Curso_Reunioes_Emails.html",
+    "nivel": null
+  },
+  {
+    "area": "Soft Skills",
+    "areaIcon": "💬",
+    "icon": "📈",
+    "titulo": "Apresentação de Resultados",
+    "descricao": "Como estruturar e apresentar resultados financeiros e relatórios de forma clara e convincente para clientes e gestão.",
+    "ficheiro": "Digit-Curso_Apresentacao_Resultados.html",
+    "nivel": null
+  },
+  {
+    "area": "Inovação",
+    "areaIcon": "🤖",
+    "icon": "🤖",
+    "titulo": "Literacia em Inteligência Artificial",
+    "descricao": "Formação obrigatória em cumprimento do Artigo 4.º do Regulamento Europeu da IA (AI Act). Aprende o que a lei exige, os níveis de risco e como usar IA de forma responsável na Digit.",
+    "ficheiro": "Digit-Curso_Literacia_AI.html",
+    "nivel": "Obrigatório"
+  },
+  {
+    "area": "Inovação",
+    "areaIcon": "🤖",
+    "icon": "🤖",
+    "titulo": "IA na Contabilidade",
+    "descricao": "Onde a inteligência artificial ajuda no trabalho contabilístico, os seus limites e riscos, e como a usar com rigor, sigilo e supervisão humana.",
+    "ficheiro": "Digit-Curso_IA_Contabilidade.html",
+    "nivel": null
+  },
+  {
+    "area": "Inovação",
+    "areaIcon": "🤖",
+    "icon": "💬",
+    "titulo": "Prompts eficazes",
+    "descricao": "Como escrever instruções claras e bem estruturadas para tirar o máximo das ferramentas de IA — com exemplos práticos do dia a dia da Digit.",
+    "ficheiro": "Digit-Curso_Prompts_Eficazes.html",
+    "nivel": null
+  },
+  {
+    "area": "Inovação",
+    "areaIcon": "🤖",
+    "icon": "🔄",
+    "titulo": "BPO — O que é e como funciona",
+    "descricao": "Business Process Outsourcing na prática — modelos, processos e como a Digit entrega valor aos clientes em BPO.",
+    "ficheiro": "Digit-Curso_BPO.html",
+    "nivel": null
+  }
+]
