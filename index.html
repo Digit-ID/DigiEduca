@@ -173,6 +173,17 @@
               </sc-for>
             </div>
 
+            <sc-if value="{{ temPendentes }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fff;border:1px solid #E7EAF6;border-left:4px solid #2440D9;border-radius:14px;padding:20px 22px;margin-bottom:34px">
+                <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#2440D9;margin-bottom:7px">Formação obrigatória pendente</div>
+                <div style="font-size:14.5px;line-height:1.6;color:#141A33;text-wrap:pretty">{{ textoPendentes }}</div>
+                <div style="font-size:12.5px;color:#8C97C2;margin-top:8px">Exigida pelo Art. 4.º do Regulamento (UE) 2024/1689 (AI Act) — a Digit tem de comprovar que todos os colaboradores a concluíram.</div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ tudoConforme }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#E4F8F0;border:1px solid #B8E6D3;border-radius:14px;padding:16px 20px;margin-bottom:34px;font-size:14px;color:#00694A;font-weight:600">Formação obrigatória concluída — estás conforme com o Art. 4.º do AI Act.</div>
+            </sc-if>
+
             <sc-for list="{{ areasCat }}" as="a" hint-placeholder-count="3">
               <div style="margin-bottom:36px">
                 <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:11px;border-bottom:2px solid #EEF0FA">
@@ -183,9 +194,14 @@
                 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
                   <sc-for list="{{ a.cursos }}" as="c" hint-placeholder-count="3">
                     <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;padding:20px;display:flex;flex-direction:column;gap:12px" style-hover="border-color:#3B5BFF">
-                      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+                      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
                         <div style="font-size:22px">{{ c.icone }}</div>
-                        <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:20px;padding:5px 10px;background:{{ c.corFundo }};color:{{ c.corTexto }}">{{ c.estado }}</div>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+                          <sc-if value="{{ c.obrigatorio }}" hint-placeholder-val="{{ false }}">
+                            <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:20px;padding:5px 10px;background:#2440D9;color:#fff">Obrigatório</div>
+                          </sc-if>
+                          <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:20px;padding:5px 10px;background:{{ c.corFundo }};color:{{ c.corTexto }}">{{ c.estado }}</div>
+                        </div>
                       </div>
                       <div style="font-size:16.5px;font-weight:700;line-height:1.3;letter-spacing:-.01em">{{ c.titulo }}</div>
                       <div style="font-size:13.5px;color:#6B77A8;line-height:1.55;text-wrap:pretty;flex:1">{{ c.descricao }}</div>
@@ -687,6 +703,15 @@ class Component extends DCLogic {
       estiloNavCatalogo: this.estiloNav(s.vista === "catalogo"), estiloNavCerts: this.estiloNav(s.vista === "certificados"), estiloNavAdmin: this.estiloNav(s.vista === "admin"),
 
       subtituloCatalogo: cursosVisiveis.length + " cursos em " + areasCat.length + " áreas · o teu progresso fica registado na tua conta",
+      temPendentes: !admin && obrig.length > 0 && obrigFeitos < obrig.length,
+      tudoConforme: !admin && obrig.length > 0 && obrigFeitos >= obrig.length,
+      textoPendentes: (() => {
+        const faltam = obrig.filter(c => !(prog[c.slug] && prog[c.slug].estado === "concluido"));
+        if (!faltam.length) return "";
+        const nomes = faltam.map(c => c.titulo);
+        const lista = nomes.length === 1 ? nomes[0] : nomes.slice(0, -1).join(", ") + " e " + nomes[nomes.length - 1];
+        return (faltam.length === 1 ? "Falta-te concluir 1 curso obrigatório: " : "Faltam-te " + faltam.length + " cursos obrigatórios: ") + lista + ".";
+      })(),
       kpis: [
         { rotulo: "Disponíveis", valor: cursosVisiveis.filter(c => estadoDe(c) === "disponivel").length, nota: "no teu catálogo", cor: "#141A33" },
         { rotulo: "Concluídos", valor: concluidos, nota: "com avaliação aprovada", cor: "#00B87A" },
