@@ -48,10 +48,10 @@
           <sc-if value="{{ aCriar }}" hint-placeholder-val="{{ false }}">
             <div style="display:grid;gap:14px;margin-bottom:16px">
               <label style="display:grid;gap:6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">Nome completo
-                <input ref="{{ refNome }}" type="text" placeholder="Ex: Ana Silva" autocomplete="name" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;outline:none">
+                <input ref="{{ refNome }}" onKeyDown="{{ aoTeclar }}" type="text" placeholder="Ex: Ana Silva" autocomplete="name" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;outline:none">
               </label>
               <label style="display:grid;gap:6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">Departamento
-                <select ref="{{ refDepto }}" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;background:#fff;outline:none">
+                <select ref="{{ refDepto }}" onKeyDown="{{ aoTeclar }}" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;background:#fff;outline:none">
                   <option>Contabilidade</option>
                   <option>Fiscalidade</option>
                   <option>Recursos Humanos</option>
@@ -70,14 +70,14 @@
             <div style="display:grid;gap:6px">
               <div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">Email Digit</div>
               <div style="display:flex;gap:8px">
-                <input ref="{{ refEmail }}" type="email" placeholder="nome.apelido" autocomplete="email" style="flex:1;min-width:0;border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;outline:none">
+                <input ref="{{ refEmail }}" onKeyDown="{{ aoTeclar }}" type="email" placeholder="nome.apelido" autocomplete="email" style="flex:1;min-width:0;border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;outline:none">
                 <button onClick="{{ juntarDominio }}" title="Acrescentar @digit.com.pt" style="border:1.5px solid #3B5BFF;background:#EEF0FA;color:#3B5BFF;border-radius:10px;padding:0 13px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap" style-hover="background:#E2E8FC">@digit.com.pt</button>
               </div>
             </div>
             </sc-if>
             <sc-if value="{{ pedePassword }}" hint-placeholder-val="{{ true }}">
               <label style="display:grid;gap:6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">{{ rotuloPassword }}
-                <input ref="{{ refPass }}" type="password" placeholder="Mínimo 8 caracteres" autocomplete="current-password" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;outline:none">
+                <input ref="{{ refPass }}" onKeyDown="{{ aoTeclar }}" type="password" placeholder="Mínimo 8 caracteres" autocomplete="current-password" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;outline:none">
               </label>
             </sc-if>
           </div>
@@ -483,6 +483,8 @@ class Component extends DCLogic {
   }
 
   /* ---------------------------------------------------------- autenticação */
+  aoTeclar = e => { if (e.key === "Enter") { e.preventDefault(); this.submeter(); } };
+
   juntarDominio = () => {
     const i = this.refEmail.current;
     if (!i) return;
@@ -680,6 +682,7 @@ class Component extends DCLogic {
       textoRecuperar: s.modoAuth === "entrar" ? "Esqueci-me da palavra-passe" : "Voltar à entrada",
       alternarRecuperar: this.alternarRecuperar,
       juntarDominio: this.juntarDominio,
+      aoTeclar: this.aoTeclar,
       textoBotao: s.modoAuth === "recuperar" ? "Enviar ligação de recuperação"
         : s.modoAuth === "nova" ? "Guardar palavra-passe e entrar"
         : s.aCriar ? "Criar conta e entrar" : "Entrar no portal",
