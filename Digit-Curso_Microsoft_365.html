@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Digit · Microsoft 365 — Dicas e Produtividade</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+:root{--blue:#3B5BFF;--blue2:#2244EE;--cyan:#00AAFF;--light:#E8ECFA;--mid:#7B8FD4;--bg:#F0F3FB;--white:#FFFFFF;--border:#D8DCEF;--text:#1A1E3C;--textm:#5B6189;--textd:#9AA0BE;--green:#00B87A;--red:#E84545;--amber:#D4880A;--r:12px;--sh:0 2px 12px rgba(59,91,255,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Plus Jakarta Sans",sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── WELCOME ── */
+#welcome{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg)}
+.ws-box{background:#fff;border:1px solid var(--border);border-radius:20px;padding:48px;max-width:480px;width:100%;box-shadow:0 8px 48px rgba(59,91,255,.12);text-align:center}
+.ws-logo{height:34px;width:auto;margin-bottom:32px}
+.ws-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--mid);font-weight:700;margin-bottom:10px}
+.ws-title{font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.4px;margin-bottom:8px}
+.ws-sub{font-size:14px;color:var(--textm);line-height:1.65;margin-bottom:28px}
+.ws-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--textm);margin-bottom:8px;text-align:left}
+.ws-input{width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--r);font-family:inherit;font-size:16px;font-weight:600;color:var(--text);background:var(--bg);outline:none;margin-bottom:6px;-webkit-appearance:none;appearance:none}
+.ws-input:focus{border-color:var(--blue);background:#fff}
+.ws-error{font-size:12px;color:var(--red);text-align:left;margin-bottom:14px;min-height:18px;font-weight:500}
+.ws-btn{width:100%;padding:15px;border-radius:var(--r);background:linear-gradient(135deg,var(--blue),var(--cyan));border:none;color:#fff;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;-webkit-appearance:none;appearance:none}
+.ws-legal{font-size:11px;color:var(--textd);margin-top:18px;line-height:1.55}
+
+/* ── APP (hidden until started) ── */
+#app{display:none;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.app-inner{display:flex;min-height:100vh}
+.sb{width:272px;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;height:100vh;overflow-y:auto;z-index:100;box-shadow:var(--sh)}
+.sb-logo{padding:20px 20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.sb-logo img{height:32px;width:auto}
+.sb-logo-text{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mid);font-weight:700}
+.sb-prog{padding:14px 20px;border-bottom:1px solid var(--border);background:var(--light)}
+.sb-plabel{display:flex;justify-content:space-between;font-size:12px;color:var(--textm);margin-bottom:7px;font-weight:500}
+.sb-pct{font-weight:800;color:var(--blue)}
+.sb-pbar{height:4px;background:var(--border);border-radius:99px;overflow:hidden}
+.sb-pfill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:99px;transition:width .5s ease;width:0%}
+.sb-nav{padding:10px 0;flex:1}
+.sb-sec{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--textd);padding:12px 20px 5px;font-weight:700}
+.ni{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;transition:all .15s;border-left:3px solid transparent}
+.ni:hover:not(.locked){background:var(--light)}
+.ni.active{background:rgba(59,91,255,.07);border-left-color:var(--blue)}
+.ni.locked{opacity:.35;cursor:not-allowed}
+.ni-num{width:22px;height:22px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--textd);flex-shrink:0;transition:all .15s}
+.ni.active .ni-num{background:var(--blue);color:#fff}
+.ni.done .ni-num{background:var(--green);color:#fff}
+.ni-title{font-size:12.5px;font-weight:500;color:var(--textm);flex:1;line-height:1.3}
+.ni.active .ni-title{color:var(--text);font-weight:700}
+.ni-dur{font-size:11px;color:var(--textd)}
+.sb-certbtn{margin:14px;padding:12px;border-radius:var(--r);background:linear-gradient(135deg,var(--blue),var(--cyan));border:none;color:#fff;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;opacity:.3;pointer-events:none;transition:all .3s;box-shadow:0 4px 14px rgba(59,91,255,.2)}
+.sb-certbtn.on{opacity:1;pointer-events:all}
+
+/* ── MAIN ── */
+.main{margin-left:272px;flex:1;display:flex;flex-direction:column}
+.topbar{padding:14px 40px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;background:var(--white);position:sticky;top:0;z-index:50;box-shadow:0 1px 6px rgba(59,91,255,.05)}
+.tb-badge{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);background:rgba(59,91,255,.08);padding:4px 11px;border-radius:99px;border:1px solid rgba(59,91,255,.2);font-weight:700}
+.tb-title{font-weight:700;font-size:14px}
+.tb-time{margin-left:auto;font-size:12px;color:var(--textd)}
+.content{padding:40px;max-width:820px}
+
+/* ── MODULES ── */
+.mv{display:none}
+.mv.active{display:block;animation:fi .25s ease}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.mh{margin-bottom:32px}
+.mtag{display:inline-flex;align-items:center;gap:6px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;font-weight:700}
+.mtag::before{content:"";display:inline-block;width:18px;height:3px;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:99px}
+.mh1{font-size:30px;font-weight:800;line-height:1.1;letter-spacing:-.5px;margin-bottom:12px}
+.mlead{font-size:15px;color:var(--textm);line-height:1.7;max-width:600px}
+
+/* ── CARDS ── */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:24px;margin-bottom:18px;box-shadow:var(--sh)}
+.ct{font-size:14px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.card p{font-size:13.5px;color:var(--textm);line-height:1.75}
+.card p+p{margin-top:10px}
+.hcard{background:rgba(59,91,255,.04);border-color:rgba(59,91,255,.2)}
+.wcard{background:rgba(245,166,35,.05);border-color:rgba(245,166,35,.25)}
+.scard{background:rgba(0,184,122,.05);border-color:rgba(0,184,122,.25)}
+.dcard{background:rgba(232,69,69,.05);border-color:rgba(232,69,69,.25)}
+.lq{border-left:4px solid var(--blue);padding:16px 20px;background:var(--light);border-radius:0 var(--r) var(--r) 0;margin:18px 0;font-size:13.5px;line-height:1.8;color:var(--text);font-style:italic}
+.lqs{font-size:10px;color:var(--textd);margin-top:7px;font-style:normal;letter-spacing:1px;text-transform:uppercase}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px}
+.mc{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px;text-align:center;box-shadow:var(--sh)}
+.mc .n{font-size:28px;font-weight:800;color:var(--blue);display:block}
+.mc .l{font-size:12px;color:var(--textm);margin-top:3px;font-weight:500}
+.rt{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+.rt th{text-align:left;padding:9px 12px;background:var(--light);color:var(--textm);font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:700;border-bottom:2px solid var(--border)}
+.rt td{padding:11px 12px;border-bottom:1px solid var(--border);color:var(--text);line-height:1.45;vertical-align:top}
+.rt tr:last-child td{border-bottom:none}
+.rb{display:inline-block;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:700;white-space:nowrap}
+.rp{background:rgba(232,69,69,.12);color:#E84545}
+.ra{background:rgba(212,136,10,.15);color:var(--amber)}
+.rl{background:rgba(59,91,255,.12);color:var(--blue)}
+.rm{background:rgba(0,184,122,.12);color:var(--green)}
+.cl{list-style:none}
+.cl li{display:flex;align-items:flex-start;gap:11px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13.5px;color:var(--textm);line-height:1.5}
+.cl li:last-child{border-bottom:none}
+.ci{color:var(--blue);font-size:14px;flex-shrink:0;margin-top:1px;font-weight:700}
+.ci.r{color:var(--red)}.ci.g{color:var(--green)}
+.tl{position:relative;padding-left:26px}
+.tl::before{content:"";position:absolute;left:7px;top:0;bottom:0;width:2px;background:var(--border)}
+.tli{position:relative;margin-bottom:20px}
+.tld{position:absolute;left:-22px;top:4px;width:13px;height:13px;border-radius:50%;background:var(--blue);border:2px solid var(--bg)}
+.tld.g{background:var(--green)}.tld.r{background:var(--red)}
+.tldate{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--textd);margin-bottom:2px;font-weight:700}
+.tltxt{font-size:13.5px;color:var(--text);line-height:1.45}
+.pill{display:inline-block;font-size:10px;padding:2px 7px;border-radius:99px;margin-left:6px;font-weight:700}
+.pg{background:rgba(0,184,122,.12);color:var(--green)}.pa{background:rgba(212,136,10,.15);color:var(--amber)}
+.sc{background:var(--light);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin:16px 0;border-left:4px solid var(--cyan)}
+.sctag{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);font-weight:700;margin-bottom:8px}
+.sctxt{font-size:13.5px;line-height:1.75;color:var(--textm)}.sctxt strong{color:var(--text)}
+.notif{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;border-radius:var(--r);margin-bottom:16px;font-size:13.5px;line-height:1.6}
+.nw{background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.3);color:#6B4800}
+.nw strong{display:block;margin-bottom:2px;color:#4A3000;font-weight:700}
+.ni-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.hero{background:linear-gradient(135deg,var(--blue) 0%,#2244CC 55%,#0088BB 100%);border-radius:18px;padding:40px;margin-bottom:24px;position:relative;overflow:hidden;color:#fff}
+.hero::before{content:"";position:absolute;top:-70px;right:-70px;width:240px;height:240px;background:rgba(255,255,255,.07);border-radius:50%}
+.hero::after{content:"";position:absolute;bottom:-50px;left:25%;width:180px;height:180px;background:rgba(0,170,255,.12);border-radius:50%}
+.hero-logo{height:28px;margin-bottom:24px;filter:brightness(0) invert(1);position:relative;z-index:1}
+.hero-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:10px;font-weight:700;position:relative;z-index:1}
+.hero-h{font-size:36px;font-weight:800;line-height:1.08;letter-spacing:-.8px;margin-bottom:12px;position:relative;z-index:1}
+.hero-h span{color:rgba(255,255,255,.7)}
+.hero-lead{font-size:15px;color:rgba(255,255,255,.8);line-height:1.7;max-width:520px;position:relative;z-index:1}
+.btns{display:flex;gap:10px;margin-top:40px;padding-top:24px;border-top:1px solid var(--border)}
+.btn{padding:11px 26px;border-radius:var(--r);font-family:inherit;font-weight:700;font-size:13.5px;cursor:pointer;border:none;transition:all .2s}
+.btnp{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(59,91,255,.22)}.btnp:hover{background:var(--blue2);transform:translateY(-1px)}
+.btns2{background:var(--light);color:var(--textm);border:1.5px solid var(--border)}.btns2:hover{border-color:var(--blue);color:var(--blue)}
+.qb{margin-bottom:26px}
+.qt{font-size:14.5px;font-weight:600;margin-bottom:13px;line-height:1.5;color:var(--text)}
+.qn{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:var(--blue);color:#fff;font-weight:800;font-size:11px;border-radius:7px;margin-right:9px;vertical-align:middle;flex-shrink:0}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:flex-start;gap:13px;padding:13px 16px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .2s;font-size:13.5px;color:var(--textm);line-height:1.5}
+.opt:hover{border-color:var(--blue);background:rgba(59,91,255,.04);color:var(--text)}
+.opt.sel{border-color:var(--blue);background:rgba(59,91,255,.07);color:var(--text)}
+.opt.ok{border-color:var(--green);background:rgba(0,184,122,.07);color:var(--text)}
+.opt.ko{border-color:var(--red);background:rgba(232,69,69,.06)}
+.orad{width:17px;height:17px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center}
+.opt.sel .orad,.opt.ok .orad{border-color:var(--blue);background:var(--blue)}
+.opt.ok .orad{border-color:var(--green);background:var(--green)}
+.opt.ko .orad{border-color:var(--red);background:var(--red)}
+.rdot{width:5px;height:5px;border-radius:50%;background:#fff}
+.fb{padding:12px 15px;border-radius:var(--r);font-size:12.5px;line-height:1.6;margin-top:9px;display:none;font-weight:500}
+.fb.okfb{background:rgba(0,184,122,.08);border:1px solid rgba(0,184,122,.25);color:#007A52}
+.fb.kofb{background:rgba(232,69,69,.07);border:1px solid rgba(232,69,69,.25);color:var(--red)}
+.fb.show{display:block;animation:fi .25s ease}
+.score-wrap{display:flex;align-items:center;gap:16px;padding:18px 22px;background:var(--light);border-radius:var(--r);margin-bottom:20px;border:1.5px solid var(--border)}
+.score-svg{transform:rotate(-90deg);flex-shrink:0}
+.score-inner-wrap{position:relative;width:56px;height:56px;flex-shrink:0}
+.score-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:var(--text)}
+.s-info .s-label{font-size:14px;font-weight:700;color:var(--text)}
+.s-info .s-sub{font-size:13px;color:var(--textm);margin-top:3px}
+
+/* ── CERTIFICATE ── */
+.cov{display:none;position:fixed;inset:0;background:rgba(26,30,60,.82);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(12px);overflow-y:auto;padding:24px}
+.cert-page{width:210mm;min-height:297mm;background:#fff;position:relative;overflow:hidden;box-shadow:0 24px 80px rgba(59,91,255,.25);display:flex;flex-direction:column}
+.cert-topbar{height:14mm;background:linear-gradient(90deg,#3B5BFF 0%,#00AAFF 100%);flex-shrink:0}
+.cert-side{position:absolute;left:0;top:14mm;bottom:14mm;width:8mm;background:linear-gradient(180deg,#3B5BFF 0%,#00AAFF 100%)}
+.cert-bottombar{height:14mm;background:linear-gradient(90deg,#00AAFF 0%,#3B5BFF 100%);flex-shrink:0;margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding:0 18mm}
+.cert-bottombar span{color:rgba(255,255,255,.85);font-size:8pt;letter-spacing:.4px}
+.cert-inner{padding:12mm 16mm 8mm 22mm;flex:1;display:flex;flex-direction:column}
+.cert-header-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8mm}
+.cert-logo-img{height:16mm;width:auto}
+.cert-badge{background:rgba(59,91,255,.08);border:1px solid rgba(59,91,255,.2);border-radius:6px;padding:5px 13px;font-size:8pt;letter-spacing:2px;text-transform:uppercase;color:#3B5BFF;font-weight:700;white-space:nowrap}
+.cert-divider{height:2px;background:linear-gradient(90deg,#3B5BFF,#00AAFF,rgba(0,170,255,0));border-radius:99px;margin-bottom:7mm}
+.cert-title-block{margin-bottom:7mm}
+.cert-subtitle{font-size:9pt;letter-spacing:3px;text-transform:uppercase;color:#7B8FD4;font-weight:700;margin-bottom:3mm}
+.cert-title{font-size:26pt;font-weight:800;background:linear-gradient(135deg,#3B5BFF,#00AAFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.4;letter-spacing:-.5px;margin-bottom:3mm;padding-bottom:2mm}
+.cert-law-ref{font-size:8.5pt;color:#8A90A8;line-height:1.5;border-left:3px solid #3B5BFF;padding-left:10px;font-style:italic}
+.cert-recipient-block{background:linear-gradient(135deg,rgba(59,91,255,.05),rgba(0,170,255,.05));border:1px solid rgba(59,91,255,.2);border-radius:10px;padding:6mm 10mm;margin-bottom:7mm;display:flex;align-items:center;gap:7mm}
+.cert-medal{font-size:34pt;line-height:1}
+.cert-certifies{font-size:8.5pt;color:#8A90A8;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:2mm}
+.cert-name{font-size:20pt;font-weight:800;color:#1A1E3C;letter-spacing:-.3px;margin-bottom:1mm}
+.cert-company{font-size:9pt;color:#5B6189;font-weight:500}
+.cert-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;margin-bottom:7mm}
+.cert-meta-box{background:#F0F3FB;border-radius:8px;padding:4mm 5mm;border:1px solid #D8DCEF}
+.cert-meta-label{font-size:7pt;text-transform:uppercase;letter-spacing:1.5px;color:#9AA0BE;font-weight:700;margin-bottom:2mm}
+.cert-meta-val{font-size:10.5pt;font-weight:800;color:#1A1E3C}
+.cert-comp-title{font-size:9pt;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#3B5BFF;margin-bottom:4mm}
+.cert-comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5mm;margin-bottom:7mm}
+.cert-comp-item{display:flex;align-items:center;gap:6px;font-size:8.5pt;color:#5B6189}
+.cert-comp-dot{width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#3B5BFF,#00AAFF);flex-shrink:0}
+.cert-actions{width:210mm;display:flex;gap:10px;margin-top:16px;justify-content:center}
+.cert-btn-close{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;font-family:inherit;font-weight:600;font-size:13px;padding:10px 22px;border-radius:10px;cursor:pointer}
+.cert-btn-print{background:linear-gradient(135deg,#3B5BFF,#00AAFF);border:none;color:#fff;font-family:inherit;font-weight:700;font-size:13px;padding:10px 28px;border-radius:10px;cursor:pointer}
+
+/* ── MOBILE ── */
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);z-index:200;box-shadow:0 -4px 16px rgba(59,91,255,.08)}
+.mob-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 2px;cursor:pointer;font-size:9px;font-weight:600;color:var(--textd);letter-spacing:.5px;text-transform:uppercase;gap:3px;border:none;background:none;font-family:inherit}
+.mob-nav-item.active{color:var(--blue)}.mob-nav-item.locked{opacity:.3;pointer-events:none}
+.mob-nav-icon{font-size:17px;line-height:1}
+.mob-prog{display:none;position:fixed;top:0;left:0;right:0;height:3px;background:var(--border);z-index:300}
+.mob-prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .5s ease;width:0%}
+
+@media(max-width:860px){
+  .sb{display:none}.main{margin-left:0}.content{padding:20px 16px 90px}
+  .g2,.g3{grid-template-columns:1fr}.hero-h{font-size:24px}.mh1{font-size:20px}
+  .hero{padding:28px 20px;border-radius:14px;margin-bottom:18px}.hero-logo{height:22px;margin-bottom:18px}.hero-lead{font-size:13px}
+  .topbar{padding:12px 16px;gap:8px}.tb-title{font-size:13px}.card{padding:18px}
+  .rt{font-size:12px}.rt th,.rt td{padding:8px 10px}.btns{flex-direction:column;margin-top:28px}.btn{width:100%;text-align:center;padding:13px}
+  .qt{font-size:14px}.opt{font-size:13px;padding:11px 14px}
+  .mob-nav{display:flex}.mob-prog{display:block}
+  .ws-box{padding:32px 20px;border-radius:16px}.ws-logo{height:26px;margin-bottom:22px}.ws-title{font-size:20px}.ws-sub{font-size:13px}.ws-btn{font-size:14px;padding:14px}
+  .cov{padding:0;align-items:flex-start}.cert-page{width:100%;min-height:auto;border-radius:0}.cert-inner{padding:8mm 5mm 6mm 14mm}.cert-title{font-size:18pt}.cert-meta{grid-template-columns:1fr 1fr}.cert-comp-grid{grid-template-columns:1fr}.cert-actions{width:100%;padding:16px;flex-direction:column}.cert-btn-close,.cert-btn-print{width:100%;text-align:center}.cert-bottombar{padding:4mm 5mm;flex-direction:column;gap:2px;justify-content:center;height:auto}.cert-bottombar span{font-size:7pt}
+}
+@media print{
+  body>*:not(.cov){display:none!important}
+  .cov{display:block!important;position:static!important;background:none!important;padding:0!important;backdrop-filter:none!important}
+  .cert-actions{display:none!important}
+  .cert-page{box-shadow:none;width:210mm;min-height:297mm}
+  @page{size:A4 portrait;margin:0}
+}
+
+/* ===== Afinações iOS / Android ===== */
+html{-webkit-text-size-adjust:100%}
+body{overflow-x:hidden}
+input,select,textarea{font-size:16px}
+@media(max-width:860px){
+  .rt{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .mob-nav{padding-bottom:env(safe-area-inset-bottom)}
+  .content{padding-bottom:calc(100px + env(safe-area-inset-bottom))}
+  .opt{min-height:44px}
+  .btn{min-height:46px}
+  .topbar{flex-wrap:wrap}
+}
+@media(max-width:400px){
+  .hero-h{font-size:21px}
+  .mh1{font-size:18px}
+  .content{padding-left:12px;padding-right:12px}
+  .card{padding:16px 14px}
+}
+@media(hover:none){
+  a,button,.opt{-webkit-tap-highlight-color:rgba(59,91,255,.15)}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ WELCOME ══ -->
+<div id="welcome">
+  <div class="ws-box">
+    <img class="ws-logo" src="data:image/png;base64,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" alt="Digit">
+    <div class="ws-tag">Formação · Excel & Ferramentas</div>
+    <div class="ws-title">Microsoft 365 — Dicas e Produtividade</div>
+    <div class="ws-sub">Esta formação ensina a tirar partido do <strong>Microsoft 365</strong> — nuvem, colaboração em tempo real e dicas de produtividade que poupam tempo.<br><br>Introduz o teu primeiro e último nome para começar o curso e gerar o teu certificado de conclusão.</div>
+    <label class="ws-label" for="ni">O TEU PRIMEIRO E ÚLTIMO NOME</label>
+    <input class="ws-input" id="ni" type="text" placeholder="Ex: Ana Silva" autocomplete="name" autocorrect="off" autocapitalize="words" maxlength="80">
+    <div class="ws-error" id="ne"></div>
+    <button class="ws-btn" id="startBtn">Começar a Formação →</button>
+    <div class="ws-legal">Ao continuar, confirmas que és colaborador/a da Digit e que esta formação é uma ação de formação interna da Digit na área de Excel & Ferramentas.</div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app">
+  <div class="mob-prog"><div class="mob-prog-fill" id="mobProgFill"></div></div>
+  <div class="app-inner">
+    <aside class="sb">
+      <div class="sb-logo">
+        <img src="data:image/png;base64,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" alt="d">
+        <div><div style="font-weight:800;font-size:14px;color:#1A1E3C">digit</div><div class="sb-logo-text">Microsoft 365</div></div>
+      </div>
+      <div class="sb-prog">
+        <div class="sb-plabel"><span>Progresso</span><span class="sb-pct" id="pct">0%</span></div>
+        <div class="sb-pbar"><div class="sb-pfill" id="pfill"></div></div>
+      </div>
+      <nav class="sb-nav">
+        <div class="sb-sec">Módulos</div>
+        <div class="ni active" onclick="goTo(0)" id="n0"><div class="ni-num">0</div><div class="ni-title">Introdução</div><div class="ni-dur">3 min</div></div>
+        <div class="ni locked" onclick="goTo(1)" id="n1"><div class="ni-num">1</div><div class="ni-title">O que é o Microsoft 365</div><div class="ni-dur">6 min</div></div>
+        <div class="ni locked" onclick="goTo(2)" id="n2"><div class="ni-num">2</div><div class="ni-title">Trabalhar na nuvem</div><div class="ni-dur">8 min</div></div>
+        <div class="ni locked" onclick="goTo(3)" id="n3"><div class="ni-num">3</div><div class="ni-title">Colaborar em equipa</div><div class="ni-dur">8 min</div></div>
+        <div class="ni locked" onclick="goTo(4)" id="n4"><div class="ni-num">4</div><div class="ni-title">Dicas de produtividade</div><div class="ni-dur">7 min</div></div>
+        <div class="ni locked" onclick="goTo(5)" id="n5"><div class="ni-num">5</div><div class="ni-title">Avaliação Final</div><div class="ni-dur">10 min</div></div>
+      </nav>
+      <button class="sb-certbtn" id="certBtn" onclick="showCert()">🎓 Obter Certificado</button>
+    </aside>
+    <main class="main">
+      <div class="topbar">
+        <div class="tb-badge" id="tbBadge">Módulo 0</div>
+        <div class="tb-title" id="tbTitle">Introdução</div>
+        <div class="tb-time">⏱ <span id="tSpent">0</span> min</div>
+      </div>
+      <div class="content">
+
+<!-- MOD 0 -->
+<div class="mv active" id="m0">
+  <div class="hero">
+    <img class="hero-logo" src="data:image/png;base64,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" alt="Digit">
+    <div class="hero-label">Regulamento Excel & Ferramentas · Digit</div>
+    <div class="hero-h">Microsoft 365<br><span>Dicas e Produtividade</span></div>
+    <div class="hero-lead">O Microsoft 365 é muito mais do que o Word e o Excel. Aprende a tirar partido da nuvem, a colaborar em tempo real e a usar truques de produtividade que poupam horas todas as semanas.</div>
+  </div>
+  <div class="g3">
+    <div class="mc"><span class="n">5</span><div class="l">Módulos</div></div>
+    <div class="mc"><span class="n">10</span><div class="l">Minutos</div></div>
+    <div class="mc"><span class="n">70%</span><div class="l">Nota mínima</div></div>
+  </div>
+  <div class="notif nw"><div class="ni-icon">⚡</div><div><strong>Pequenos truques, grande diferença</strong>A maioria das pessoas usa uma fração do que o Microsoft 365 oferece. Conhecer as funcionalidades de nuvem e colaboração transforma a forma de trabalhar — menos versões perdidas, menos e-mails, mais tempo para o que importa.</div></div>
+  <div class="card"><div class="ct">📋 O que vais aprender</div>
+    <ul class="cl">
+      <li><span class="ci">→</span>O que é o Microsoft 365 e o que inclui</li>
+      <li><span class="ci">→</span>Trabalhar na nuvem com OneDrive e SharePoint</li>
+      <li><span class="ci">→</span>Colaborar em tempo real e usar o Teams</li>
+      <li><span class="ci">→</span>Dicas de produtividade que poupam tempo</li>
+      <li><span class="ci">→</span>Boas práticas de organização e segurança</li>
+    </ul>
+  </div>
+  <div class="btns"><button class="btn btnp" onclick="next()">Começar o Curso →</button></div>
+</div>
+
+<!-- MOD 1 -->
+<div class="mv" id="m1">
+  <div class="mh"><div class="mtag">Módulo 1</div><div class="mh1">O que é o Microsoft 365</div><div class="mlead">Mais do que um pacote de programas — um conjunto de ferramentas ligadas pela nuvem.</div></div>
+<div class="card hcard"><div class="ct">🧩 Um conjunto integrado</div><p>O <strong>Microsoft 365</strong> (antes "Office 365") é um conjunto de aplicações de produtividade <strong>ligadas pela nuvem</strong>. Inclui as ferramentas clássicas e muitas outras de colaboração e organização.</p></div>
+  <div class="card"><div class="ct">📦 As principais aplicações</div>
+    <table class="rt"><tr><th>Aplicação</th><th>Para quê</th></tr>
+    <tr><td><strong>Word, Excel, PowerPoint</strong></td><td>Documentos, folhas de cálculo, apresentações</td></tr>
+    <tr><td><strong>Outlook</strong></td><td>E-mail e calendário</td></tr>
+    <tr><td><strong>OneDrive / SharePoint</strong></td><td>Guardar e partilhar ficheiros na nuvem</td></tr>
+    <tr><td><strong>Teams</strong></td><td>Reuniões, chat e trabalho em equipa</td></tr>
+    </table>
+  </div>
+  <div class="card"><div class="ct">☁️ A diferença está na nuvem</div><p>O grande salto do Microsoft 365 é a <strong>nuvem</strong>: os ficheiros deixam de viver só no computador e passam a estar acessíveis de qualquer lado, sempre atualizados e seguros. É isto que permite a colaboração em tempo real.</p></div>
+  <div class="card wcard"><div class="ct">💻 Funciona em qualquer dispositivo</div><p>Com o Microsoft 365, trabalha-se no <strong>computador, no telemóvel ou no navegador</strong> — e o trabalho fica sincronizado. Começa um documento no escritório e continua-o noutro lado sem perder nada. Para uma equipa móvel, é uma enorme vantagem.</p></div>
+  <div class="btns"><button class="btn btns2" onclick="prev()">← Anterior</button><button class="btn btnp" onclick="next()">Módulo 2 →</button></div>
+</div>
+
+<!-- MOD 2 -->
+<div class="mv" id="m2">
+  <div class="mh"><div class="mtag">Módulo 2</div><div class="mh1">Trabalhar na nuvem</div><div class="mlead">OneDrive e SharePoint mudam a relação com os ficheiros. Acabaram-se as versões perdidas.</div></div>
+<div class="card hcard"><div class="ct">☁️ OneDrive e SharePoint</div><p>O <strong>OneDrive</strong> é o teu espaço pessoal na nuvem; o <strong>SharePoint</strong> é o espaço partilhado da equipa/empresa. Guardar aí os ficheiros (em vez de só no computador) é a base de tudo o resto.</p></div>
+  <div class="card"><div class="ct">✨ Vantagens de guardar na nuvem</div>
+    <ul class="cl">
+      <li><span class="ci">→</span><strong>Acesso em qualquer lado</strong> e dispositivo</li>
+      <li><span class="ci">→</span><strong>Cópia de segurança</strong> automática</li>
+      <li><span class="ci">→</span><strong>Histórico de versões</strong> — recuperar versões anteriores</li>
+      <li><span class="ci">→</span><strong>Partilha</strong> fácil, sem anexos pesados</li>
+    </ul>
+  </div>
+  <div class="card"><div class="ct">📧 Partilhar link, não anexo</div><p>Em vez de enviar o ficheiro como anexo (criando várias cópias soltas), partilha-se um <strong>link</strong> para o ficheiro na nuvem. Todos trabalham na <strong>mesma versão</strong>, sempre atualizada. Adeus "documento_final_v3_revisto_AGORA.xlsx".</p></div>
+  <div class="card wcard"><div class="ct">🕓 Histórico de versões</div><p>Uma funcionalidade subvalorizada: o <strong>histórico de versões</strong>. Se alguém apagar algo por engano ou quiseres voltar atrás, podes <strong>recuperar uma versão anterior</strong> do ficheiro. Uma rede de segurança que evita muitas dores de cabeça.</p></div>
+  <div class="btns"><button class="btn btns2" onclick="prev()">← Anterior</button><button class="btn btnp" onclick="next()">Módulo 3 →</button></div>
+</div>
+
+<!-- MOD 3 -->
+<div class="mv" id="m3">
+  <div class="mh"><div class="mtag">Módulo 3</div><div class="mh1">Colaborar em equipa</div><div class="mlead">Trabalhar ao mesmo tempo no mesmo ficheiro, comunicar sem caos de e-mails. É aqui que se ganha tempo.</div></div>
+<div class="card hcard"><div class="ct">🤝 Coautoria em tempo real</div><p>Várias pessoas podem editar o <strong>mesmo documento ao mesmo tempo</strong>, vendo as alterações umas das outras ao vivo. Acabou o reenvio de ficheiros e a junção manual de versões — todos trabalham juntos, em simultâneo.</p></div>
+  <div class="card"><div class="ct">💬 O Teams como centro</div>
+    <ul class="cl">
+      <li><span class="ci">→</span><strong>Chat</strong> em vez de e-mails internos para tudo</li>
+      <li><span class="ci">→</span><strong>Reuniões</strong> e videochamadas com partilha de ecrã</li>
+      <li><span class="ci">→</span><strong>Canais</strong> por equipa ou projeto, com ficheiros à mão</li>
+      <li><span class="ci">→</span>Tudo <strong>num só sítio</strong>, ligado às outras apps</li>
+    </ul>
+  </div>
+  <div class="card"><div class="ct">📝 Comentários e menções</div><p>Em vez de e-mails a dizer "muda isto", deixa-se um <strong>comentário</strong> diretamente no documento, no sítio certo. Com uma <strong>menção</strong> (@nome), a pessoa é notificada. O feedback fica no contexto — muito mais claro do que descrever por e-mail.</p></div>
+  <div class="card wcard"><div class="ct">⚠️ Colaboração com regras</div><p>Colaborar não é "toda a gente mexe em tudo". É importante saber <strong>quem pode aceder a quê</strong> — sobretudo com dados de clientes. As permissões de partilha devem ser geridas com cuidado, respeitando a confidencialidade e o sigilo.</p></div>
+  <div class="btns"><button class="btn btns2" onclick="prev()">← Anterior</button><button class="btn btnp" onclick="next()">Módulo 4 →</button></div>
+</div>
+
+<!-- MOD 4 -->
+<div class="mv" id="m4">
+  <div class="mh"><div class="mtag">Módulo 4</div><div class="mh1">Dicas de produtividade</div><div class="mlead">Pequenos hábitos e funcionalidades que, somados, poupam horas todas as semanas.</div></div>
+<div class="card hcard"><div class="ct">⚡ Trabalhar mais esperto</div><p>Para além das grandes funcionalidades, há <strong>pequenos truques</strong> que fazem diferença no dia a dia. Não é preciso saber tudo — algumas dicas bem aplicadas já poupam muito tempo.</p></div>
+  <div class="card"><div class="ct">🎯 Dicas que valem a pena</div>
+    <ul class="cl">
+      <li><span class="ci">→</span><strong>Pesquisar</strong> (caixa de pesquisa) em vez de procurar menus</li>
+      <li><span class="ci">→</span><strong>Atalhos de teclado</strong> para as ações mais frequentes</li>
+      <li><span class="ci">→</span><strong>Modelos</strong> reutilizáveis para documentos repetitivos</li>
+      <li><span class="ci">→</span><strong>Calendário partilhado</strong> para coordenar a equipa</li>
+    </ul>
+  </div>
+  <div class="card"><div class="ct">📂 Organização que se mantém</div><p>Uma boa <strong>estrutura de pastas</strong> no SharePoint e nomes de ficheiro <strong>consistentes</strong> poupam horas de procura. Combinar regras simples na equipa (como nomear ficheiros) evita o caos quando os projetos crescem.</p></div>
+  <div class="card wcard"><div class="ct">🌟 O essencial</div><p>Não é preciso dominar tudo de uma vez. O importante é <strong>guardar na nuvem</strong>, <strong>partilhar por link</strong> e <strong>colaborar em tempo real</strong> — só estes três hábitos já transformam a forma de trabalhar. O resto aprende-se com o uso.</p></div>
+  <div class="btns"><button class="btn btns2" onclick="prev()">← Anterior</button><button class="btn btnp" onclick="next()">Avaliação Final →</button></div>
+</div>
+
+<!-- MOD 5: QUIZ -->
+<div class="mv" id="m5">
+  <div class="mh"><div class="mtag">Módulo 5</div><div class="mh1">Avaliação Final</div><div class="mlead">10 perguntas. Precisas de 70% (7 certas) para obter o certificado.</div></div>
+  <div id="qwrap">
+
+        <div class="qb"><div class="qt"><span class="qn">1</span>O que é o Microsoft 365?</div><div class="opts">
+      <div class="opt" onclick="sel(this,0,false)"><div class="orad"><div class="rdot"></div></div>Só o Word e o Excel</div>
+      <div class="opt" onclick="sel(this,0,true)"><div class="orad"><div class="rdot"></div></div>Um conjunto de aplicações de produtividade ligadas pela nuvem</div>
+      <div class="opt" onclick="sel(this,0,false)"><div class="orad"><div class="rdot"></div></div>Um antivírus</div>
+      <div class="opt" onclick="sel(this,0,false)"><div class="orad"><div class="rdot"></div></div>Um jogo</div>
+    </div><div class="fb okfb" id="f0c">✓ Correto! Aplicações de produtividade ligadas pela nuvem.</div><div class="fb kofb" id="f0w">✗ Errado. É <strong>um conjunto de aplicações de produtividade ligadas pela nuvem</strong>.</div></div>
+
+    <div class="qb"><div class="qt"><span class="qn">2</span>Qual é a grande diferença do Microsoft 365 face ao Office tradicional?</div><div class="opts">
+      <div class="opt" onclick="sel(this,1,false)"><div class="orad"><div class="rdot"></div></div>Tem mais cores</div>
+      <div class="opt" onclick="sel(this,1,true)"><div class="orad"><div class="rdot"></div></div>A integração com a nuvem</div>
+      <div class="opt" onclick="sel(this,1,false)"><div class="orad"><div class="rdot"></div></div>É mais lento</div>
+      <div class="opt" onclick="sel(this,1,false)"><div class="orad"><div class="rdot"></div></div>Não tem Excel</div>
+    </div><div class="fb okfb" id="f1c">✓ Correto! A nuvem.</div><div class="fb kofb" id="f1w">✗ Errado. A grande diferença é <strong>a integração com a nuvem</strong>.</div></div>
+
+    <div class="qb"><div class="qt"><span class="qn">3</span>Para que serve o OneDrive?</div><div class="opts">
+      <div class="opt" onclick="sel(this,2,false)"><div class="orad"><div class="rdot"></div></div>Para jogar</div>
+      <div class="opt" onclick="sel(this,2,true)"><div class="orad"><div class="rdot"></div></div>Guardar e aceder a ficheiros na nuvem</div>
+      <div class="opt" onclick="sel(this,2,false)"><div class="orad"><div class="rdot"></div></div>Para enviar SMS</div>
+      <div class="opt" onclick="sel(this,2,false)"><div class="orad"><div class="rdot"></div></div>Para imprimir</div>
+    </div><div class="fb okfb" id="f2c">✓ Correto! Guardar ficheiros na nuvem.</div><div class="fb kofb" id="f2w">✗ Errado. Serve para <strong>guardar e aceder a ficheiros na nuvem</strong>.</div></div>
+
+    <div class="qb"><div class="qt"><span class="qn">4</span>Qual é a vantagem de partilhar um link em vez de um anexo?</div><div class="opts">
+      <div class="opt" onclick="sel(this,3,false)"><div class="orad"><div class="rdot"></div></div>Não há vantagem</div>
+      <div class="opt" onclick="sel(this,3,true)"><div class="orad"><div class="rdot"></div></div>Todos trabalham na mesma versão, sempre atualizada</div>
+      <div class="opt" onclick="sel(this,3,false)"><div class="orad"><div class="rdot"></div></div>Cria mais cópias</div>
+      <div class="opt" onclick="sel(this,3,false)"><div class="orad"><div class="rdot"></div></div>É mais pesado</div>
+    </div><div class="fb okfb" id="f3c">✓ Correto! Mesma versão para todos.</div><div class="fb kofb" id="f3w">✗ Errado. <strong>Todos trabalham na mesma versão, sempre atualizada</strong>.</div></div>
+
+    <div class="qb"><div class="qt"><span class="qn">5</span>O que permite o 'histórico de versões' de um ficheiro na nuvem?</div><div class="opts">
+      <div class="opt" onclick="sel(this,4,false)"><div class="orad"><div class="rdot"></div></div>Apagar tudo</div>
+      <div class="opt" onclick="sel(this,4,true)"><div class="orad"><div class="rdot"></div></div>Recuperar versões anteriores do ficheiro</div>
+      <div class="opt" onclick="sel(this,4,false)"><div class="orad"><div class="rdot"></div></div>Mudar a cor</div>
+      <div class="opt" onclick="sel(this,4,false)"><div class="orad"><div class="rdot"></div></div>Imprimir mais rápido</div>
+    </div><div class="fb okfb" id="f4c">✓ Correto! Recuperar versões anteriores.</div><div class="fb kofb" id="f4w">✗ Errado. Permite <strong>recuperar versões anteriores do ficheiro</strong>.</div></div>
+
+    <div class="qb"><div class="qt"><span class="qn">6</span>O que é a coautoria em tempo real?</div><div class="opts">
+      <div class="opt" onclick="sel(this,5,false)"><div class="orad"><div class="rdot"></div></div>Escrever sozinho</div>
+      <div class="opt" onclick="sel(this,5,true)"><div class="orad"><div class="rdot"></div></div>Várias pessoas editarem o mesmo documento ao mesmo tempo</div>
+      <div class="opt" onclick="sel(this,5,false)"><div class="orad"><div class="rdot"></div></div>Imprimir em grupo</div>
+      <div class="opt" onclick="sel(this,5,false)"><div class="orad"><div class="rdot"></div></div>Enviar e-mails</div>
+    </div><div class="fb okfb" id="f5c">✓ Correto! Editar em simultâneo.</div><div class="fb kofb" id="f5w">✗ Errado. É <strong>várias pessoas editarem o mesmo documento ao mesmo tempo</strong>.</div></div>
+
+    <div class="qb"><div class="qt"><span class="qn">7</span>Para que serve o Teams?</div><div class="opts">
+      <div class="opt" onclick="sel(this,6,false)"><div class="orad"><div class="rdot"></div></div>Só para jogos</div>
+      <div class="opt" onclick="sel(this,6,true)"><div class="orad"><div class="rdot"></div></div>Chat, reuniões e trabalho em equipa num só sítio</div>
+      <div class="opt" onclick="sel(this,6,false)"><div class="orad"><div class="rdot"></div></div>Para guardar fotos</div>
+      <div class="opt" onclick="sel(this,6,false)"><div class="orad"><div class="rdot"></div></div>Para fazer cálculos</div>
+    </div><div class="fb okfb" id="f6c">✓ Correto! Comunicação e trabalho em equipa.</div><div class="fb kofb" id="f6w">✗ Errado. Serve para <strong>chat, reuniões e trabalho em equipa num só sítio</strong>.</div></div>
+
+    <div class="qb"><div class="qt"><span class="qn">8</span>Qual é a forma mais clara de dar feedback num documento partilhado?</div><div class="opts">
+      <div class="opt" onclick="sel(this,7,false)"><div class="orad"><div class="rdot"></div></div>Enviar dez e-mails</div>
+      <div class="opt" onclick="sel(this,7,true)"><div class="orad"><div class="rdot"></div></div>Deixar um comentário no sítio certo, com menção (@nome)</div>
+      <div class="opt" onclick="sel(this,7,false)"><div class="orad"><div class="rdot"></div></div>Não dar feedback</div>
+      <div class="opt" onclick="sel(this,7,false)"><div class="orad"><div class="rdot"></div></div>Ligar a meio da noite</div>
+    </div><div class="fb okfb" id="f7c">✓ Correto! Comentário no contexto, com menção.</div><div class="fb kofb" id="f7w">✗ Errado. É <strong>deixar um comentário no sítio certo, com menção (@nome)</strong>.</div></div>
+
+    <div class="qb"><div class="qt"><span class="qn">9</span>Ao colaborar com dados de clientes, o que é importante gerir?</div><div class="opts">
+      <div class="opt" onclick="sel(this,8,false)"><div class="orad"><div class="rdot"></div></div>Nada</div>
+      <div class="opt" onclick="sel(this,8,true)"><div class="orad"><div class="rdot"></div></div>As permissões de acesso, respeitando a confidencialidade</div>
+      <div class="opt" onclick="sel(this,8,false)"><div class="orad"><div class="rdot"></div></div>A cor das pastas</div>
+      <div class="opt" onclick="sel(this,8,false)"><div class="orad"><div class="rdot"></div></div>O tamanho da letra</div>
+    </div><div class="fb okfb" id="f8c">✓ Correto! Gerir permissões e confidencialidade.</div><div class="fb kofb" id="f8w">✗ Errado. É importante gerir <strong>as permissões de acesso, respeitando a confidencialidade</strong>.</div></div>
+
+    <div class="qb"><div class="qt"><span class="qn">10</span>Quais três hábitos já transformam a forma de trabalhar no Microsoft 365?</div><div class="opts">
+      <div class="opt" onclick="sel(this,9,false)"><div class="orad"><div class="rdot"></div></div>Imprimir, arquivar, apagar</div>
+      <div class="opt" onclick="sel(this,9,true)"><div class="orad"><div class="rdot"></div></div>Guardar na nuvem, partilhar por link e colaborar em tempo real</div>
+      <div class="opt" onclick="sel(this,9,false)"><div class="orad"><div class="rdot"></div></div>Nada em especial</div>
+      <div class="opt" onclick="sel(this,9,false)"><div class="orad"><div class="rdot"></div></div>Trabalhar sempre offline</div>
+    </div><div class="fb okfb" id="f9c">✓ Correto! Nuvem, link e colaboração.</div><div class="fb kofb" id="f9w">✗ Errado. <strong>Guardar na nuvem, partilhar por link e colaborar em tempo real</strong>.</div></div>
+
+  
+
+    <div id="submitArea" style="margin-top:20px">
+      <div id="notAll" class="notif nw" style="display:none"><div class="ni-icon">⚠️</div><div>Faltam <strong id="rem">0</strong> perguntas por responder.</div></div>
+      <button class="btn btnp" onclick="submitQ()" style="width:100%;padding:14px;font-size:14px">Submeter Avaliação →</button>
+    </div>
+    <div id="result" style="display:none;margin-top:24px">
+      <div class="score-wrap">
+        <div class="score-inner-wrap">
+          <svg class="score-svg" width="56" height="56" viewBox="0 0 56 56">
+            <circle cx="28" cy="28" r="22" fill="none" stroke="#D8DCEF" stroke-width="5"/>
+            <circle id="sarc" cx="28" cy="28" r="22" fill="none" stroke="#3B5BFF" stroke-width="5" stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="138.2" style="transition:stroke-dashoffset 1s ease,stroke .5s"/>
+          </svg>
+          <div class="score-inner" id="snum">0/10</div>
+        </div>
+        <div class="s-info"><div class="s-label" id="slabel">—</div><div class="s-sub" id="ssub">—</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="btns">
+    <button class="btn btns2" onclick="prev()">← Anterior</button>
+    <button class="btn btnp" id="certBtnMain" style="display:none" onclick="showCert()">🎓 Obter Certificado</button>
+  </div>
+</div>
+
+      </div><!-- /content -->
+    </main>
+  </div>
+  <nav class="mob-nav">
+    <button class="mob-nav-item active" onclick="goTo(0)" id="mn0"><div class="mob-nav-icon">📋</div>Intro</button>
+    <button class="mob-nav-item locked" onclick="goTo(1)" id="mn1"><div class="mob-nav-icon">🧩</div>M365</button>
+    <button class="mob-nav-item locked" onclick="goTo(2)" id="mn2"><div class="mob-nav-icon">☁</div>Nuvem</button>
+    <button class="mob-nav-item locked" onclick="goTo(3)" id="mn3"><div class="mob-nav-icon">🤝</div>Equipa</button>
+    <button class="mob-nav-item locked" onclick="goTo(4)" id="mn4"><div class="mob-nav-icon">⚡</div>Dicas</button>
+    <button class="mob-nav-item locked" onclick="goTo(5)" id="mn5"><div class="mob-nav-icon">✅</div>Quiz</button>
+  </nav>
+</div>
+
+<!-- CERTIFICATE -->
+<div class="cov" id="cov">
+  <div>
+    <div class="cert-page">
+      <div class="cert-topbar"></div>
+      <div class="cert-side"></div>
+      <div class="cert-inner">
+        <div class="cert-header-row">
+          <img class="cert-logo-img" src="data:image/png;base64,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" alt="Digit">
+          <div class="cert-badge">Certificado Oficial</div>
+        </div>
+        <div class="cert-divider"></div>
+        <div class="cert-title-block">
+          <div class="cert-subtitle">Formação interna em</div>
+          <div class="cert-title">Microsoft 365<br>Dicas e Produtividade</div>
+          <div class="cert-law-ref">Formação interna · Excel & Ferramentas<br>Digit · Portugal</div>
+        </div>
+        <div class="cert-recipient-block">
+          <div class="cert-medal">🎓</div>
+          <div>
+            <div class="cert-certifies">Certifica-se que</div>
+            <div class="cert-name" id="certColabName">Colaborador Digit</div>
+            <div class="cert-company">Digit · Beyond Numbers</div>
+          </div>
+        </div>
+        <div class="cert-meta">
+          <div class="cert-meta-box"><div class="cert-meta-label">Data de Conclusão</div><div class="cert-meta-val" id="cDate">—</div></div>
+          <div class="cert-meta-box"><div class="cert-meta-label">Pontuação</div><div class="cert-meta-val" id="cScore">—</div></div>
+          <div class="cert-meta-box"><div class="cert-meta-label">Duração</div><div class="cert-meta-val" id="cDur">—</div></div>
+          <div class="cert-meta-box"><div class="cert-meta-label">Validade</div><div class="cert-meta-val">1 ano</div></div>
+        </div>
+        <div class="cert-comp-title">Competências adquiridas</div>
+        <div class="cert-comp-grid">
+          <div class="cert-comp-item"><div class="cert-comp-dot"></div>As aplicações do Microsoft 365</div>
+          <div class="cert-comp-item"><div class="cert-comp-dot"></div>Trabalhar na nuvem com OneDrive e SharePoint</div>
+          <div class="cert-comp-item"><div class="cert-comp-dot"></div>Partilha por link e histórico de versões</div>
+          <div class="cert-comp-item"><div class="cert-comp-dot"></div>Coautoria em tempo real e o Teams</div>
+          <div class="cert-comp-item"><div class="cert-comp-dot"></div>Comentários, menções e permissões</div>
+          <div class="cert-comp-item"><div class="cert-comp-dot"></div>Dicas de produtividade e organização</div>
+        </div>
+      </div>
+      <div class="cert-bottombar">
+        <span>Digit · Beyond Numbers · www.digit.com.pt</span>
+        <span>Formação interna da Digit · Excel & Ferramentas</span>
+        <span>Validade: 1 ano a contar da data de emissão</span>
+      </div>
+    </div>
+    <div class="cert-actions">
+      <button class="cert-btn-close" onclick="closeCert()">✕ Fechar</button>
+      <button class="cert-btn-print" onclick="window.print()">⬇ Imprimir / Guardar PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var TOTAL=6, mnames=["Introdução","O que é o Microsoft 365","Trabalhar na nuvem","Colaborar em equipa","Dicas de produtividade","Avaliação Final"];
+var cur=0, done={}, ans=[], score=0, t0=Date.now(), collabName="";
+var cIdx=[1,1,2,2,1,1,2,2,2,3];
+for(var i=0;i<10;i++) ans.push(null);
+
+setInterval(function(){ document.getElementById("tSpent").textContent=Math.floor((Date.now()-t0)/60000); },15000);
+
+// ── WELCOME ──
+document.getElementById("startBtn").addEventListener("click", startCourse);
+document.getElementById("ni").addEventListener("keydown", function(e){ if(e.key==="Enter") startCourse(); });
+
+function startCourse(){
+  var val=(document.getElementById("ni").value||"").replace(/\s+/," ").trim();
+  var err=document.getElementById("ne");
+  if(val.length<3){ err.textContent="Introduz o teu primeiro e último nome."; return; }
+  if(!/[a-zA-ZÀ-ÿ]/.test(val)){ err.textContent="O nome deve conter letras."; return; }
+  collabName=val;
+  document.getElementById("certColabName").textContent=collabName;
+  document.getElementById("welcome").style.display="none";
+  document.getElementById("app").style.display="block";
+  window.scrollTo(0,0);
+}
+
+// ── NAV ──
+function goTo(i){ if(document.getElementById("n"+i).classList.contains("locked")) return; cur=i; render(); }
+function next(){ done[cur]=true; if(window.DigitTracker) DigitTracker.modulo(cur); cur=Math.min(cur+1,TOTAL-1); unlock(cur); render(); }
+function prev(){ cur=Math.max(cur-1,0); render(); }
+function unlock(i){
+  ["n","mn"].forEach(function(p){ var e=document.getElementById(p+i); if(e) e.classList.remove("locked"); });
+}
+function doneCount(){ var n=0; for(var k in done) if(done[k]) n++; return n; }
+
+function render(){
+  document.querySelectorAll(".mv").forEach(function(v){ v.classList.remove("active"); });
+  document.getElementById("m"+cur).classList.add("active");
+  document.querySelectorAll(".ni").forEach(function(el,i){
+    el.classList.remove("active");
+    if(done[i]&&i!==cur) el.classList.add("done"); else el.classList.remove("done");
+  });
+  document.getElementById("n"+cur).classList.add("active");
+  document.querySelectorAll(".mob-nav-item").forEach(function(el){ el.classList.remove("active"); });
+  var mn=document.getElementById("mn"+cur); if(mn) mn.classList.add("active");
+  var p=Math.round(doneCount()/TOTAL*100);
+  document.getElementById("pfill").style.width=p+"%";
+  document.getElementById("pct").textContent=p+"%";
+  var mf=document.getElementById("mobProgFill"); if(mf) mf.style.width=p+"%";
+  document.getElementById("tbBadge").textContent="Módulo "+cur;
+  document.getElementById("tbTitle").textContent=mnames[cur];
+  window.scrollTo(0,0);
+}
+
+// ── QUIZ ──
+function sel(el,qi,isOk){
+  var blk=el.closest(".qb");
+  if(ans[qi]!==null) return;
+  blk.querySelectorAll(".opt").forEach(function(o){ o.classList.remove("sel"); });
+  el.classList.add("sel"); ans[qi]=isOk;
+  if(isOk){ el.classList.add("ok"); document.getElementById("f"+qi+"c").classList.add("show"); }
+  else{ el.classList.add("ko"); document.getElementById("f"+qi+"w").classList.add("show"); blk.querySelectorAll(".opt")[cIdx[qi]].classList.add("ok"); }
+  blk.querySelectorAll(".opt").forEach(function(o){ o.style.pointerEvents="none"; });
+}
+function submitQ(){
+  var left=ans.filter(function(a){ return a===null; }).length;
+  if(left>0){ document.getElementById("rem").textContent=left; document.getElementById("notAll").style.display="flex"; return; }
+  document.getElementById("notAll").style.display="none";
+  score=ans.filter(function(a){ return a===true; }).length;
+  if(window.DigitTracker) DigitTracker.avaliacao(score,10);
+  var pct=Math.round(score/10*100);
+  document.getElementById("submitArea").style.display="none";
+  document.getElementById("result").style.display="block";
+  document.getElementById("snum").textContent=score+"/10";
+  var arc=document.getElementById("sarc");
+  arc.style.strokeDashoffset=138.2-(pct/100*138.2);
+  arc.style.stroke=score>=7?"#00B87A":"#E84545";
+  if(score>=7){
+    document.getElementById("slabel").textContent="✅ Aprovado — "+pct+"%";
+    document.getElementById("ssub").textContent="Parabéns! Podes obter o teu certificado de conformidade.";
+    document.getElementById("certBtnMain").style.display="inline-block";
+    document.getElementById("certBtn").classList.add("on");
+    done[5]=true; render();
+  } else {
+    document.getElementById("slabel").textContent="❌ Não aprovado — "+pct+"%";
+    document.getElementById("ssub").textContent="Precisas de pelo menos 7/10. Revê os módulos e tenta novamente.";
+    setTimeout(function(){ if(confirm("Queres tentar novamente?")) resetQ(); },800);
+  }
+}
+function resetQ(){
+  for(var i=0;i<10;i++) ans[i]=null;
+  document.querySelectorAll(".opt").forEach(function(o){ o.classList.remove("sel","ok","ko"); o.style.pointerEvents="auto"; });
+  document.querySelectorAll(".fb").forEach(function(f){ f.classList.remove("show"); });
+  document.getElementById("submitArea").style.display="block";
+  document.getElementById("result").style.display="none";
+}
+function showCert(){
+  var m=Math.max(Math.floor((Date.now()-t0)/60000),5);
+  document.getElementById("cDate").textContent=new Date().toLocaleDateString("pt-PT",{year:"numeric",month:"long",day:"numeric"});
+  document.getElementById("cScore").textContent=score+"/10 ("+Math.round(score/10*100)+"%)";
+  document.getElementById("cDur").textContent=m+" minutos";
+  document.getElementById("certColabName").textContent=collabName||"Colaborador Digit";
+  document.getElementById("cov").style.display="flex";
+}
+function closeCert(){ document.getElementById("cov").style.display="none"; }
+</script>
+<script type="module" src="digit-tracker.js"></script>
+</body>
+</html>

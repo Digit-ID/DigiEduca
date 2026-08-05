@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portal de Formação · Digit</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#F6F7FB;color:#141A33;font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:#3B5BFF;text-decoration:none}
+  a:hover{color:#00AAFF}
+  input,select,button{font-family:inherit}
+  @keyframes gira{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+
+<div style="min-height:100vh">
+
+  <sc-if value="{{ ecraLogin }}" hint-placeholder-val="{{ true }}">
+    <div style="min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#2440D9 0%,#3B5BFF 45%,#00AAFF 100%)">
+      <div style="width:100%;max-width:440px">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px">
+          <div style="background:#fff;border-radius:10px;padding:9px 14px;display:inline-flex">
+            <img src="assets/digit-logo.png" alt="Digit" style="height:26px;width:auto;display:block">
+          </div>
+          <div style="color:#fff;font-size:13px;letter-spacing:.16em;text-transform:uppercase;opacity:.85">Portal de Formação</div>
+        </div>
+        <div style="background:#fff;border-radius:18px;padding:30px 28px 26px;box-shadow:0 24px 60px rgba(12,24,80,.28)">
+          <div style="display:flex;gap:4px;background:#EEF0FA;padding:4px;border-radius:11px;margin-bottom:22px">
+            <button onClick="{{ irEntrar }}" style="{{ estiloTabEntrar }}">Entrar</button>
+            <button onClick="{{ irCriar }}" style="{{ estiloTabCriar }}">Criar conta</button>
+          </div>
+
+          <sc-if value="{{ aCriar }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;gap:14px;margin-bottom:16px">
+              <label style="display:grid;gap:6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">Nome completo
+                <input ref="{{ refNome }}" type="text" placeholder="Ex: Ana Silva" autocomplete="name" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;outline:none">
+              </label>
+              <label style="display:grid;gap:6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">Departamento
+                <select ref="{{ refDepto }}" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;background:#fff;outline:none">
+                  <option>Contabilidade</option>
+                  <option>Fiscalidade</option>
+                  <option>Recursos Humanos</option>
+                  <option>Processamento Salarial</option>
+                  <option>Tesouraria</option>
+                  <option>I&amp;D</option>
+                  <option>BPO</option>
+                  <option>Direção</option>
+                </select>
+              </label>
+            </div>
+          </sc-if>
+
+          <div style="display:grid;gap:14px">
+            <label style="display:grid;gap:6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">Email Digit
+              <input ref="{{ refEmail }}" type="email" placeholder="nome.apelido@digit.com.pt" autocomplete="email" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;outline:none">
+            </label>
+            <label style="display:grid;gap:6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">Palavra-passe
+              <input ref="{{ refPass }}" type="password" placeholder="Mínimo 8 caracteres" autocomplete="current-password" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;outline:none">
+            </label>
+          </div>
+
+          <sc-if value="{{ erro }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:14px;background:#FDECEC;border:1px solid #F5C6C6;color:#B02525;border-radius:10px;padding:11px 13px;font-size:13.5px">{{ erro }}</div>
+          </sc-if>
+
+          <button onClick="{{ submeter }}" style="margin-top:20px;width:100%;border:0;border-radius:11px;padding:15px;background:#3B5BFF;color:#fff;font-size:15.5px;font-weight:700;cursor:pointer;letter-spacing:.01em" style-hover="background:#2440D9">{{ textoBotao }}</button>
+
+          <div style="margin-top:18px;padding-top:16px;border-top:1px solid #EEF0FA;font-size:12.5px;color:#7B8FD4;line-height:1.6">
+            Acesso restrito a endereços <strong style="color:#3B5BFF">@digit.com.pt</strong>. O teu progresso, notas e certificados ficam registados na conta.
+          </div>
+        </div>
+
+        <div style="margin-top:16px;text-align:center">
+          <button onClick="{{ alternarConfig }}" style="background:transparent;border:0;color:rgba(255,255,255,.8);font-size:12.5px;cursor:pointer;text-decoration:underline">{{ etiquetaModo }}</button>
+        </div>
+
+        <sc-if value="{{ mostrarConfig }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:14px;padding:18px;color:#fff">
+            <div style="font-size:13px;font-weight:700;margin-bottom:4px">Ligação ao Supabase</div>
+            <div style="font-size:12px;opacity:.8;line-height:1.5;margin-bottom:12px">Cola o URL do projeto e a chave <em>anon public</em> (Project Settings → API). Guardadas neste navegador.</div>
+            <div style="display:grid;gap:9px">
+              <input ref="{{ refUrl }}" type="text" placeholder="https://xxxxxxxx.supabase.co" style="border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;border-radius:9px;padding:10px 12px;font-size:13px;outline:none">
+              <input ref="{{ refChave }}" type="text" placeholder="eyJhbGciOi… (anon public)" style="border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;border-radius:9px;padding:10px 12px;font-size:13px;outline:none">
+              <button onClick="{{ guardarLigacao }}" style="border:0;border-radius:9px;padding:11px;background:#fff;color:#2440D9;font-size:13.5px;font-weight:700;cursor:pointer">Ligar e recarregar</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ ecraApp }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <header style="background:linear-gradient(120deg,#2440D9,#3B5BFF 55%,#00AAFF);color:#fff;padding:0 28px">
+        <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:20px;height:70px">
+          <div style="background:#fff;border-radius:8px;padding:7px 11px;display:inline-flex">
+            <img src="assets/digit-logo.png" alt="Digit" style="height:20px;width:auto;display:block">
+          </div>
+          <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;opacity:.8">Portal de Formação</div>
+          <div style="flex:1"></div>
+          <div style="display:flex;gap:6px">
+            <button onClick="{{ verCatalogo }}" style="{{ estiloNavCatalogo }}">Catálogo</button>
+            <button onClick="{{ verCertificados }}" style="{{ estiloNavCerts }}">Certificados</button>
+            <sc-if value="{{ souAdmin }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ verAdmin }}" style="{{ estiloNavAdmin }}">Administração</button>
+            </sc-if>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding-left:16px;border-left:1px solid rgba(255,255,255,.25);flex-shrink:0">
+            <div style="text-align:right;line-height:1.3;white-space:nowrap">
+              <div style="font-size:13.5px;font-weight:600">{{ meuNome }}</div>
+              <div style="font-size:11.5px;opacity:.75">{{ meuPapel }}</div>
+            </div>
+            <button onClick="{{ sair }}" style="border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:8px 13px;font-size:12.5px;cursor:pointer">Sair</button>
+          </div>
+        </div>
+      </header>
+
+      <sc-if value="{{ modoDemo }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#FFF6E5;border-bottom:1px solid #F2DFB8;color:#8A5A00;font-size:12.5px;padding:9px 28px;text-align:center">
+          Modo de demonstração — os dados existem só neste navegador. Liga o Supabase no painel de Administração para registo real.
+        </div>
+      </sc-if>
+
+      <main style="max-width:1280px;margin:0 auto;padding:30px 28px 70px">
+
+        <sc-if value="{{ vistaCatalogo }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:22px">
+              <div>
+                <h1 style="margin:0 0 6px;font-size:29px;letter-spacing:-.02em">Olá, {{ primeiroNome }}.</h1>
+                <div style="color:#6B77A8;font-size:14.5px">{{ subtituloCatalogo }}</div>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:34px">
+              <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+                <div style="background:#fff;border:1px solid #E7EAF6;border-radius:14px;padding:18px 20px">
+                  <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7B8FD4;margin-bottom:9px">{{ k.rotulo }}</div>
+                  <div style="font-size:31px;font-weight:700;letter-spacing:-.02em;color:{{ k.cor }}">{{ k.valor }}</div>
+                  <div style="font-size:12.5px;color:#8C97C2;margin-top:3px">{{ k.nota }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <sc-for list="{{ areasCat }}" as="a" hint-placeholder-count="3">
+              <div style="margin-bottom:36px">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:11px;border-bottom:2px solid #EEF0FA">
+                  <span style="font-size:19px">{{ a.icone }}</span>
+                  <div style="font-size:17.5px;font-weight:700;letter-spacing:-.01em">{{ a.nome }}</div>
+                  <div style="font-size:12px;color:#7B8FD4;background:#EEF0FA;border-radius:20px;padding:4px 11px;font-weight:600">{{ a.contagem }}</div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
+                  <sc-for list="{{ a.cursos }}" as="c" hint-placeholder-count="3">
+                    <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;padding:20px;display:flex;flex-direction:column;gap:12px" style-hover="border-color:#3B5BFF">
+                      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+                        <div style="font-size:22px">{{ c.icone }}</div>
+                        <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:20px;padding:5px 10px;background:{{ c.corFundo }};color:{{ c.corTexto }}">{{ c.estado }}</div>
+                      </div>
+                      <div style="font-size:16.5px;font-weight:700;line-height:1.3;letter-spacing:-.01em">{{ c.titulo }}</div>
+                      <div style="font-size:13.5px;color:#6B77A8;line-height:1.55;text-wrap:pretty;flex:1">{{ c.descricao }}</div>
+                      <div>
+                        <div style="height:6px;background:#EEF0FA;border-radius:6px;overflow:hidden">
+                          <div style="height:100%;border-radius:6px;background:{{ c.corBarra }};width:{{ c.larguraBarra }}"></div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:12px;color:#8C97C2;margin-top:7px">
+                          <span>{{ c.textoProgresso }}</span>
+                          <span>{{ c.duracao }}</span>
+                        </div>
+                      </div>
+                      <a href="{{ c.ficheiro }}" style="display:block;text-align:center;border-radius:10px;padding:12px;background:#3B5BFF;color:#fff;font-size:14px;font-weight:700" style-hover="background:#2440D9">{{ c.acao }}</a>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ vistaCertificados }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <h1 style="margin:0 0 6px;font-size:29px;letter-spacing:-.02em">Os meus certificados</h1>
+            <div style="color:#6B77A8;font-size:14.5px;margin-bottom:26px">{{ subtituloCerts }}</div>
+            <sc-if value="{{ semCerts }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fff;border:1px dashed #D5DBF0;border-radius:15px;padding:48px;text-align:center;color:#8C97C2;font-size:14.5px">Ainda não tens certificados. Conclui a avaliação final de um curso com 70% ou mais.</div>
+            </sc-if>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px">
+              <sc-for list="{{ meusCerts }}" as="c" hint-placeholder-count="2">
+                <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;padding:22px;display:flex;flex-direction:column;gap:10px">
+                  <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#00AAFF">Certificado {{ c.codigo }}</div>
+                  <div style="font-size:17px;font-weight:700;line-height:1.3">{{ c.curso }}</div>
+                  <div style="font-size:13px;color:#6B77A8">Emitido a {{ c.data }} · nota {{ c.nota }}</div>
+                  <button onClick="{{ c.imprimir }}" style="margin-top:6px;border:1.5px solid #3B5BFF;background:#fff;color:#3B5BFF;border-radius:10px;padding:11px;font-size:13.5px;font-weight:700;cursor:pointer" style-hover="background:#EEF0FA">Ver e imprimir</button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ vistaAdmin }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <h1 style="margin:0 0 18px;font-size:29px;letter-spacing:-.02em">Administração</h1>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;background:#EEF0FA;padding:5px;border-radius:12px;margin-bottom:26px;width:fit-content">
+              <sc-for list="{{ separadores }}" as="t" hint-placeholder-count="5">
+                <button onClick="{{ t.abrir }}" style="border:0;border-radius:9px;padding:10px 16px;font-size:13.5px;font-weight:600;cursor:pointer;background:{{ t.fundo }};color:{{ t.cor }}">{{ t.rotulo }}</button>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ abaVisao }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:30px">
+                  <sc-for list="{{ kpisAdmin }}" as="k" hint-placeholder-count="5">
+                    <div style="background:#fff;border:1px solid #E7EAF6;border-radius:14px;padding:18px 20px">
+                      <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7B8FD4;margin-bottom:9px">{{ k.rotulo }}</div>
+                      <div style="font-size:31px;font-weight:700;letter-spacing:-.02em;color:{{ k.cor }}">{{ k.valor }}</div>
+                      <div style="font-size:12.5px;color:#8C97C2;margin-top:3px">{{ k.nota }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:18px;margin-bottom:26px">
+                  <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;padding:22px">
+                    <div style="font-size:16px;font-weight:700;margin-bottom:14px">Conclusões por área</div>
+                    <sc-for list="{{ porArea }}" as="a" hint-placeholder-count="6">
+                      <div style="margin-bottom:13px">
+                        <div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:6px">
+                          <span>{{ a.nome }}</span><span style="color:#7B8FD4">{{ a.texto }}</span>
+                        </div>
+                        <div style="height:8px;background:#EEF0FA;border-radius:6px;overflow:hidden">
+                          <div style="height:100%;border-radius:6px;background:#3B5BFF;width:{{ a.largura }}"></div>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;padding:22px">
+                    <div style="font-size:16px;font-weight:700;margin-bottom:4px">Conformidade AI Act — em atraso</div>
+                    <div style="font-size:12.5px;color:#8C97C2;margin-bottom:14px">Colaboradores com cursos obrigatórios pendentes (Art. 4.º do Regulamento (UE) 2024/1689).</div>
+                    <sc-for list="{{ emAtraso }}" as="p" hint-placeholder-count="4">
+                      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid #F2F4FB">
+                        <div>
+                          <div style="font-size:14px;font-weight:600">{{ p.nome }}</div>
+                          <div style="font-size:12px;color:#8C97C2">{{ p.departamento }}</div>
+                        </div>
+                        <div style="font-size:12.5px;font-weight:700;color:#D4880A;white-space:nowrap">{{ p.pendentes }}</div>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ todosConformes }}" hint-placeholder-val="{{ false }}">
+                      <div style="color:#00B87A;font-size:14px;font-weight:600;padding:8px 0">Todos os colaboradores estão conformes.</div>
+                    </sc-if>
+                  </div>
+                </div>
+
+                <div style="display:flex;gap:10px;flex-wrap:wrap">
+                  <button onClick="{{ exportarProgresso }}" style="border:1.5px solid #3B5BFF;background:#fff;color:#3B5BFF;border-radius:10px;padding:12px 18px;font-size:13.5px;font-weight:700;cursor:pointer" style-hover="background:#EEF0FA">Exportar progresso (CSV para RH)</button>
+                  <button onClick="{{ exportarCertificados }}" style="border:1.5px solid #3B5BFF;background:#fff;color:#3B5BFF;border-radius:10px;padding:12px 18px;font-size:13.5px;font-weight:700;cursor:pointer" style-hover="background:#EEF0FA">Exportar certificados (CSV)</button>
+                  <button onClick="{{ relatorioAIAct }}" style="border:0;background:#3B5BFF;color:#fff;border-radius:10px;padding:12px 18px;font-size:13.5px;font-weight:700;cursor:pointer" style-hover="background:#2440D9">Relatório de conformidade AI Act (PDF)</button>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ abaColaboradores }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;overflow:hidden">
+                <div style="display:grid;grid-template-columns:2.2fr 1.2fr .8fr .8fr .9fr 1.1fr 1fr;gap:12px;padding:14px 20px;background:#F8F9FE;border-bottom:1px solid #E7EAF6;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">
+                  <div>Colaborador</div><div>Departamento</div><div>Concluídos</div><div>Em curso</div><div>Certificados</div><div>AI Act</div><div>Ações</div>
+                </div>
+                <sc-for list="{{ colaboradores }}" as="p" hint-placeholder-count="8">
+                  <div style="display:grid;grid-template-columns:2.2fr 1.2fr .8fr .8fr .9fr 1.1fr 1fr;gap:12px;padding:14px 20px;border-bottom:1px solid #F2F4FB;align-items:center;font-size:13.5px">
+                    <div>
+                      <div style="font-weight:600">{{ p.nome }}</div>
+                      <div style="font-size:12px;color:#8C97C2">{{ p.email }}</div>
+                    </div>
+                    <div style="color:#6B77A8">{{ p.departamento }}</div>
+                    <div style="font-weight:700">{{ p.concluidos }}</div>
+                    <div style="color:#6B77A8">{{ p.emCurso }}</div>
+                    <div style="font-weight:700;color:#3B5BFF">{{ p.certificados }}</div>
+                    <div style="font-size:12.5px;font-weight:700;color:{{ p.corConformidade }}">{{ p.conformidade }}</div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap">
+                      <button onClick="{{ p.verNotas }}" style="border:1px solid #D5DBF0;background:#fff;color:#3B5BFF;border-radius:7px;padding:6px 9px;font-size:12px;cursor:pointer">Notas</button>
+                      <button onClick="{{ p.alternarPapel }}" style="border:1px solid #D5DBF0;background:#fff;color:#6B77A8;border-radius:7px;padding:6px 9px;font-size:12px;cursor:pointer">{{ p.textoPapel }}</button>
+                      <button onClick="{{ p.remover }}" style="border:1px solid #F5C6C6;background:#fff;color:#B02525;border-radius:7px;padding:6px 9px;font-size:12px;cursor:pointer">Remover</button>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <sc-if value="{{ detalheAberto }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:18px;background:#fff;border:1px solid #E7EAF6;border-radius:15px;padding:22px">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                    <div style="font-size:16px;font-weight:700">Notas de {{ detalheNome }}</div>
+                    <button onClick="{{ fecharDetalhe }}" style="border:0;background:#EEF0FA;color:#3B5BFF;border-radius:8px;padding:7px 12px;font-size:12.5px;font-weight:600;cursor:pointer">Fechar</button>
+                  </div>
+                  <sc-for list="{{ detalheNotas }}" as="n" hint-placeholder-count="4">
+                    <div style="display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #F2F4FB;font-size:13.5px">
+                      <span>{{ n.curso }}</span>
+                      <span style="color:#6B77A8">{{ n.detalhe }}</span>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ detalheSemNotas }}" hint-placeholder-val="{{ false }}">
+                    <div style="color:#8C97C2;font-size:13.5px">Sem avaliações submetidas.</div>
+                  </sc-if>
+                </div>
+              </sc-if>
+            </sc-if>
+
+            <sc-if value="{{ abaCursos }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <div style="color:#6B77A8;font-size:14px;margin-bottom:16px">Desligar um curso retira-o do catálogo dos colaboradores sem apagar o histórico. Marcar como obrigatório fá-lo contar para a conformidade do AI Act.</div>
+                <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;overflow:hidden">
+                  <div style="display:grid;grid-template-columns:2.6fr 1.4fr .9fr .9fr 1.5fr;gap:12px;padding:14px 20px;background:#F8F9FE;border-bottom:1px solid #E7EAF6;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">
+                    <div>Curso</div><div>Área</div><div>Inscritos</div><div>Concluíram</div><div>Estado</div>
+                  </div>
+                  <sc-for list="{{ cursosAdmin }}" as="c" hint-placeholder-count="10">
+                    <div style="display:grid;grid-template-columns:2.6fr 1.4fr .9fr .9fr 1.5fr;gap:12px;padding:13px 20px;border-bottom:1px solid #F2F4FB;align-items:center;font-size:13.5px">
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <span style="font-size:17px">{{ c.icone }}</span>
+                        <span style="font-weight:600">{{ c.titulo }}</span>
+                      </div>
+                      <div style="color:#6B77A8;font-size:12.5px">{{ c.area }}</div>
+                      <div>{{ c.inscritos }}</div>
+                      <div style="font-weight:700">{{ c.concluiram }}</div>
+                      <div style="display:flex;gap:6px;flex-wrap:wrap">
+                        <button onClick="{{ c.alternar }}" style="border:0;border-radius:7px;padding:7px 11px;font-size:12px;font-weight:700;cursor:pointer;background:{{ c.fundoEstado }};color:{{ c.corEstado }}">{{ c.textoEstado }}</button>
+                        <button onClick="{{ c.alternarObrigatorio }}" style="border:1px solid #D5DBF0;background:{{ c.fundoObrig }};color:{{ c.corObrig }};border-radius:7px;padding:7px 11px;font-size:12px;font-weight:600;cursor:pointer">{{ c.textoObrig }}</button>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ abaCertificados }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;overflow:hidden">
+                <div style="display:grid;grid-template-columns:1.3fr 1.8fr 2.2fr .7fr 1fr 1.4fr;gap:12px;padding:14px 20px;background:#F8F9FE;border-bottom:1px solid #E7EAF6;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">
+                  <div>Código</div><div>Colaborador</div><div>Curso</div><div>Nota</div><div>Data</div><div>Ações</div>
+                </div>
+                <sc-for list="{{ certsAdmin }}" as="c" hint-placeholder-count="8">
+                  <div style="display:grid;grid-template-columns:1.3fr 1.8fr 2.2fr .7fr 1fr 1.4fr;gap:12px;padding:13px 20px;border-bottom:1px solid #F2F4FB;align-items:center;font-size:13.5px">
+                    <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:#3B5BFF">{{ c.codigo }}</div>
+                    <div style="font-weight:600">{{ c.nome }}</div>
+                    <div style="color:#6B77A8">{{ c.curso }}</div>
+                    <div style="font-weight:700">{{ c.nota }}</div>
+                    <div style="color:#6B77A8;font-size:12.5px">{{ c.data }}</div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap">
+                      <button onClick="{{ c.imprimir }}" style="border:1px solid #D5DBF0;background:#fff;color:#3B5BFF;border-radius:7px;padding:6px 10px;font-size:12px;cursor:pointer">Rever</button>
+                      <button onClick="{{ c.alternarValido }}" style="border:1px solid #D5DBF0;background:{{ c.fundoValido }};color:{{ c.corValido }};border-radius:7px;padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer">{{ c.textoValido }}</button>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ abaAuditoria }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <div style="color:#6B77A8;font-size:14px;margin-bottom:16px">Registo imutável de acessos, avaliações e alterações ao catálogo — a prova documental exigida pelo Art. 4.º do AI Act.</div>
+                <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;overflow:hidden">
+                  <sc-for list="{{ auditoria }}" as="a" hint-placeholder-count="10">
+                    <div style="display:grid;grid-template-columns:1.3fr 1.8fr 1.4fr 3fr;gap:12px;padding:12px 20px;border-bottom:1px solid #F2F4FB;align-items:center;font-size:13px">
+                      <div style="color:#8C97C2;font-size:12.5px">{{ a.data }}</div>
+                      <div style="color:#6B77A8">{{ a.email }}</div>
+                      <div style="font-weight:600">{{ a.acao }}</div>
+                      <div style="color:#8C97C2;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px">{{ a.detalhe }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ abaLigacao }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;padding:26px;max-width:640px">
+                <div style="font-size:17px;font-weight:700;margin-bottom:6px">Ligação ao Supabase</div>
+                <div style="font-size:13.5px;color:#6B77A8;line-height:1.6;margin-bottom:8px">Estado atual: <strong style="color:{{ corModo }}">{{ etiquetaEstado }}</strong></div>
+                <div style="font-size:13.5px;color:#6B77A8;line-height:1.6;margin-bottom:18px">Cria o projeto em supabase.com, corre <code style="background:#EEF0FA;padding:2px 6px;border-radius:5px">supabase/schema.sql</code> no SQL Editor e cola aqui o URL e a chave <em>anon public</em>.</div>
+                <div style="display:grid;gap:11px">
+                  <input ref="{{ refUrl2 }}" type="text" placeholder="https://xxxxxxxx.supabase.co" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:14px;outline:none">
+                  <input ref="{{ refChave2 }}" type="text" placeholder="eyJhbGciOi… (anon public)" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:14px;outline:none">
+                  <button onClick="{{ guardarLigacao2 }}" style="border:0;border-radius:10px;padding:13px;background:#3B5BFF;color:#fff;font-size:14px;font-weight:700;cursor:pointer">Guardar e recarregar</button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+      </main>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ aCarregar }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;display:grid;place-items:center;background:rgba(246,247,251,.85);z-index:50">
+      <div style="width:34px;height:34px;border:3px solid #DCE2F7;border-top-color:#3B5BFF;border-radius:50%;animation:gira .8s linear infinite"></div>
+    </div>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;supabaseUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Supabase&quot;},&quot;supabaseKey&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Supabase&quot;}}">
+class Component extends DCLogic {
+  state = {
+    pronto: false, aCarregar: true, erro: "", aCriar: false, mostrarConfig: false,
+    vista: "catalogo", aba: "visao", detalhe: null,
+    cursos: [], areas: [], progresso: {}, certs: [],
+    colabs: [], certsTodos: [], audit: [], eu: null, modo: "demonstração"
+  };
+
+  refNome = React.createRef(); refDepto = React.createRef(); refEmail = React.createRef();
+  refPass = React.createRef(); refUrl = React.createRef(); refChave = React.createRef();
+  refUrl2 = React.createRef(); refChave2 = React.createRef();
+
+  async componentDidMount() {
+    const mod = await import("./digit-data.js");
+    this.lib = mod;
+    this.store = await mod.criarStore(mod.lerConfig(this.props));
+    this.setState({ modo: this.store.modo, eu: this.store.perfilAtual(), pronto: true, aCarregar: false });
+    if (this.store.perfilAtual()) this.carregar();
+  }
+
+  async carregar() {
+    this.setState({ aCarregar: true });
+    const eu = this.store.perfilAtual();
+    const cat = await this.store.catalogo();
+    const prog = await this.store.meuProgresso();
+    const certs = await this.store.meusCertificados();
+    let colabs = [], certsTodos = [], audit = [];
+    if (eu && eu.papel === "admin") {
+      colabs = await this.store.colaboradores();
+      certsTodos = await this.store.certificadosTodos();
+      audit = await this.store.auditoria();
+    }
+    this.setState({ eu, cursos: cat.cursos, areas: cat.areas, progresso: prog, certs, colabs, certsTodos, audit, aCarregar: false });
+  }
+
+  /* ---------------------------------------------------------- autenticação */
+  submeter = async () => {
+    const email = (this.refEmail.current && this.refEmail.current.value) || "";
+    const pass = (this.refPass.current && this.refPass.current.value) || "";
+    this.setState({ erro: "", aCarregar: true });
+    try {
+      if (this.state.aCriar) {
+        const nome = (this.refNome.current && this.refNome.current.value || "").trim();
+        if (nome.split(" ").length < 2) throw new Error("Indica o nome próprio e o apelido.");
+        if (this.store.modo === "supabase" && pass.length < 8) throw new Error("A palavra-passe precisa de 8 caracteres.");
+        await this.store.registar({ nome, email, password: pass, departamento: (this.refDepto.current || {}).value });
+      } else {
+        await this.store.entrar(email, pass);
+      }
+      await this.carregar();
+    } catch (e) {
+      this.setState({ erro: e.message, aCarregar: false });
+    }
+  };
+  sair = async () => { await this.store.sair(); this.setState({ eu: null, vista: "catalogo", erro: "" }); };
+
+  guardar = (r1, r2) => {
+    const url = (r1.current && r1.current.value || "").trim();
+    const chave = (r2.current && r2.current.value || "").trim();
+    if (!url || !chave) { this.setState({ erro: "Preenche o URL e a chave." }); return; }
+    this.lib.gravarConfig(url, chave);
+    location.reload();
+  };
+
+  /* ------------------------------------------------------------ documentos */
+  abrirJanela(html) {
+    const w = window.open("", "_blank", "width=900,height=1100");
+    if (!w) return;
+    w.document.write(html); w.document.close();
+    setTimeout(() => w.print(), 500);
+  }
+
+  certificadoHTML(nome, curso, codigo, data, nota) {
+    const logo = new URL("assets/digit-logo.png", location.href).href;
+    return `<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><title>Certificado ${codigo}</title>
+    <style>@page{size:A4 landscape;margin:0}body{margin:0;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#141A33}
+    .p{width:297mm;height:210mm;padding:22mm 24mm;box-sizing:border-box;display:flex;flex-direction:column;position:relative}
+    .p:before{content:"";position:absolute;inset:0;border:2mm solid #3B5BFF}
+    .p:after{content:"";position:absolute;left:0;right:0;top:0;height:6mm;background:linear-gradient(90deg,#2440D9,#3B5BFF,#00AAFF)}
+    .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14mm}
+    .badge{font-size:9pt;letter-spacing:.28em;text-transform:uppercase;color:#7B8FD4}
+    h1{font-size:32pt;margin:0 0 4mm;letter-spacing:-.02em}
+    .lead{font-size:12pt;color:#6B77A8;margin-bottom:12mm}
+    .nome{font-size:26pt;font-weight:700;color:#3B5BFF;border-bottom:.6mm solid #EEF0FA;padding-bottom:5mm;margin-bottom:8mm}
+    .curso{font-size:15pt;line-height:1.5;max-width:190mm}
+    .rodape{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;font-size:10pt;color:#6B77A8}
+    .cod{font-family:ui-monospace,Menlo,monospace;color:#3B5BFF}</style></head><body><div class="p">
+    <div class="top"><img src="${logo}" style="height:14mm"><div class="badge">Certificado Oficial</div></div>
+    <h1>Certificado de Conclusão</h1><div class="lead">A Digit certifica que</div>
+    <div class="nome">${nome}</div>
+    <div class="curso">concluiu com aproveitamento a formação <strong>${curso}</strong>, com a classificação de <strong>${nota}</strong>, cumprindo os requisitos de avaliação do Portal de Formação Digit.</div>
+    <div class="rodape"><div>Emitido a ${data}<br><span class="cod">${codigo}</span></div><div style="text-align:right">Digit · Portugal</div></div>
+    </div></body></html>`;
+  }
+
+  relatorioAIAct = () => {
+    const obrig = this.state.cursos.filter(c => c.obrigatorio && c.ativo);
+    const colabs = this.state.colabs.filter(p => p.papel === "colaborador");
+    const conformes = colabs.filter(p => p.obrigatorios_concluidos >= p.obrigatorios_total).length;
+    const linhas = colabs.map(p => `<tr><td>${p.nome}</td><td>${p.departamento || "—"}</td><td>${p.obrigatorios_concluidos}/${p.obrigatorios_total}</td><td>${p.certificados}</td><td style="color:${p.obrigatorios_concluidos >= p.obrigatorios_total ? "#00875A" : "#B02525"};font-weight:700">${p.obrigatorios_concluidos >= p.obrigatorios_total ? "Conforme" : "Pendente"}</td></tr>`).join("");
+    const logo = new URL("assets/digit-logo.png", location.href).href;
+    this.abrirJanela(`<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><title>Conformidade AI Act — Digit</title>
+    <style>@page{size:A4;margin:16mm}body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#141A33;margin:0}
+    h1{font-size:20pt;margin:8mm 0 2mm;letter-spacing:-.01em}.sub{color:#6B77A8;font-size:10.5pt;margin-bottom:8mm}
+    table{width:100%;border-collapse:collapse;font-size:10pt}th{text-align:left;background:#EEF0FA;color:#3B5BFF;padding:3mm;font-size:8.5pt;letter-spacing:.08em;text-transform:uppercase}
+    td{padding:2.6mm 3mm;border-bottom:.2mm solid #EDF0F9}.kpis{display:flex;gap:6mm;margin-bottom:8mm}
+    .k{flex:1;border:.3mm solid #E7EAF6;border-radius:3mm;padding:4mm}.kv{font-size:18pt;font-weight:700;color:#3B5BFF}
+    .kl{font-size:8pt;letter-spacing:.1em;text-transform:uppercase;color:#7B8FD4}
+    .nota{margin-top:8mm;font-size:9pt;color:#6B77A8;line-height:1.6}</style></head><body>
+    <img src="${logo}" style="height:11mm">
+    <h1>Relatório de conformidade — Art. 4.º do Regulamento (UE) 2024/1689</h1>
+    <div class="sub">Digit · Portugal — emitido a ${new Date().toLocaleDateString("pt-PT")}</div>
+    <div class="kpis"><div class="k"><div class="kl">Colaboradores</div><div class="kv">${colabs.length}</div></div>
+    <div class="k"><div class="kl">Conformes</div><div class="kv">${conformes}</div></div>
+    <div class="k"><div class="kl">Taxa</div><div class="kv">${colabs.length ? Math.round(conformes * 100 / colabs.length) : 0}%</div></div>
+    <div class="k"><div class="kl">Cursos obrigatórios</div><div class="kv">${obrig.length}</div></div></div>
+    <table><thead><tr><th>Colaborador</th><th>Departamento</th><th>Obrigatórios</th><th>Certificados</th><th>Estado</th></tr></thead><tbody>${linhas}</tbody></table>
+    <div class="nota">Cursos obrigatórios considerados: ${obrig.map(c => c.titulo).join(", ") || "—"}.<br>
+    Registo de formação em literacia de IA mantido no Portal de Formação Digit, com trilha de auditoria por colaborador.</div>
+    </body></html>`);
+  };
+
+  /* ------------------------------------------------------------ auxiliares */
+  data = s => s ? new Date(s).toLocaleDateString("pt-PT") : "—";
+  tituloCurso = slug => { const c = this.state.cursos.find(x => x.slug === slug); return c ? c.titulo : slug; };
+
+  renderVals() {
+    const s = this.state, eu = s.eu, admin = !!(eu && eu.papel === "admin");
+    const cursosVisiveis = s.cursos.filter(c => c.ativo || admin);
+    const prog = s.progresso;
+    const concluidos = Object.values(prog).filter(p => p.estado === "concluido").length;
+    const emCurso = Object.values(prog).filter(p => p.estado === "em_curso").length;
+    const obrig = s.cursos.filter(c => c.obrigatorio && c.ativo);
+    const obrigFeitos = obrig.filter(c => prog[c.slug] && prog[c.slug].estado === "concluido").length;
+
+    const areasCat = s.areas.map(a => {
+      const lista = cursosVisiveis.filter(c => c.area === a.nome).sort((x, y) => x.ordem - y.ordem);
+      return {
+        nome: a.nome, icone: a.icone, contagem: lista.length + (lista.length === 1 ? " curso" : " cursos"),
+        cursos: lista.map(c => {
+          const p = prog[c.slug];
+          const feito = p && p.estado === "concluido";
+          const iniciado = !!p && !feito;
+          const pct = feito ? 100 : (p ? Math.round(((p.modulos_feitos || []).length / (c.modulos || 5)) * 100) : 0);
+          return {
+            ...c,
+            estado: feito ? "Concluído" : iniciado ? "Em curso" : c.ativo ? "Disponível" : "Desativado",
+            corFundo: feito ? "#E4F8F0" : iniciado ? "#FFF4E0" : "#EEF0FA",
+            corTexto: feito ? "#00875A" : iniciado ? "#A96C00" : "#3B5BFF",
+            corBarra: feito ? "#00B87A" : "#3B5BFF",
+            larguraBarra: pct + "%",
+            textoProgresso: feito ? "Avaliação aprovada · nota " + (p.nota != null ? p.nota + "/" + (p.total || 10) : "—") : iniciado ? (p.modulos_feitos || []).length + " de " + (c.modulos || 5) + " módulos" : (c.modulos || 5) + " módulos",
+            duracao: (c.duracao_min || 10) + " min",
+            acao: feito ? "Rever curso" : iniciado ? "Continuar" : "Iniciar curso"
+          };
+        })
+      };
+    }).filter(a => a.cursos.length);
+
+    const meusCerts = s.certs.map(c => ({
+      codigo: c.codigo, curso: this.tituloCurso(c.curso_slug), data: this.data(c.emitido_em),
+      nota: (c.nota != null ? c.nota + "/" + (c.total || 10) : "—"),
+      imprimir: () => this.abrirJanela(this.certificadoHTML(c.nome_certificado, this.tituloCurso(c.curso_slug), c.codigo, this.data(c.emitido_em), (c.nota != null ? c.nota + "/" + (c.total || 10) : "—")))
+    }));
+
+    const colabsSemAdmin = s.colabs.filter(p => p.papel === "colaborador");
+    const conformes = colabsSemAdmin.filter(p => p.obrigatorios_concluidos >= p.obrigatorios_total);
+    const totalConclusoes = s.colabs.reduce((n, p) => n + p.cursos_concluidos, 0);
+
+    const porArea = s.areas.map(a => {
+      const slugs = s.cursos.filter(c => c.area === a.nome).map(c => c.slug);
+      const n = s.colabs.reduce((acc, p) => acc + (p.notas || []).filter(x => slugs.includes(x.curso)).length, 0);
+      return { nome: a.nome, n };
+    });
+    const maxArea = Math.max(1, ...porArea.map(a => a.n));
+
+    const separadores = [["visao", "Visão geral"], ["colaboradores", "Colaboradores"], ["cursos", "Cursos"], ["certificados", "Certificados"], ["auditoria", "Auditoria"], ["ligacao", "Ligação Supabase"]]
+      .map(([id, rotulo]) => ({
+        rotulo, abrir: () => this.setState({ aba: id }),
+        fundo: s.aba === id ? "#fff" : "transparent", cor: s.aba === id ? "#3B5BFF" : "#6B77A8"
+      }));
+
+    const detalhe = s.detalhe ? s.colabs.find(p => p.id === s.detalhe) : null;
+
+    return {
+      aCarregar: s.aCarregar,
+      ecraLogin: s.pronto && !eu,
+      ecraApp: !!eu,
+      modoDemo: s.modo !== "supabase",
+      etiquetaModo: s.modo === "supabase" ? "Ligado ao Supabase" : "Modo de demonstração — configurar Supabase",
+      etiquetaEstado: s.modo === "supabase" ? "Ligado ao Supabase" : "Modo de demonstração (dados locais)",
+      corModo: s.modo === "supabase" ? "#00875A" : "#D4880A",
+      erro: s.erro, aCriar: s.aCriar, mostrarConfig: s.mostrarConfig,
+      textoBotao: s.aCriar ? "Criar conta e entrar" : "Entrar no portal",
+      irEntrar: () => this.setState({ aCriar: false, erro: "" }),
+      irCriar: () => this.setState({ aCriar: true, erro: "" }),
+      estiloTabEntrar: this.estiloTab(!s.aCriar), estiloTabCriar: this.estiloTab(s.aCriar),
+      alternarConfig: () => this.setState({ mostrarConfig: !s.mostrarConfig }),
+      guardarLigacao: () => this.guardar(this.refUrl, this.refChave),
+      guardarLigacao2: () => this.guardar(this.refUrl2, this.refChave2),
+      refNome: this.refNome, refDepto: this.refDepto, refEmail: this.refEmail, refPass: this.refPass,
+      refUrl: this.refUrl, refChave: this.refChave, refUrl2: this.refUrl2, refChave2: this.refChave2,
+      submeter: this.submeter, sair: this.sair,
+
+      meuNome: eu ? eu.nome : "", primeiroNome: eu ? eu.nome.split(" ")[0] : "",
+      meuPapel: eu ? (eu.papel === "admin" ? "Administração" : (eu.departamento || "Colaborador")) : "",
+      souAdmin: admin,
+      vista: s.vista, vistaCatalogo: s.vista === "catalogo", vistaCertificados: s.vista === "certificados", vistaAdmin: s.vista === "admin" && admin,
+      verCatalogo: () => this.setState({ vista: "catalogo" }),
+      verCertificados: () => this.setState({ vista: "certificados" }),
+      verAdmin: () => this.setState({ vista: "admin" }),
+      estiloNavCatalogo: this.estiloNav(s.vista === "catalogo"), estiloNavCerts: this.estiloNav(s.vista === "certificados"), estiloNavAdmin: this.estiloNav(s.vista === "admin"),
+
+      subtituloCatalogo: cursosVisiveis.length + " cursos em " + areasCat.length + " áreas · o teu progresso fica registado na tua conta",
+      kpis: [
+        { rotulo: "Disponíveis", valor: cursosVisiveis.length, nota: "no teu catálogo", cor: "#141A33" },
+        { rotulo: "Concluídos", valor: concluidos, nota: "com avaliação aprovada", cor: "#00B87A" },
+        { rotulo: "Em curso", valor: emCurso, nota: "podes retomar onde parares", cor: "#D4880A" },
+        { rotulo: "AI Act", valor: obrigFeitos + "/" + obrig.length, nota: "cursos obrigatórios", cor: obrig.length && obrigFeitos >= obrig.length ? "#00B87A" : "#3B5BFF" }
+      ],
+      areasCat,
+
+      subtituloCerts: s.certs.length ? s.certs.length + (s.certs.length === 1 ? " certificado emitido" : " certificados emitidos") : "Nenhum certificado emitido até agora",
+      semCerts: !s.certs.length, meusCerts,
+
+      separadores,
+      abaVisao: s.aba === "visao", abaColaboradores: s.aba === "colaboradores", abaCursos: s.aba === "cursos",
+      abaCertificados: s.aba === "certificados", abaAuditoria: s.aba === "auditoria", abaLigacao: s.aba === "ligacao",
+
+      kpisAdmin: [
+        { rotulo: "Colaboradores", valor: colabsSemAdmin.length, nota: "com conta ativa", cor: "#141A33" },
+        { rotulo: "Conclusões", valor: totalConclusoes, nota: "cursos concluídos", cor: "#3B5BFF" },
+        { rotulo: "Certificados", valor: s.certsTodos.filter(c => c.valido).length, nota: "válidos", cor: "#00AAFF" },
+        { rotulo: "Conformidade", valor: (colabsSemAdmin.length ? Math.round(conformes.length * 100 / colabsSemAdmin.length) : 0) + "%", nota: "Art. 4.º do AI Act", cor: conformes.length === colabsSemAdmin.length && colabsSemAdmin.length ? "#00B87A" : "#D4880A" },
+        { rotulo: "Catálogo", valor: s.cursos.filter(c => c.ativo).length + "/" + s.cursos.length, nota: "cursos ativos", cor: "#141A33" }
+      ],
+      porArea: porArea.map(a => ({ nome: a.nome, texto: a.n + " conclusões", largura: Math.round(a.n * 100 / maxArea) + "%" })),
+      emAtraso: colabsSemAdmin.filter(p => p.obrigatorios_concluidos < p.obrigatorios_total)
+        .map(p => ({ nome: p.nome, departamento: p.departamento || "—", pendentes: (p.obrigatorios_total - p.obrigatorios_concluidos) + " pendentes" })),
+      todosConformes: !!colabsSemAdmin.length && conformes.length === colabsSemAdmin.length,
+
+      colaboradores: s.colabs.map(p => ({
+        nome: p.nome, email: p.email, departamento: p.departamento || "—",
+        concluidos: p.cursos_concluidos, emCurso: p.cursos_em_curso, certificados: p.certificados,
+        conformidade: p.papel === "admin" ? "—" : p.obrigatorios_concluidos + "/" + p.obrigatorios_total,
+        corConformidade: p.papel === "admin" ? "#8C97C2" : (p.obrigatorios_concluidos >= p.obrigatorios_total ? "#00B87A" : "#D4880A"),
+        textoPapel: p.papel === "admin" ? "Tornar colaborador" : "Tornar admin",
+        verNotas: () => this.setState({ detalhe: p.id }),
+        alternarPapel: async () => { await this.store.definirPapel(p.id, p.papel === "admin" ? "colaborador" : "admin"); this.carregar(); },
+        remover: async () => { if (confirm("Remover " + p.nome + " do portal?")) { await this.store.removerColaborador(p.id); this.carregar(); } }
+      })),
+      detalheAberto: !!detalhe, detalheNome: detalhe ? detalhe.nome : "",
+      detalheSemNotas: !!detalhe && !(detalhe.notas || []).length,
+      detalheNotas: detalhe ? (detalhe.notas || []).map(n => ({ curso: this.tituloCurso(n.curso), detalhe: n.nota + "/" + (n.total || 10) + " · " + this.data(n.data) })) : [],
+      fecharDetalhe: () => this.setState({ detalhe: null }),
+
+      cursosAdmin: s.cursos.slice().sort((a, b) => a.ordem - b.ordem).map(c => {
+        const inscritos = s.colabs.filter(p => (p.notas || []).some(n => n.curso === c.slug)).length;
+        const concl = s.certsTodos.filter(x => x.curso_slug === c.slug && x.valido).length;
+        return {
+          titulo: c.titulo, area: c.area, icone: c.icone, inscritos, concluiram: concl,
+          textoEstado: c.ativo ? "Ativo" : "Desativado",
+          fundoEstado: c.ativo ? "#E4F8F0" : "#FDECEC", corEstado: c.ativo ? "#00875A" : "#B02525",
+          textoObrig: c.obrigatorio ? "Obrigatório" : "Opcional",
+          fundoObrig: c.obrigatorio ? "#EEF0FA" : "#fff", corObrig: c.obrigatorio ? "#3B5BFF" : "#8C97C2",
+          alternar: async () => { await this.store.alternarCurso(c.slug, !c.ativo); this.carregar(); },
+          alternarObrigatorio: async () => { await this.store.alternarObrigatorio(c.slug, !c.obrigatorio); this.carregar(); }
+        };
+      }),
+
+      certsAdmin: s.certsTodos.map(c => ({
+        codigo: c.codigo, nome: c.nome || "—", curso: c.curso || c.curso_slug,
+        nota: (c.nota != null ? c.nota + "/" + (c.total || 10) : "—"), data: this.data(c.emitido_em),
+        textoValido: c.valido ? "Anular" : "Revalidar",
+        fundoValido: c.valido ? "#fff" : "#E4F8F0", corValido: c.valido ? "#B02525" : "#00875A",
+        imprimir: () => this.abrirJanela(this.certificadoHTML(c.nome_certificado || c.nome, c.curso || c.curso_slug, c.codigo, this.data(c.emitido_em), (c.nota != null ? c.nota + "/" + (c.total || 10) : "—"))),
+        alternarValido: async () => { await this.store.revalidarCertificado(c.id, !c.valido); this.carregar(); }
+      })),
+
+      auditoria: s.audit.map(a => ({
+        data: a.criado_em ? new Date(a.criado_em).toLocaleString("pt-PT") : "—",
+        email: a.email || "—", acao: String(a.acao || "").replace(/_/g, " "),
+        detalhe: JSON.stringify(a.detalhe || {})
+      })),
+
+      exportarProgresso: () => {
+        const linhas = s.colabs.filter(p => p.papel === "colaborador").map(p => ({
+          Nome: p.nome, Email: p.email, Departamento: p.departamento || "",
+          Concluidos: p.cursos_concluidos, EmCurso: p.cursos_em_curso, Certificados: p.certificados,
+          Obrigatorios: p.obrigatorios_concluidos + "/" + p.obrigatorios_total,
+          Conforme: p.obrigatorios_concluidos >= p.obrigatorios_total ? "Sim" : "Não",
+          UltimaAtividade: this.data(p.ultima_atividade)
+        }));
+        this.lib.descarregar("digit-progresso-" + new Date().toISOString().slice(0, 10) + ".csv", this.lib.paraCSV(linhas));
+      },
+      exportarCertificados: () => {
+        const linhas = s.certsTodos.map(c => ({
+          Codigo: c.codigo, Colaborador: c.nome, Email: c.email, Curso: c.curso || c.curso_slug,
+          Nota: c.nota, Total: c.total || 10, Emitido: this.data(c.emitido_em), Valido: c.valido ? "Sim" : "Não"
+        }));
+        this.lib.descarregar("digit-certificados-" + new Date().toISOString().slice(0, 10) + ".csv", this.lib.paraCSV(linhas));
+      },
+      relatorioAIAct: this.relatorioAIAct
+    };
+  }
+
+  estiloTab(ativo) {
+    return "flex:1;border:0;border-radius:9px;padding:11px;font-size:13.5px;font-weight:700;cursor:pointer;background:" +
+      (ativo ? "#fff" : "transparent") + ";color:" + (ativo ? "#3B5BFF" : "#7B8FD4") +
+      (ativo ? ";box-shadow:0 1px 3px rgba(20,35,100,.12)" : "");
+  }
+  estiloNav(ativo) {
+    return "border:0;border-radius:9px;padding:9px 15px;font-size:13.5px;font-weight:600;cursor:pointer;background:" +
+      (ativo ? "rgba(255,255,255,.22)" : "transparent") + ";color:#fff";
+  }
+}
+
+</script>
+</body>
+</html>
