@@ -11,9 +11,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DigiEduca · Digit</title>
 <link rel="icon" type="image/png" href="assets/digit-simbolo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;family=Spectral:wght@600;700&amp;display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box}
-  body{margin:0;background:#F6F7FB;color:#141A33;font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  body{margin:0;background:#F6F7FB;color:#141A33;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
   a{color:#3B5BFF;text-decoration:none}
   a:hover{color:#00AAFF}
   input,select,button{font-family:inherit}
@@ -30,7 +33,7 @@
         <div style="margin-top:8px;margin-bottom:32px;color:#4B5563;font-size:16px">As tuas formações, beyond your numbers!</div>
 
         <div style="width:100%;background:#fff;border-radius:18px;padding:32px 40px 30px;box-shadow:0 6px 28px rgba(30,30,20,.06)">
-          <div style="font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:27px;letter-spacing:-.01em;color:#111;margin-bottom:6px">{{ tituloCard }}</div>
+          <div style="font-family:'Spectral',Georgia,serif;font-weight:700;font-size:27px;letter-spacing:-.01em;color:#111;margin-bottom:6px">{{ tituloCard }}</div>
           <div style="font-size:15px;color:#6B7280;margin-bottom:24px;line-height:1.5">{{ subtituloCard }}</div>
 
           <sc-if value="{{ aCriar }}" hint-placeholder-val="{{ false }}">
@@ -115,26 +118,23 @@
 
   <sc-if value="{{ ecraApp }}" hint-placeholder-val="{{ false }}">
     <div>
-      <header style="background:linear-gradient(120deg,#2440D9,#3B5BFF 55%,#00AAFF);color:#fff;padding:0 28px">
-        <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:20px;height:70px">
-          <div style="background:#fff;border-radius:9px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <img src="assets/digit-simbolo.png" alt="Digit" style="height:22px;width:auto;display:block">
+      <header style="background:#fff;border-bottom:1px solid #ECEEF4;padding:0 28px">
+        <div style="max-width:1280px;margin:0 auto">
+          <div style="display:flex;align-items:center;gap:12px;height:64px">
+            <div style="display:flex;align-items:baseline;gap:10px">
+              <div style="font-size:22px;font-weight:800;color:#2563EB;letter-spacing:-.02em">DigiEduca</div>
+              <div style="font-size:11px;letter-spacing:.14em;color:#9CA3AF;font-weight:600">BEYOND NUMBERS</div>
+            </div>
+            <div style="flex:1"></div>
+            <div style="font-size:14px;color:#374151;white-space:nowrap">Olá, <strong>{{ primeiroNome }}</strong></div>
+            <button onClick="{{ sair }}" style="border:0;background:transparent;color:#6B7280;font-size:13.5px;cursor:pointer;text-decoration:underline;padding:0 0 0 6px">sair</button>
           </div>
-          <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;opacity:.8">DigiEduca</div>
-          <div style="flex:1"></div>
-          <div style="display:flex;gap:6px">
+          <div style="display:flex;gap:12px;padding-bottom:14px">
             <button onClick="{{ verCatalogo }}" style="{{ estiloNavCatalogo }}">Catálogo</button>
             <button onClick="{{ verCertificados }}" style="{{ estiloNavCerts }}">Certificados</button>
             <sc-if value="{{ souAdmin }}" hint-placeholder-val="{{ true }}">
               <button onClick="{{ verAdmin }}" style="{{ estiloNavAdmin }}">Administração</button>
             </sc-if>
-          </div>
-          <div style="display:flex;align-items:center;gap:12px;padding-left:16px;border-left:1px solid rgba(255,255,255,.25);flex-shrink:0">
-            <div style="text-align:right;line-height:1.3;white-space:nowrap">
-              <div style="font-size:13.5px;font-weight:600">{{ meuNome }}</div>
-              <div style="font-size:11.5px;opacity:.75">{{ meuPapel }}</div>
-            </div>
-            <button onClick="{{ sair }}" style="border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:8px 13px;font-size:12.5px;cursor:pointer">Sair</button>
           </div>
         </div>
       </header>
@@ -556,7 +556,9 @@ class Component extends DCLogic {
   certificadoHTML(nome, curso, codigo, data, nota) {
     const logo = new URL("assets/digit-logo.png", location.href).href;
     return `<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><title>Certificado ${codigo}</title>
-    <style>@page{size:A4 landscape;margin:0}body{margin:0;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#141A33}
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spectral:wght@700&display=swap" rel="stylesheet">
+    <style>@page{size:A4 landscape;margin:0}body{margin:0;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#141A33}
+    h1,.nome{font-family:'Spectral',Georgia,serif}
     .p{width:297mm;height:210mm;padding:22mm 24mm;box-sizing:border-box;display:flex;flex-direction:column;position:relative}
     .p:before{content:"";position:absolute;inset:0;border:2mm solid #3B5BFF}
     .p:after{content:"";position:absolute;left:0;right:0;top:0;height:6mm;background:linear-gradient(90deg,#2440D9,#3B5BFF,#00AAFF)}
@@ -583,7 +585,9 @@ class Component extends DCLogic {
     const linhas = colabs.map(p => `<tr><td>${p.nome}</td><td>${p.departamento || "—"}</td><td>${p.obrigatorios_concluidos}/${p.obrigatorios_total}</td><td>${p.certificados}</td><td style="color:${p.obrigatorios_concluidos >= p.obrigatorios_total ? "#00875A" : "#B02525"};font-weight:700">${p.obrigatorios_concluidos >= p.obrigatorios_total ? "Conforme" : "Pendente"}</td></tr>`).join("");
     const logo = new URL("assets/digit-logo.png", location.href).href;
     this.abrirJanela(`<!doctype html><html lang="pt-PT"><head><meta charset="utf-8"><title>Conformidade AI Act — Digit</title>
-    <style>@page{size:A4;margin:16mm}body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:#141A33;margin:0}
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Spectral:wght@700&display=swap" rel="stylesheet">
+    <style>@page{size:A4;margin:16mm}body{font-family:'Hanken Grotesk',system-ui,sans-serif;color:#141A33;margin:0}
+    h1{font-family:'Spectral',Georgia,serif}
     h1{font-size:20pt;margin:8mm 0 2mm;letter-spacing:-.01em}.sub{color:#6B77A8;font-size:10.5pt;margin-bottom:8mm}
     table{width:100%;border-collapse:collapse;font-size:10pt}th{text-align:left;background:#EEF0FA;color:#3B5BFF;padding:3mm;font-size:8.5pt;letter-spacing:.08em;text-transform:uppercase}
     td{padding:2.6mm 3mm;border-bottom:.2mm solid #EDF0F9}.kpis{display:flex;gap:6mm;margin-bottom:8mm}
@@ -833,8 +837,9 @@ class Component extends DCLogic {
       (ativo ? ";box-shadow:0 1px 3px rgba(20,35,100,.12)" : "");
   }
   estiloNav(ativo) {
-    return "border:0;border-radius:9px;padding:9px 15px;font-size:13.5px;font-weight:600;cursor:pointer;background:" +
-      (ativo ? "rgba(255,255,255,.22)" : "transparent") + ";color:#fff";
+    return "flex:1;border:0;border-radius:12px;padding:12px 15px;font-size:14px;font-weight:700;cursor:pointer;background:" +
+      (ativo ? "#2563EB" : "#F1F3F7") + ";color:" + (ativo ? "#fff" : "#374151") +
+      (ativo ? ";box-shadow:0 3px 10px rgba(37,99,235,.25)" : "");
   }
 }
 

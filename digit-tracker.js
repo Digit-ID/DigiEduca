@@ -44,13 +44,20 @@ window.DigitTracker = {
   }
 })();
 
-/* Símbolo da Digit como favicon em todos os cursos */
+/* Símbolo da Digit como favicon + lettering DigiNote em todos os cursos */
 (function () {
   if (!document.querySelector('link[rel="icon"]')) {
     const l = document.createElement("link");
     l.rel = "icon"; l.type = "image/png"; l.href = "assets/digit-simbolo.png";
     document.head.appendChild(l);
   }
+  const f = document.createElement("link");
+  f.rel = "stylesheet";
+  f.href = "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Spectral:wght@600;700&display=swap";
+  document.head.appendChild(f);
+  const s = document.createElement("style");
+  s.textContent = "body,input,select,button,textarea{font-family:'Hanken Grotesk',system-ui,sans-serif !important}";
+  document.head.appendChild(s);
 })();
 
 /* Botão fixo de regresso ao portal, em todos os cursos */
