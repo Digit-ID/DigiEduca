@@ -9,7 +9,7 @@
 <x-dc>
 <helmet>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Portal de Formação · Digit</title>
+<title>DigiEduca · Digit</title>
 <style>
   *{box-sizing:border-box}
   body{margin:0;background:#F6F7FB;color:#141A33;font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
@@ -23,64 +23,54 @@
 <div style="min-height:100vh">
 
   <sc-if value="{{ ecraLogin }}" hint-placeholder-val="{{ true }}">
-    <div style="min-height:100vh;display:grid;place-items:center;padding:24px;background:linear-gradient(135deg,#2440D9 0%,#3B5BFF 45%,#00AAFF 100%)">
-      <div style="width:100%;max-width:440px">
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px">
-          <div style="background:#fff;border-radius:10px;padding:9px 14px;display:inline-flex">
-            <img src="assets/digit-logo.png" alt="Digit" style="height:26px;width:auto;display:block">
-          </div>
-          <div style="color:#fff;font-size:13px;letter-spacing:.16em;text-transform:uppercase;opacity:.85">Portal de Formação</div>
-        </div>
-        <div style="background:#fff;border-radius:18px;padding:30px 28px 26px;box-shadow:0 24px 60px rgba(12,24,80,.28)">
-          <sc-if value="{{ mostrarTabs }}" hint-placeholder-val="{{ true }}">
-            <div style="display:flex;gap:4px;background:#EEF0FA;padding:4px;border-radius:11px;margin-bottom:22px">
-              <button onClick="{{ irEntrar }}" style="{{ estiloTabEntrar }}">Entrar</button>
-              <button onClick="{{ irCriar }}" style="{{ estiloTabCriar }}">Criar conta</button>
-            </div>
-          </sc-if>
-          <sc-if value="{{ tituloEspecial }}" hint-placeholder-val="{{ false }}">
-            <div style="margin-bottom:20px">
-              <div style="font-size:19px;font-weight:700;letter-spacing:-.01em;margin-bottom:5px">{{ tituloEspecial }}</div>
-              <div style="font-size:13.5px;color:#6B77A8;line-height:1.55">{{ subtituloEspecial }}</div>
-            </div>
-          </sc-if>
+    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:110px 24px 40px;background:#FAF7F0">
+      <div style="width:100%;max-width:500px;display:flex;flex-direction:column;align-items:center">
+        <img src="assets/digit-logo.png" alt="Digit" style="height:96px;width:auto;display:block;mix-blend-mode:multiply">
+        <div style="margin-top:8px;margin-bottom:32px;color:#4B5563;font-size:16px">As tuas formações, beyond your numbers!</div>
+
+        <div style="width:100%;background:#fff;border-radius:18px;padding:32px 40px 30px;box-shadow:0 6px 28px rgba(30,30,20,.06)">
+          <div style="font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:27px;letter-spacing:-.01em;color:#111;margin-bottom:6px">{{ tituloCard }}</div>
+          <div style="font-size:15px;color:#6B7280;margin-bottom:24px;line-height:1.5">{{ subtituloCard }}</div>
 
           <sc-if value="{{ aCriar }}" hint-placeholder-val="{{ false }}">
-            <div style="display:grid;gap:14px;margin-bottom:16px">
-              <label style="display:grid;gap:6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">Nome completo
-                <input ref="{{ refNome }}" onKeyDown="{{ aoTeclar }}" type="text" placeholder="Ex: Ana Silva" autocomplete="name" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;outline:none">
-              </label>
-              <label style="display:grid;gap:6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">Departamento
-                <select ref="{{ refDepto }}" onKeyDown="{{ aoTeclar }}" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;background:#fff;outline:none">
-                  <option>Contabilidade</option>
-                  <option>Fiscalidade</option>
-                  <option>Recursos Humanos</option>
-                  <option>Processamento Salarial</option>
-                  <option>Tesouraria</option>
-                  <option>I&amp;D</option>
-                  <option>BPO</option>
-                  <option>Direção</option>
-                </select>
-              </label>
+            <div style="display:grid;gap:12px;margin-bottom:12px">
+              <input ref="{{ refNome }}" onKeyDown="{{ aoTeclar }}" type="text" placeholder="Nome completo" autocomplete="name" style="border:1.5px solid #E5E7EB;border-radius:14px;padding:14px 16px;font-size:15px;color:#141A33;outline:none;width:100%" style-focus="border-color:#3B5BFF">
+              <select ref="{{ refDepto }}" onKeyDown="{{ aoTeclar }}" style="border:1.5px solid #E5E7EB;border-radius:14px;padding:14px 16px;font-size:15px;color:#141A33;background:#fff;outline:none;width:100%">
+                <option>Contabilidade</option>
+                <option>Fiscalidade</option>
+                <option>Recursos Humanos</option>
+                <option>Processamento Salarial</option>
+                <option>Tesouraria</option>
+                <option>I&amp;D</option>
+                <option>BPO</option>
+                <option>Direção</option>
+              </select>
             </div>
           </sc-if>
 
-          <div style="display:grid;gap:14px">
+          <div style="display:grid;gap:12px">
             <sc-if value="{{ pedeEmail }}" hint-placeholder-val="{{ true }}">
-            <div style="display:grid;gap:6px">
-              <div style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">Email Digit</div>
-              <div style="display:flex;gap:8px">
-                <input ref="{{ refEmail }}" onKeyDown="{{ aoTeclar }}" type="email" placeholder="nome.apelido" autocomplete="email" style="flex:1;min-width:0;border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;outline:none">
-                <button onClick="{{ juntarDominio }}" title="Acrescentar @digit.com.pt" style="border:1.5px solid #3B5BFF;background:#EEF0FA;color:#3B5BFF;border-radius:10px;padding:0 13px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap" style-hover="background:#E2E8FC">@digit.com.pt</button>
+              <div style="display:flex;gap:10px">
+                <input ref="{{ refEmail }}" onKeyDown="{{ aoTeclar }}" type="email" placeholder="Email Digit" autocomplete="email" defaultValue="{{ emailGuardado }}" style="flex:1;min-width:0;border:1.5px solid #E5E7EB;border-radius:14px;padding:14px 16px;font-size:15px;color:#141A33;outline:none" style-focus="border-color:#3B5BFF">
+                <button onClick="{{ juntarDominio }}" title="Acrescentar @digit.com.pt" style="border:0;background:#EDF2FB;color:#2563EB;border-radius:14px;padding:0 16px;font-size:14.5px;font-weight:700;cursor:pointer;white-space:nowrap" style-hover="background:#E2E8FC">@digit.com.pt</button>
               </div>
-            </div>
             </sc-if>
             <sc-if value="{{ pedePassword }}" hint-placeholder-val="{{ true }}">
-              <label style="display:grid;gap:6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7B8FD4">{{ rotuloPassword }}
-                <input ref="{{ refPass }}" onKeyDown="{{ aoTeclar }}" type="password" placeholder="Mínimo 8 caracteres" autocomplete="current-password" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:12px 14px;font-size:15px;color:#141A33;outline:none">
-              </label>
+              <div style="position:relative">
+                <input ref="{{ refPass }}" onKeyDown="{{ aoTeclar }}" type="{{ tipoPass }}" placeholder="{{ rotuloPassword }}" autocomplete="current-password" style="width:100%;border:1.5px solid #E5E7EB;border-radius:14px;padding:14px 46px 14px 16px;font-size:15px;color:#141A33;outline:none" style-focus="border-color:#3B5BFF">
+                <button onClick="{{ alternarPass }}" title="Mostrar palavra-passe" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:0;cursor:pointer;padding:6px;display:flex;align-items:center">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ corOlho }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+              </div>
             </sc-if>
           </div>
+
+          <sc-if value="{{ mostrarLembrar }}" hint-placeholder-val="{{ true }}">
+            <label style="display:flex;align-items:center;gap:9px;margin-top:14px;font-size:14px;color:#374151;cursor:pointer">
+              <input type="checkbox" checked="{{ lembrar }}" onChange="{{ alternarLembrar }}" style="width:17px;height:17px;accent-color:#2563EB;cursor:pointer">
+              Lembrar os meus dados de acesso
+            </label>
+          </sc-if>
 
           <sc-if value="{{ erro }}" hint-placeholder-val="{{ false }}">
             <div style="margin-top:14px;background:#FDECEC;border:1px solid #F5C6C6;color:#B02525;border-radius:10px;padding:11px 13px;font-size:13.5px">{{ erro }}</div>
@@ -90,29 +80,31 @@
             <div style="margin-top:14px;background:#E4F8F0;border:1px solid #B8E6D3;color:#00694A;border-radius:10px;padding:11px 13px;font-size:13.5px;line-height:1.5">{{ aviso }}</div>
           </sc-if>
 
-          <button onClick="{{ submeter }}" style="margin-top:20px;width:100%;border:0;border-radius:11px;padding:15px;background:#3B5BFF;color:#fff;font-size:15.5px;font-weight:700;cursor:pointer;letter-spacing:.01em" style-hover="background:#2440D9">{{ textoBotao }}</button>
+          <button onClick="{{ submeter }}" style="margin-top:18px;width:100%;border:0;border-radius:28px;padding:14px;background:#2563EB;color:#fff;font-size:15.5px;font-weight:600;cursor:pointer;letter-spacing:.01em" style-hover="background:#1D4FD7">{{ textoBotao }}</button>
 
           <div style="margin-top:16px;display:flex;justify-content:center">
-            <button onClick="{{ alternarRecuperar }}" style="background:transparent;border:0;color:#3B5BFF;font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline">{{ textoRecuperar }}</button>
+            <button onClick="{{ alternarRecuperar }}" style="background:transparent;border:0;color:#1F2937;font-size:14px;font-weight:500;cursor:pointer;text-decoration:underline">{{ textoRecuperar }}</button>
           </div>
 
-          <div style="margin-top:14px;padding-top:16px;border-top:1px solid #EEF0FA;font-size:12.5px;color:#7B8FD4;line-height:1.6">
-            Acesso restrito a endereços <strong style="color:#3B5BFF">@digit.com.pt</strong>. O teu progresso, notas e certificados ficam registados na conta.
+          <div style="margin-top:12px;text-align:center;font-size:14px;color:#374151">
+            {{ perguntaConta }} <button onClick="{{ alternarCriar }}" style="background:transparent;border:0;color:#2563EB;font-size:14px;font-weight:700;cursor:pointer;padding:0">{{ acaoConta }}</button>
           </div>
         </div>
 
-        <div style="margin-top:16px;text-align:center">
-          <button onClick="{{ alternarConfig }}" style="background:transparent;border:0;color:rgba(255,255,255,.8);font-size:12.5px;cursor:pointer;text-decoration:underline">{{ etiquetaModo }}</button>
+        <div style="margin-top:20px;text-align:center;font-size:13.5px;color:#8A8A82">As tuas contas e formações ficam guardadas em segurança na nuvem.</div>
+
+        <div style="margin-top:10px;text-align:center">
+          <button onClick="{{ alternarConfig }}" style="background:transparent;border:0;color:#B5B5AC;font-size:12px;cursor:pointer;text-decoration:underline">{{ etiquetaModo }}</button>
         </div>
 
         <sc-if value="{{ mostrarConfig }}" hint-placeholder-val="{{ false }}">
-          <div style="margin-top:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:14px;padding:18px;color:#fff">
+          <div style="width:100%;margin-top:12px;background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:18px;color:#141A33">
             <div style="font-size:13px;font-weight:700;margin-bottom:4px">Ligação ao Supabase</div>
-            <div style="font-size:12px;opacity:.8;line-height:1.5;margin-bottom:12px">Cola o URL do projeto e a chave <em>anon public</em> (Project Settings → API). Guardadas neste navegador.</div>
+            <div style="font-size:12px;color:#6B7280;line-height:1.5;margin-bottom:12px">Cola o URL do projeto e a chave <em>anon public</em> (Project Settings → API). Guardadas neste navegador.</div>
             <div style="display:grid;gap:9px">
-              <input ref="{{ refUrl }}" type="text" placeholder="https://xxxxxxxx.supabase.co" style="border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;border-radius:9px;padding:10px 12px;font-size:13px;outline:none">
-              <input ref="{{ refChave }}" type="text" placeholder="eyJhbGciOi… (anon public)" style="border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;border-radius:9px;padding:10px 12px;font-size:13px;outline:none">
-              <button onClick="{{ guardarLigacao }}" style="border:0;border-radius:9px;padding:11px;background:#fff;color:#2440D9;font-size:13.5px;font-weight:700;cursor:pointer">Ligar e recarregar</button>
+              <input ref="{{ refUrl }}" type="text" placeholder="https://xxxxxxxx.supabase.co" style="border:1px solid #E5E7EB;border-radius:9px;padding:10px 12px;font-size:13px;outline:none">
+              <input ref="{{ refChave }}" type="text" placeholder="eyJhbGciOi… (anon public)" style="border:1px solid #E5E7EB;border-radius:9px;padding:10px 12px;font-size:13px;outline:none">
+              <button onClick="{{ guardarLigacao }}" style="border:0;border-radius:9px;padding:11px;background:#2563EB;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer">Ligar e recarregar</button>
             </div>
           </div>
         </sc-if>
@@ -127,7 +119,7 @@
           <div style="background:#fff;border-radius:8px;padding:7px 11px;display:inline-flex">
             <img src="assets/digit-logo.png" alt="Digit" style="height:20px;width:auto;display:block">
           </div>
-          <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;opacity:.8">Portal de Formação</div>
+          <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;opacity:.8">DigiEduca</div>
           <div style="flex:1"></div>
           <div style="display:flex;gap:6px">
             <button onClick="{{ verCatalogo }}" style="{{ estiloNavCatalogo }}">Catálogo</button>
@@ -447,6 +439,9 @@ class Component extends DCLogic {
   state = {
     pronto: false, aCarregar: true, erro: "", aCriar: false, mostrarConfig: false,
     vista: "catalogo", aba: "visao", detalhe: null, aviso: "", modoAuth: "entrar",
+    mostrarPass: false,
+    emailGuardado: (() => { try { return localStorage.getItem("digitEducaEmail") || ""; } catch (e) { return ""; } })(),
+    lembrar: (() => { try { return !!localStorage.getItem("digitEducaEmail"); } catch (e) { return false; } })(),
     cursos: [], areas: [], progresso: {}, certs: [],
     colabs: [], certsTodos: [], audit: [], eu: null, modo: "demonstração"
   };
@@ -485,6 +480,17 @@ class Component extends DCLogic {
   /* ---------------------------------------------------------- autenticação */
   aoTeclar = e => { if (e.key === "Enter") { e.preventDefault(); this.submeter(); } };
 
+  alternarPass = () => this.setState({ mostrarPass: !this.state.mostrarPass });
+  alternarLembrar = e => this.setState({ lembrar: e.target.checked });
+  alternarCriar = () => this.setState({ aCriar: !this.state.aCriar, modoAuth: "entrar", erro: "", aviso: "" });
+
+  guardarEmailSeLembrar = email => {
+    try {
+      if (this.state.lembrar) localStorage.setItem("digitEducaEmail", email);
+      else localStorage.removeItem("digitEducaEmail");
+    } catch (e) {}
+  };
+
   juntarDominio = () => {
     const i = this.refEmail.current;
     if (!i) return;
@@ -521,6 +527,7 @@ class Component extends DCLogic {
         await this.store.registar({ nome, email, password: pass, departamento: (this.refDepto.current || {}).value });
       } else {
         await this.store.entrar(email, pass);
+        this.guardarEmailSeLembrar(email.trim().toLowerCase());
       }
       await this.carregar();
     } catch (e) {
@@ -671,24 +678,32 @@ class Component extends DCLogic {
       etiquetaEstado: s.modo === "supabase" ? "Ligado ao Supabase" : "Modo de demonstração (dados locais)",
       corModo: s.modo === "supabase" ? "#00875A" : "#D4880A",
       erro: s.erro, aviso: s.aviso, aCriar: s.aCriar && s.modoAuth === "entrar", mostrarConfig: s.mostrarConfig,
-      mostrarTabs: s.modoAuth === "entrar",
       pedeEmail: s.modoAuth !== "nova",
       pedePassword: s.modoAuth !== "recuperar",
-      rotuloPassword: s.modoAuth === "nova" ? "Nova palavra-passe" : "Palavra-passe",
-      tituloEspecial: s.modoAuth === "recuperar" ? "Recuperar o acesso" : s.modoAuth === "nova" ? "Definir nova palavra-passe" : "",
-      subtituloEspecial: s.modoAuth === "recuperar"
-        ? "Indica o teu email Digit e enviamos-te uma ligação segura para criares uma palavra-passe nova."
-        : s.modoAuth === "nova" ? "A ligação foi confirmada. Escolhe uma palavra-passe com pelo menos 8 caracteres." : "",
-      textoRecuperar: s.modoAuth === "entrar" ? "Esqueci-me da palavra-passe" : "Voltar à entrada",
+      rotuloPassword: s.modoAuth === "nova" ? "Nova palavra-passe (mínimo 8 caracteres)" : "Palavra-passe",
+      tituloCard: s.modoAuth === "recuperar" ? "Recuperar o acesso"
+        : s.modoAuth === "nova" ? "Nova palavra-passe"
+        : s.aCriar ? "Cria a tua conta" : "Bem-vindo de volta",
+      subtituloCard: s.modoAuth === "recuperar" ? "Indica o teu email Digit e enviamos-te uma ligação segura para criares uma palavra-passe nova."
+        : s.modoAuth === "nova" ? "A ligação foi confirmada. Escolhe uma palavra-passe com pelo menos 8 caracteres."
+        : s.aCriar ? "Regista-te com o teu email Digit." : "Entra na tua conta DigiEduca.",
+      textoRecuperar: s.modoAuth === "entrar" ? "Esqueceste-te da palavra-passe?" : "Voltar à entrada",
       alternarRecuperar: this.alternarRecuperar,
       juntarDominio: this.juntarDominio,
       aoTeclar: this.aoTeclar,
+      tipoPass: s.mostrarPass ? "text" : "password",
+      corOlho: s.mostrarPass ? "#2563EB" : "#9CA3AF",
+      alternarPass: this.alternarPass,
+      mostrarLembrar: s.modoAuth === "entrar" && !s.aCriar,
+      lembrar: s.lembrar,
+      alternarLembrar: this.alternarLembrar,
+      emailGuardado: s.emailGuardado,
+      perguntaConta: s.aCriar ? "Já tens conta?" : "Ainda não tens conta?",
+      acaoConta: s.aCriar ? "Entrar" : "Criar conta",
+      alternarCriar: this.alternarCriar,
       textoBotao: s.modoAuth === "recuperar" ? "Enviar ligação de recuperação"
         : s.modoAuth === "nova" ? "Guardar palavra-passe e entrar"
-        : s.aCriar ? "Criar conta e entrar" : "Entrar no portal",
-      irEntrar: () => this.setState({ aCriar: false, erro: "", aviso: "" }),
-      irCriar: () => this.setState({ aCriar: true, erro: "", aviso: "" }),
-      estiloTabEntrar: this.estiloTab(!s.aCriar), estiloTabCriar: this.estiloTab(s.aCriar),
+        : s.aCriar ? "Criar conta" : "Entrar",
       alternarConfig: () => this.setState({ mostrarConfig: !s.mostrarConfig }),
       guardarLigacao: () => this.guardar(this.refUrl, this.refChave),
       guardarLigacao2: () => this.guardar(this.refUrl2, this.refChave2),

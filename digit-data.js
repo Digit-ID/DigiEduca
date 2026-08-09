@@ -10,8 +10,8 @@ const OBRIGATORIOS = ["literacia-ai","rgpd","branqueamento-capitais","seguranca-
 const CHAVE_DEMO = "digitPortalDemo_v3";
 
 /* Projeto Supabase da Digit (chave publicável — protegida por RLS) */
-const URL_PADRAO = "https://mnmleozehfzqpbipmhne.supabase.co";
-const CHAVE_PADRAO = "sb_publishable_HKEbhpSONeIYcNs_7VfmPA_NZt4OAXN";
+const URL_PADRAO = "https://aucnnpvdbvqwijamjokm.supabase.co";
+const CHAVE_PADRAO = "sb_publishable_oMc9Ls4Te9w5MlkuTiuMaQ_pRaEaF1j";
 
 export const slugDoFicheiro = f => String(f).replace(/^Digit-Curso_/, "").replace(/\.html$/, "")
   .normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -184,7 +184,20 @@ function storeSupabase(url, chave) {
     modo: "supabase",
     async init() {
       const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
-      sb = createClient(url, chave);
+      /* Com o Supabase ligado, os dados do antigo modo de demonstração ficam obsoletos
+         e podem encher a quota do navegador, impedindo a gravação do token de sessão. */
+      try {
+        ["digitPortalDemo", "digitPortalDemo_v2", "digitPortalDemo_v3", "digitUsers", "digitSession"]
+          .forEach(k => { localStorage.removeItem(k); sessionStorage.removeItem(k); });
+      } catch (e) {}
+      /* Armazenamento resiliente: se o localStorage falhar, cai para sessionStorage e depois memória */
+      const memoria = {};
+      const arm = {
+        getItem: k => { try { const v = localStorage.getItem(k); if (v != null) return v; } catch (e) {} try { const v = sessionStorage.getItem(k); if (v != null) return v; } catch (e) {} return memoria[k] != null ? memoria[k] : null; },
+        setItem: (k, v) => { memoria[k] = v; try { localStorage.setItem(k, v); return; } catch (e) {} try { sessionStorage.setItem(k, v); } catch (e) {} },
+        removeItem: k => { delete memoria[k]; try { localStorage.removeItem(k); } catch (e) {} try { sessionStorage.removeItem(k); } catch (e) {} }
+      };
+      sb = createClient(url, chave, { auth: { storage: arm } });
       recuperacao = /type=recovery/.test(location.hash) || /type=recovery/.test(location.search);
       const { data } = await sb.auth.getSession();
       if (data && data.session && !recuperacao) meu = erro(await sb.from("perfis").select("*").eq("id", data.session.user.id).single());
