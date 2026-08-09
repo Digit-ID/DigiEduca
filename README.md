@@ -3,7 +3,7 @@
 Portal interno de formação da Digit — 30 cursos interativos em 6 áreas, com contas
 individuais, registo de progresso, avaliações, certificados e painel de administração.
 
-Publicado por GitHub Pages: <https://digit-id.github.io/Forma-o_Digit/>
+Publicado por GitHub Pages: <https://digit-id.github.io/DigiEduca/>
 
 ## Estrutura
 

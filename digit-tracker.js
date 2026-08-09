@@ -44,6 +44,15 @@ window.DigitTracker = {
   }
 })();
 
+/* Símbolo da Digit como favicon em todos os cursos */
+(function () {
+  if (!document.querySelector('link[rel="icon"]')) {
+    const l = document.createElement("link");
+    l.rel = "icon"; l.type = "image/png"; l.href = "assets/digit-simbolo.png";
+    document.head.appendChild(l);
+  }
+})();
+
 /* Botão fixo de regresso ao portal, em todos os cursos */
 (function () {
   function criar() {
