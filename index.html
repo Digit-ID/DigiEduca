@@ -117,27 +117,85 @@
   </sc-if>
 
   <sc-if value="{{ ecraApp }}" hint-placeholder-val="{{ false }}">
-    <div>
-      <header style="background:#fff;border-bottom:1px solid #ECEEF4;padding:0 28px">
-        <div style="max-width:1280px;margin:0 auto">
-          <div style="display:flex;align-items:center;gap:12px;height:64px">
-            <div style="display:flex;align-items:baseline;gap:10px">
-              <div style="font-size:22px;font-weight:800;color:#2563EB;letter-spacing:-.02em">DigiEduca</div>
-              <div style="font-size:11px;letter-spacing:.14em;color:#9CA3AF;font-weight:600">BEYOND NUMBERS</div>
-            </div>
-            <div style="flex:1"></div>
-            <div style="font-size:14px;color:#374151;white-space:nowrap">Olá, <strong>{{ primeiroNome }}</strong></div>
-            <button onClick="{{ sair }}" style="border:0;background:transparent;color:#6B7280;font-size:13.5px;cursor:pointer;text-decoration:underline;padding:0 0 0 6px">sair</button>
-          </div>
-          <div style="display:flex;gap:12px;padding-bottom:14px">
-            <button onClick="{{ verCatalogo }}" style="{{ estiloNavCatalogo }}">Catálogo</button>
-            <button onClick="{{ verCertificados }}" style="{{ estiloNavCerts }}">Certificados</button>
-            <sc-if value="{{ souAdmin }}" hint-placeholder-val="{{ true }}">
-              <button onClick="{{ verAdmin }}" style="{{ estiloNavAdmin }}">Administração</button>
-            </sc-if>
-          </div>
+    <div style="display:flex;align-items:stretch;min-height:100vh">
+      <sc-if value="{{ menuLateral }}" hint-placeholder-val="{{ true }}">
+      <aside style="width:236px;flex:none;position:sticky;top:0;height:100vh;background:#F8F9FE;border-right:1px solid #ECEEF4;display:flex;flex-direction:column;padding:18px 12px;box-sizing:border-box">
+        <div style="display:flex;justify-content:center;padding:4px 0 8px">
+          <img src="assets/digit-logo.png" alt="Digit" style="width:112px;height:auto;mix-blend-mode:multiply">
         </div>
-      </header>
+        <div style="text-align:center;margin-bottom:16px">
+          <span style="font-size:15px;font-weight:800;color:#2563EB;letter-spacing:-.02em">DigiEduca</span>
+          <div style="font-size:9px;letter-spacing:.16em;color:#9CA3AF;font-weight:600;margin-top:2px">BEYOND NUMBERS</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px;background:#fff;border:1px solid #E7EAF6;border-radius:14px;padding:9px 10px">
+          <div style="width:34px;height:34px;border-radius:99px;background:linear-gradient(135deg,#3B5BFF,#2440D9);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none">{{ iniciais }}</div>
+          <div style="display:flex;flex-direction:column;min-width:0;flex:1">
+            <b style="font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#141A33">{{ meuNome }}</b>
+            <small style="font-size:10px;color:#8C97C2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ meuEmail }}</small>
+          </div>
+          <button onClick="{{ sair }}" title="Terminar sessão" style="width:28px;height:28px;border:0;background:none;color:#6B77A8;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none" style-hover="color:#B02525">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          </button>
+        </div>
+        <button onClick="{{ retomarFormacao }}" style="margin-top:12px;display:flex;align-items:center;justify-content:center;gap:7px;width:100%;border:0;border-radius:12px;padding:13px 8px;background:#2563EB;color:#fff;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 3px 10px rgba(37,99,235,.25)" style-hover="background:#1D4FD7">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>{{ rotuloRetomar }}
+        </button>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:14px">
+          <button onClick="{{ verCatalogo }}" style="{{ estiloLatCat }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>Catálogo
+          </button>
+          <button onClick="{{ verAgenda }}" style="{{ estiloLatAgenda }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>Agenda
+          </button>
+          <button onClick="{{ verBiblioteca }}" style="{{ estiloLatBib }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>Biblioteca
+          </button>
+          <button onClick="{{ verCertificados }}" data-tour="nav-certs" style="{{ estiloLatCerts }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><polyline points="8.5 13.5 7 22 12 19 17 22 15.5 13.5"></polyline></svg>Certificados
+          </button>
+          <sc-if value="{{ souAdmin }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ verAdmin }}" data-tour="nav-admin" style="{{ estiloLatAdmin }}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>Administração
+            </button>
+          </sc-if>
+        </div>
+        <div style="flex:1"></div>
+            <div style="position:relative;display:flex;gap:6px">
+              <button onClick="{{ alternarAjuda }}" data-tour="ajuda" title="Ajuda" style="order:9;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid #E7EAF6;border-radius:9px;background:#fff;color:#6B77A8;cursor:pointer" style-hover="background:#EEF0FA">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              </button>
+              <sc-if value="{{ ajudaAberta }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ fecharAjuda }}" style="position:fixed;inset:0;z-index:60"></div>
+                <div style="position:absolute;bottom:calc(100% + 6px);left:0;right:0;z-index:61;background:#fff;border:1px solid #E7EAF6;border-radius:12px;box-shadow:0 12px 34px rgba(20,35,100,.16);padding:6px;display:flex;flex-direction:column;gap:2px">
+                  <button onClick="{{ abrirTour }}" style="display:flex;align-items:center;gap:9px;padding:9px 10px;border:0;border-radius:8px;background:transparent;color:#141A33;font-size:13.5px;cursor:pointer;text-align:left" style-hover="background:#EEF0FA">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>Ver introdução
+                  </button>
+                  <button onClick="{{ abrirManual }}" style="display:flex;align-items:center;gap:9px;padding:9px 10px;border:0;border-radius:8px;background:transparent;color:#141A33;font-size:13.5px;cursor:pointer;text-align:left" style-hover="background:#EEF0FA">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>Manual de utilização
+                  </button>
+                </div>
+              </sc-if>
+              <button onClick="{{ abrirSugestao }}" title="Enviar sugestão" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid #E7EAF6;border-radius:9px;background:#fff;color:#6B77A8;cursor:pointer" style-hover="background:#EEF0FA">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2.5-7.5z"></path></svg>
+              </button>
+              <button onClick="{{ exportarMeuProgresso }}" title="Exportar o meu progresso" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid #E7EAF6;border-radius:9px;background:#fff;color:#6B77A8;cursor:pointer" style-hover="background:#EEF0FA">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              </button>
+              <button onClick="{{ recarregar }}" title="Atualizar dados" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid #E7EAF6;border-radius:9px;background:#fff;color:#6B77A8;cursor:pointer" style-hover="background:#EEF0FA">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+              </button>
+            </div>
+      </aside>
+      </sc-if>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+        <sc-if value="{{ menuFundo }}" hint-placeholder-val="{{ false }}">
+          <header style="background:#fff;border-bottom:1px solid #ECEEF4;padding:0 18px;display:flex;align-items:center;gap:10px;height:56px">
+            <div style="font-size:19px;font-weight:800;color:#2563EB;letter-spacing:-.02em">DigiEduca</div>
+            <div style="flex:1"></div>
+            <div style="font-size:13.5px;color:#374151;white-space:nowrap">Olá, <strong>{{ primeiroNome }}</strong></div>
+            <button onClick="{{ sair }}" style="border:0;background:transparent;color:#6B7280;font-size:13px;cursor:pointer;text-decoration:underline">sair</button>
+          </header>
+        </sc-if>
 
       <sc-if value="{{ modoDemo }}" hint-placeholder-val="{{ false }}">
         <div style="background:#FFF6E5;border-bottom:1px solid #F2DFB8;color:#8A5A00;font-size:12.5px;padding:9px 28px;text-align:center">
@@ -145,7 +203,7 @@
         </div>
       </sc-if>
 
-      <main style="max-width:1280px;margin:0 auto;padding:30px 28px 70px">
+      <main style="max-width:1280px;margin:0 auto;padding:30px 28px 70px;width:100%;box-sizing:border-box">
 
         <sc-if value="{{ vistaCatalogo }}" hint-placeholder-val="{{ true }}">
           <div>
@@ -154,9 +212,13 @@
                 <h1 style="margin:0 0 6px;font-size:29px;letter-spacing:-.02em">Olá, {{ primeiroNome }}.</h1>
                 <div style="color:#6B77A8;font-size:14.5px">{{ subtituloCatalogo }}</div>
               </div>
+              <div style="position:relative;width:min(320px,100%)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8C97C2" stroke-width="1.9" stroke-linecap="round" style="position:absolute;left:13px;top:50%;transform:translateY(-50%)"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
+                <input value="{{ pesquisa }}" onChange="{{ aoPesquisar }}" type="text" placeholder="Pesquisar cursos…" style="width:100%;border:1.5px solid #E7EAF6;border-radius:12px;padding:11px 14px 11px 38px;font-size:14px;color:#141A33;background:#fff;outline:none" style-focus="border-color:#3B5BFF">
+              </div>
             </div>
 
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:34px">
+            <div data-tour="kpis" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:34px">
               <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
                 <div style="background:#fff;border:1px solid #E7EAF6;border-radius:14px;padding:18px 20px">
                   <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7B8FD4;margin-bottom:9px">{{ k.rotulo }}</div>
@@ -166,6 +228,79 @@
               </sc-for>
             </div>
 
+            <sc-if value="{{ temCursoMes }}" hint-placeholder-val="{{ false }}">
+              <div style="background:linear-gradient(120deg,#2440D9,#3B5BFF,#00AAFF);border-radius:16px;padding:22px 24px;margin-bottom:34px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;color:#fff">
+                <div style="font-size:34px">{{ iconeCursoMes }}</div>
+                <div style="flex:1;min-width:220px">
+                  <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Curso do mês · {{ mesAtual }}</div>
+                  <div style="font-size:19px;font-weight:700;margin-top:3px">{{ tituloCursoMes }}</div>
+                  <div style="font-size:13px;opacity:.9;margin-top:3px;line-height:1.5;text-wrap:pretty">{{ descCursoMes }}</div>
+                </div>
+                <a href="{{ ficheiroCursoMes }}" style="background:#fff;color:#2440D9;border-radius:10px;padding:11px 18px;font-size:13.5px;font-weight:700;flex:none">Abrir curso</a>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ temPercurso }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;padding:20px 22px;margin-bottom:34px">
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                  <div style="font-size:16px;font-weight:700">{{ tituloPercurso }}</div>
+                  <div style="font-size:12px;color:#7B8FD4;background:#EEF0FA;border-radius:20px;padding:4px 11px;font-weight:600">{{ percursoContagem }}</div>
+                  <div style="flex:1"></div>
+                  <div style="font-size:12.5px;color:#8C97C2">A sequência recomendada para a tua função</div>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+                  <sc-for list="{{ passosPercurso }}" as="pp" hint-placeholder-count="5">
+                    <a href="{{ pp.ficheiro }}" style="display:flex;align-items:center;gap:7px;border:1.5px solid {{ pp.borda }};background:{{ pp.fundo }};color:{{ pp.cor }};border-radius:20px;padding:7px 13px;font-size:12.5px;font-weight:700">{{ pp.num }}. {{ pp.titulo }}</a>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-bottom:34px">
+              <div style="background:#fff;border:1px solid #E7EAF6;border-radius:14px;padding:18px 20px">
+                <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7B8FD4;margin-bottom:9px">Meta anual</div>
+                <div style="font-size:26px;font-weight:700;letter-spacing:-.02em">{{ metaTexto }}</div>
+                <div style="height:6px;background:#EEF0FA;border-radius:6px;overflow:hidden;margin-top:10px">
+                  <div style="height:100%;border-radius:6px;background:{{ metaCor }};width:{{ metaLargura }}"></div>
+                </div>
+                <div style="font-size:12.5px;color:#8C97C2;margin-top:7px">{{ metaNota }}</div>
+              </div>
+              <div style="background:#fff;border:1px solid #E7EAF6;border-radius:14px;padding:18px 20px">
+                <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7B8FD4;margin-bottom:9px">Sequência</div>
+                <div style="font-size:26px;font-weight:700;letter-spacing:-.02em;color:#D4880A">{{ streakTexto }}</div>
+                <div style="font-size:12.5px;color:#8C97C2;margin-top:7px">semanas seguidas com atividade de formação</div>
+              </div>
+              <sc-if value="{{ temRanking }}" hint-placeholder-val="{{ false }}">
+                <div style="background:#fff;border:1px solid #E7EAF6;border-radius:14px;padding:18px 20px">
+                  <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7B8FD4;margin-bottom:11px">Ranking de departamentos</div>
+                  <sc-for list="{{ rankingTop }}" as="rk" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:9px;padding:4px 0;font-size:13px">
+                      <span style="flex:none;width:20px;font-weight:800;color:#7B8FD4">{{ rk.pos }}</span>
+                      <span style="flex:1;font-weight:{{ rk.peso }};color:{{ rk.cor }}">{{ rk.nome }}</span>
+                      <span style="color:#8C97C2;font-size:12px">{{ rk.texto }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+
+            <sc-if value="{{ temNovosDisponiveis }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#E9F6FF;border:1px solid #BFE4FA;border-radius:14px;padding:15px 20px;margin-bottom:34px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+                <div style="flex:1;min-width:220px;font-size:14px;color:#075985;line-height:1.5"><strong>Boas notícias!</strong> {{ textoNovosDisponiveis }}</div>
+                <button onClick="{{ dispensarNovos }}" style="border:0;border-radius:9px;padding:9px 14px;background:#fff;color:#075985;font-size:12.5px;font-weight:700;cursor:pointer;border:1px solid #BFE4FA">OK, visto</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ temAtribuicoes }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fff;border:1px solid #E7EAF6;border-left:4px solid #00AAFF;border-radius:14px;padding:20px 22px;margin-bottom:34px">
+                <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0087C7;margin-bottom:8px">Cursos atribuídos a ti</div>
+                <sc-for list="{{ minhasAtribs }}" as="ma" hint-placeholder-count="2">
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #F2F4FB;font-size:13.5px">
+                    <a href="{{ ma.ficheiro }}" style="font-weight:600;color:#141A33">{{ ma.titulo }}</a>
+                    <span style="font-size:12.5px;font-weight:700;color:{{ ma.corPrazo }};white-space:nowrap">{{ ma.textoPrazo }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
             <sc-if value="{{ temPendentes }}" hint-placeholder-val="{{ false }}">
               <div style="background:#fff;border:1px solid #E7EAF6;border-left:4px solid #2440D9;border-radius:14px;padding:20px 22px;margin-bottom:34px">
                 <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#2440D9;margin-bottom:7px">Formação obrigatória pendente</div>
@@ -177,16 +312,19 @@
               <div style="background:#E4F8F0;border:1px solid #B8E6D3;border-radius:14px;padding:16px 20px;margin-bottom:34px;font-size:14px;color:#00694A;font-weight:600">Formação obrigatória concluída — estás conforme com o Art. 4.º do AI Act.</div>
             </sc-if>
 
+            <sc-if value="{{ semResultados }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fff;border:1px dashed #D5DBF0;border-radius:15px;padding:40px;text-align:center;color:#8C97C2;font-size:14.5px">Nenhum curso corresponde a «{{ pesquisa }}».</div>
+            </sc-if>
             <sc-for list="{{ areasCat }}" as="a" hint-placeholder-count="3">
               <div style="margin-bottom:36px">
-                <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:11px;border-bottom:2px solid #EEF0FA">
+                <div data-tour="area" style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:11px;border-bottom:2px solid #EEF0FA">
                   <span style="font-size:19px">{{ a.icone }}</span>
                   <div style="font-size:17.5px;font-weight:700;letter-spacing:-.01em">{{ a.nome }}</div>
                   <div style="font-size:12px;color:#7B8FD4;background:#EEF0FA;border-radius:20px;padding:4px 11px;font-weight:600">{{ a.contagem }}</div>
                 </div>
                 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
                   <sc-for list="{{ a.cursos }}" as="c" hint-placeholder-count="3">
-                    <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;padding:20px;display:flex;flex-direction:column;gap:12px" style-hover="border-color:#3B5BFF">
+                    <div data-tour="curso" style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;padding:20px;display:flex;flex-direction:column;gap:12px" style-hover="border-color:#3B5BFF">
                       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
                         <div style="font-size:22px">{{ c.icone }}</div>
                         <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
@@ -204,16 +342,86 @@
                         </div>
                         <div style="display:flex;justify-content:space-between;font-size:12px;color:#8C97C2;margin-top:7px">
                           <span>{{ c.textoProgresso }}</span>
-                          <span>{{ c.duracao }}</span>
+                          <span>{{ c.duracaoMedia }}</span>
                         </div>
                       </div>
+                      <sc-if value="{{ c.feito }}" hint-placeholder-val="{{ false }}">
+                        <button onClick="{{ c.abrirAvaliacao }}" style="border:0;background:transparent;color:#7B8FD4;font-size:12.5px;cursor:pointer;text-align:left;padding:0;align-self:flex-start" style-hover="color:#3B5BFF">{{ c.rotuloAvaliar }}</button>
+                      </sc-if>
                       <sc-if value="{{ c.livre }}" hint-placeholder-val="{{ true }}">
                         <a href="{{ c.ficheiro }}" style="display:block;text-align:center;border-radius:10px;padding:12px;background:#3B5BFF;color:#fff;font-size:14px;font-weight:700" style-hover="background:#2440D9">{{ c.acao }}</a>
                       </sc-if>
                       <sc-if value="{{ c.bloqueado }}" hint-placeholder-val="{{ false }}">
                         <div style="text-align:center;border-radius:10px;padding:12px;background:#F2F4FB;color:#8C97C2;font-size:14px;font-weight:700;border:1px dashed #D5DBF0">{{ c.acao }}</div>
                       </sc-if>
+                      <sc-if value="{{ c.emBreve }}" hint-placeholder-val="{{ false }}">
+                        <button onClick="{{ c.alternarAviso }}" style="border:1.5px dashed {{ c.bordaAviso }};background:{{ c.fundoAviso }};color:{{ c.corAviso }};border-radius:10px;padding:11px;font-size:13.5px;font-weight:700;cursor:pointer">{{ c.textoAviso }}</button>
+                      </sc-if>
                     </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ vistaAgenda }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <h1 style="margin:0 0 6px;font-size:29px;letter-spacing:-.02em">Agenda de formação</h1>
+            <div style="color:#6B77A8;font-size:14.5px;margin-bottom:26px">Prazos dos cursos atribuídos e sessões ao vivo.</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:18px">
+              <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;padding:22px">
+                <div style="font-size:16px;font-weight:700;margin-bottom:14px">Os teus prazos</div>
+                <sc-if value="{{ semPrazos }}" hint-placeholder-val="{{ false }}">
+                  <div style="color:#8C97C2;font-size:13.5px">Sem cursos atribuídos por concluir. Boa!</div>
+                </sc-if>
+                <sc-for list="{{ prazosAgenda }}" as="pz" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #F2F4FB">
+                    <div style="flex:none;width:54px;text-align:center;background:#EEF0FA;color:#3B5BFF;border-radius:9px;padding:6px 4px;font-size:11px;font-weight:800;line-height:1.3">{{ pz.dataCurta }}</div>
+                    <div style="flex:1;min-width:0">
+                      <a href="{{ pz.ficheiro }}" style="font-size:13.5px;font-weight:600;color:#141A33">{{ pz.titulo }}</a>
+                      <div style="font-size:12px;color:{{ pz.corEstado }};font-weight:600">{{ pz.estado }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background:#fff;border:1px solid #E7EAF6;border-radius:15px;padding:22px">
+                <div style="font-size:16px;font-weight:700;margin-bottom:14px">Sessões ao vivo</div>
+                <sc-if value="{{ semSessoes }}" hint-placeholder-val="{{ false }}">
+                  <div style="color:#8C97C2;font-size:13.5px">Sem sessões agendadas.</div>
+                </sc-if>
+                <sc-for list="{{ sessoesAgenda }}" as="se" hint-placeholder-count="3">
+                  <div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #F2F4FB">
+                    <div style="flex:none;width:54px;text-align:center;background:#E9F6FF;color:#0087C7;border-radius:9px;padding:6px 4px;font-size:11px;font-weight:800;line-height:1.3">{{ se.dataCurta }}</div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:13.5px;font-weight:600">{{ se.titulo }}</div>
+                      <div style="font-size:12px;color:#8C97C2;line-height:1.5">{{ se.sub }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ vistaBiblioteca }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <h1 style="margin:0 0 6px;font-size:29px;letter-spacing:-.02em">Biblioteca de recursos</h1>
+            <div style="color:#6B77A8;font-size:14.5px;margin-bottom:26px">Ligações e materiais úteis fora dos cursos.</div>
+            <sc-for list="{{ gruposRecursos }}" as="g" hint-placeholder-count="3">
+              <div style="margin-bottom:30px">
+                <div style="font-size:15px;font-weight:700;margin-bottom:12px;padding-bottom:9px;border-bottom:2px solid #EEF0FA">{{ g.categoria }}</div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px">
+                  <sc-for list="{{ g.itens }}" as="r" hint-placeholder-count="3">
+                    <a href="{{ r.url }}" target="_blank" rel="noopener" style="display:flex;gap:12px;background:#fff;border:1px solid #E7EAF6;border-radius:14px;padding:16px 18px;color:#141A33" style-hover="border-color:#3B5BFF">
+                      <div style="flex:none;width:34px;height:34px;border-radius:10px;background:#EEF0FA;color:#3B5BFF;display:flex;align-items:center;justify-content:center">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                      </div>
+                      <div style="flex:1;min-width:0">
+                        <div style="font-size:14px;font-weight:700">{{ r.titulo }}</div>
+                        <div style="font-size:12.5px;color:#6B77A8;line-height:1.5;margin-top:2px">{{ r.descricao }}</div>
+                      </div>
+                    </a>
                   </sc-for>
                 </div>
               </div>
@@ -298,6 +506,7 @@
                   <button onClick="{{ exportarProgresso }}" style="border:1.5px solid #3B5BFF;background:#fff;color:#3B5BFF;border-radius:10px;padding:12px 18px;font-size:13.5px;font-weight:700;cursor:pointer" style-hover="background:#EEF0FA">Exportar progresso (CSV para RH)</button>
                   <button onClick="{{ exportarCertificados }}" style="border:1.5px solid #3B5BFF;background:#fff;color:#3B5BFF;border-radius:10px;padding:12px 18px;font-size:13.5px;font-weight:700;cursor:pointer" style-hover="background:#EEF0FA">Exportar certificados (CSV)</button>
                   <button onClick="{{ relatorioAIAct }}" style="border:0;background:#3B5BFF;color:#fff;border-radius:10px;padding:12px 18px;font-size:13.5px;font-weight:700;cursor:pointer" style-hover="background:#2440D9">Relatório de conformidade AI Act (PDF)</button>
+                  <button onClick="{{ enviarLembretes }}" style="border:1.5px solid #D4880A;background:#fff;color:#D4880A;border-radius:10px;padding:12px 18px;font-size:13.5px;font-weight:700;cursor:pointer" style-hover="background:#FFF4E0">Lembrar pendentes por email</button>
                 </div>
               </div>
             </sc-if>
@@ -320,6 +529,7 @@
                     <div style="font-size:12.5px;font-weight:700;color:{{ p.corConformidade }}">{{ p.conformidade }}</div>
                     <div style="display:flex;gap:6px;flex-wrap:wrap">
                       <button onClick="{{ p.verNotas }}" style="border:1px solid #D5DBF0;background:#fff;color:#3B5BFF;border-radius:7px;padding:6px 9px;font-size:12px;cursor:pointer">Notas</button>
+                      <button onClick="{{ p.atribuirCurso }}" style="border:1px solid #D5DBF0;background:#fff;color:#00875A;border-radius:7px;padding:6px 9px;font-size:12px;cursor:pointer">Atribuir</button>
                       <button onClick="{{ p.alternarPapel }}" style="border:1px solid #D5DBF0;background:#fff;color:#6B77A8;border-radius:7px;padding:6px 9px;font-size:12px;cursor:pointer">{{ p.textoPapel }}</button>
                       <button onClick="{{ p.remover }}" style="border:1px solid #F5C6C6;background:#fff;color:#B02525;border-radius:7px;padding:6px 9px;font-size:12px;cursor:pointer">Remover</button>
                     </div>
@@ -340,6 +550,36 @@
                   </sc-for>
                   <sc-if value="{{ detalheSemNotas }}" hint-placeholder-val="{{ false }}">
                     <div style="color:#8C97C2;font-size:13.5px">Sem avaliações submetidas.</div>
+                  </sc-if>
+                </div>
+              </sc-if>
+              <sc-if value="{{ atribuirAberto }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:18px;background:#fff;border:1px solid #E7EAF6;border-radius:15px;padding:22px">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                    <div style="font-size:16px;font-weight:700">Atribuir curso a {{ atribuirNome }}</div>
+                    <button onClick="{{ fecharAtribuir }}" style="border:0;background:#EEF0FA;color:#3B5BFF;border-radius:8px;padding:7px 12px;font-size:12.5px;font-weight:600;cursor:pointer">Fechar</button>
+                  </div>
+                  <div style="font-size:12.5px;color:#8C97C2;margin-bottom:14px">O curso aparece ao colaborador no catálogo e na agenda, com o prazo indicado.</div>
+                  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
+                    <select ref="{{ refCursoAtrib }}" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:11px 12px;font-size:13.5px;background:#fff;min-width:260px">
+                      <sc-for list="{{ opcoesCursos }}" as="o" hint-placeholder-count="5">
+                        <option value="{{ o.slug }}">{{ o.titulo }}</option>
+                      </sc-for>
+                    </select>
+                    <input ref="{{ refPrazoAtrib }}" type="date" style="border:1.5px solid #E2E6F5;border-radius:10px;padding:10px 12px;font-size:13.5px">
+                    <button onClick="{{ fazerAtribuicao }}" style="border:0;border-radius:10px;padding:11px 16px;background:#3B5BFF;color:#fff;font-size:13px;font-weight:700;cursor:pointer">Atribuir</button>
+                  </div>
+                  <sc-for list="{{ atribuicoesDoAberto }}" as="at" hint-placeholder-count="2">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #F2F4FB;font-size:13.5px">
+                      <span>{{ at.titulo }}</span>
+                      <span style="display:flex;align-items:center;gap:10px">
+                        <span style="color:#6B77A8;font-size:12.5px">{{ at.prazoTexto }}</span>
+                        <button onClick="{{ at.remover }}" style="border:1px solid #F5C6C6;background:#fff;color:#B02525;border-radius:7px;padding:5px 9px;font-size:11.5px;cursor:pointer">Remover</button>
+                      </span>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ semAtribuicoesAberto }}" hint-placeholder-val="{{ false }}">
+                    <div style="color:#8C97C2;font-size:13.5px">Sem cursos atribuídos.</div>
                   </sc-if>
                 </div>
               </sc-if>
@@ -424,6 +664,140 @@
           </div>
         </sc-if>
       </main>
+      <sc-if value="{{ menuFundo }}" hint-placeholder-val="{{ false }}">
+        <div style="height:72px"></div>
+      </sc-if>
+      </div>
+      <sc-if value="{{ menuFundo }}" hint-placeholder-val="{{ false }}">
+        <nav style="position:fixed;left:0;right:0;bottom:0;z-index:55;background:#fff;border-top:1px solid #ECEEF4;display:flex;align-items:stretch;padding:6px 4px 8px">
+          <button onClick="{{ verCatalogo }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;cursor:pointer;padding:6px 4px;min-height:48px;color:{{ corNavFundoCat }};font-size:10.5px;font-weight:700">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>Catálogo
+          </button>
+          <button onClick="{{ verCertificados }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;cursor:pointer;padding:6px 4px;min-height:48px;color:{{ corNavFundoCerts }};font-size:10.5px;font-weight:700">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><polyline points="8.5 13.5 7 22 12 19 17 22 15.5 13.5"></polyline></svg>Certificados
+          </button>
+          <button onClick="{{ verAgenda }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;cursor:pointer;padding:6px 4px;min-height:48px;color:{{ corNavFundoAgenda }};font-size:10.5px;font-weight:700">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>Agenda
+          </button>
+          <button onClick="{{ verBiblioteca }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;cursor:pointer;padding:6px 4px;min-height:48px;color:{{ corNavFundoBib }};font-size:10.5px;font-weight:700">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>Biblioteca
+          </button>
+          <button onClick="{{ alternarAjuda }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:transparent;cursor:pointer;padding:6px 4px;min-height:48px;color:#8C97C2;font-size:10.5px;font-weight:700">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.02" y2="17"></line></svg>Ajuda
+          </button>
+        </nav>
+        <sc-if value="{{ ajudaAberta }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ fecharAjuda }}" style="position:fixed;inset:0;z-index:56"></div>
+          <div style="position:fixed;right:10px;bottom:78px;z-index:57;width:238px;background:#fff;border:1px solid #E7EAF6;border-radius:12px;box-shadow:0 12px 34px rgba(20,35,100,.2);padding:6px;display:flex;flex-direction:column;gap:2px">
+            <button onClick="{{ abrirTour }}" style="display:flex;align-items:center;gap:9px;padding:9px 10px;border:0;border-radius:8px;background:transparent;color:#141A33;font-size:13.5px;cursor:pointer;text-align:left" style-hover="background:#EEF0FA">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>Ver introdução
+            </button>
+            <button onClick="{{ abrirManual }}" style="display:flex;align-items:center;gap:9px;padding:9px 10px;border:0;border-radius:8px;background:transparent;color:#141A33;font-size:13.5px;cursor:pointer;text-align:left" style-hover="background:#EEF0FA">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>Manual de utilização
+            </button>
+            <button onClick="{{ abrirSugestao }}" style="display:flex;align-items:center;gap:9px;padding:9px 10px;border:0;border-radius:8px;background:transparent;color:#141A33;font-size:13.5px;cursor:pointer;text-align:left" style-hover="background:#EEF0FA">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2.5-7.5z"></path></svg>Enviar sugestão
+            </button>
+            <button onClick="{{ exportarMeuProgresso }}" style="display:flex;align-items:center;gap:9px;padding:9px 10px;border:0;border-radius:8px;background:transparent;color:#141A33;font-size:13.5px;cursor:pointer;text-align:left" style-hover="background:#EEF0FA">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>Exportar o meu progresso
+            </button>
+          </div>
+        </sc-if>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ avaliacaoAberta }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ fecharAvaliacao }}" style="position:fixed;inset:0;z-index:70;background:rgba(15,20,26,.5);display:flex;align-items:center;justify-content:center;padding:22px">
+      <div onClick="{{ pararProp }}" style="width:420px;max-width:100%;background:#fff;border:1px solid #E7EAF6;border-radius:18px;overflow:hidden;box-shadow:0 24px 70px rgba(20,35,100,.3)">
+        <div style="display:flex;align-items:center;gap:10px;padding:17px 24px;border-bottom:1px solid #E7EAF6">
+          <div style="font-family:'Spectral',Georgia,serif;font-size:17px;font-weight:600;color:#141A33;flex:1;line-height:1.3">Avaliar «{{ tituloAvaliacao }}»</div>
+          <button onClick="{{ fecharAvaliacao }}" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:0;border-radius:9px;background:transparent;color:#6B77A8;cursor:pointer;flex:none" style-hover="background:#EEF0FA">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div style="padding:18px 24px 22px">
+          <div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px">
+            <sc-for list="{{ estrelasOpts }}" as="es" hint-placeholder-count="5">
+              <button onClick="{{ es.escolher }}" style="border:0;background:transparent;cursor:pointer;font-size:30px;line-height:1;color:{{ es.cor }};padding:2px">{{ es.simbolo }}</button>
+            </sc-for>
+          </div>
+          <textarea ref="{{ refComentario }}" placeholder="Comentário (opcional) — o que melhorarias?" style="width:100%;min-height:80px;border:1.5px solid #E7EAF6;border-radius:12px;padding:12px 14px;font-size:14px;color:#141A33;outline:none;resize:vertical;font-family:inherit;box-sizing:border-box" style-focus="border-color:#3B5BFF"></textarea>
+          <sc-if value="{{ avisoAvaliacao }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:10px;font-size:13px;color:#B02525;font-weight:600">{{ avisoAvaliacao }}</div>
+          </sc-if>
+          <button onClick="{{ guardarAvaliacao }}" style="margin-top:14px;width:100%;border:0;border-radius:10px;padding:12px;background:#3B5BFF;color:#fff;font-size:14px;font-weight:700;cursor:pointer" style-hover="background:#2440D9">Guardar avaliação</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ sugestaoAberta }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ fecharSugestao }}" style="position:fixed;inset:0;z-index:70;background:rgba(15,20,26,.5);display:flex;align-items:center;justify-content:center;padding:22px">
+      <div onClick="{{ pararProp }}" style="width:460px;max-width:100%;background:#fff;border:1px solid #E7EAF6;border-radius:18px;overflow:hidden;box-shadow:0 24px 70px rgba(20,35,100,.3)">
+        <div style="display:flex;align-items:center;gap:10px;padding:17px 24px;border-bottom:1px solid #E7EAF6">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3B5BFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2.5-7.5z"></path></svg>
+          <div style="font-family:'Spectral',Georgia,serif;font-size:19px;font-weight:600;color:#141A33;flex:1">Sugestões e erros</div>
+          <button onClick="{{ fecharSugestao }}" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:0;border-radius:9px;background:transparent;color:#6B77A8;cursor:pointer" style-hover="background:#EEF0FA">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div style="padding:18px 24px 22px">
+          <div style="font-size:13px;color:#6B77A8;line-height:1.55;margin-bottom:12px">Conta-nos ideias, problemas ou erros. A mensagem vai direta para a equipa (id@digit.com.pt).</div>
+          <textarea ref="{{ refSugestao }}" placeholder="Escreve aqui a tua sugestão…" style="width:100%;min-height:110px;border:1.5px solid #E7EAF6;border-radius:12px;padding:12px 14px;font-size:14px;color:#141A33;outline:none;resize:vertical;font-family:inherit;box-sizing:border-box" style-focus="border-color:#3B5BFF"></textarea>
+          <label style="display:block;margin-top:12px;font-size:12.5px;color:#6B77A8">
+            Anexar ficheiros (até 3)
+            <input ref="{{ refAnexos }}" type="file" multiple style="display:block;margin-top:6px;font-size:12px;color:#6B77A8;width:100%">
+          </label>
+          <sc-if value="{{ sugestaoMsg }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:12px;font-size:13px;font-weight:600;color:{{ corSugestaoMsg }}">{{ sugestaoMsg }}</div>
+          </sc-if>
+          <button onClick="{{ enviarSugestao }}" style="margin-top:14px;width:100%;border:0;border-radius:10px;padding:12px;background:#3B5BFF;color:#fff;font-size:14px;font-weight:700;cursor:pointer" style-hover="background:#2440D9">{{ rotuloEnviar }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ manualAberto }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ fecharManual }}" style="position:fixed;inset:0;z-index:70;background:rgba(15,20,26,.5);display:flex;align-items:center;justify-content:center;padding:22px">
+      <div onClick="{{ pararProp }}" style="width:680px;max-width:100%;max-height:88vh;display:flex;flex-direction:column;background:#fff;border:1px solid #E7EAF6;border-radius:18px;overflow:hidden;box-shadow:0 24px 70px rgba(20,35,100,.3)">
+        <div style="display:flex;align-items:center;gap:10px;padding:17px 24px;border-bottom:1px solid #E7EAF6;flex:none">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3B5BFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          <div style="font-family:'Spectral',Georgia,serif;font-size:19px;font-weight:600;color:#141A33;flex:1">Manual de utilização</div>
+          <button onClick="{{ fecharManual }}" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:0;border-radius:9px;background:transparent;color:#6B77A8;cursor:pointer" style-hover="background:#EEF0FA">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div style="overflow-y:auto;padding:4px 26px 26px">{{ manualHtml }}</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ tourAberto }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:120">
+      <div onClick="{{ tourSeguinte }}" style="position:absolute;inset:0"></div>
+      <sc-if value="{{ tourTemHl }}" hint-placeholder-val="{{ false }}">
+        <div style="position:fixed;top:{{ tourHlTop }}px;left:{{ tourHlLeft }}px;width:{{ tourHlW }}px;height:{{ tourHlH }}px;border-radius:12px;box-shadow:0 0 0 9999px rgba(8,13,22,.58), 0 0 0 2.5px #3B5BFF, 0 8px 40px rgba(0,0,0,.3);pointer-events:none;transition:all .35s cubic-bezier(.4,0,.2,1)"></div>
+      </sc-if>
+      <sc-if value="{{ tourSemHl }}" hint-placeholder-val="{{ false }}">
+        <div style="position:fixed;inset:0;background:rgba(8,13,22,.58);pointer-events:none"></div>
+      </sc-if>
+      <div style="position:fixed;top:{{ tourTipTop }}px;left:{{ tourTipLeft }}px;width:min(352px, calc(100vw - 16px));background:#fff;border:1px solid #E7EAF6;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.4);padding:18px 18px 14px;box-sizing:border-box;transition:all .35s cubic-bezier(.4,0,.2,1)">
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:9px">
+          <div style="flex:none;width:36px;height:36px;border-radius:11px;background:#EEF0FA;color:#3B5BFF;display:flex;align-items:center;justify-content:center">{{ tourIcone }}</div>
+          <div style="font-family:'Spectral',Georgia,serif;font-size:17px;font-weight:600;color:#141A33;flex:1;line-height:1.25">{{ tourTitulo }}</div>
+          <div style="flex:none;font-size:11.5px;color:#9AA3C7;font-variant-numeric:tabular-nums;white-space:nowrap;align-self:flex-start;margin-top:2px">{{ tourContagem }}</div>
+        </div>
+        <div style="font-size:13.5px;line-height:1.62;color:#6B77A8;margin-bottom:14px;text-wrap:pretty">{{ tourTexto }}</div>
+        <div style="display:flex;align-items:center;gap:7px">
+          <div style="flex:1"></div>
+          <button onClick="{{ fecharTour }}" style="border:0;background:transparent;color:#6B77A8;font-size:12.5px;font-weight:500;cursor:pointer;padding:8px 5px;white-space:nowrap;flex:none" style-hover="color:#141A33">Saltar</button>
+          <sc-if value="{{ tourNaoPrimeiro }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ tourAnterior }}" style="padding:8px 11px;border:1px solid #E7EAF6;border-radius:10px;background:transparent;color:#141A33;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;flex:none" style-hover="background:#EEF0FA">Anterior</button>
+          </sc-if>
+          <button onClick="{{ tourSeguinte }}" style="padding:8px 14px;border:0;border-radius:10px;background:#3B5BFF;color:#fff;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap;flex:none" style-hover="background:#2440D9">{{ rotuloSeguinte }}</button>
+        </div>
+      </div>
     </div>
   </sc-if>
 
@@ -444,14 +818,31 @@ class Component extends DCLogic {
     emailGuardado: (() => { try { return localStorage.getItem("digitEducaEmail") || ""; } catch (e) { return ""; } })(),
     lembrar: (() => { try { return !!localStorage.getItem("digitEducaEmail"); } catch (e) { return false; } })(),
     cursos: [], areas: [], progresso: {}, certs: [],
-    colabs: [], certsTodos: [], audit: [], eu: null, modo: "demonstração"
+    colabs: [], certsTodos: [], audit: [], eu: null, modo: "demonstração",
+    ajudaAberta: false, manualAberto: false, tourAberto: false, tourPasso: 0, tourRect: null, tourTip: null,
+    pesquisa: "", sugestaoAberta: false, sugestaoMsg: "", sugestaoOk: false, sugestaoBusy: false,
+    estreito: (() => { try { return window.innerWidth < 900; } catch (e) { return false; } })(),
+    percursos: [], recursos: [], sessoes: [], medias: {}, minhasAtrib: [], atribsTodas: [], ranking: [],
+    avaliacaoAberta: null, avaliacaoEstrelas: 0, avisoAvaliacao: "", atribuirA: null
   };
 
   refNome = React.createRef(); refDepto = React.createRef(); refEmail = React.createRef();
   refPass = React.createRef(); refUrl = React.createRef(); refChave = React.createRef();
   refUrl2 = React.createRef(); refChave2 = React.createRef();
+  refSugestao = React.createRef(); refAnexos = React.createRef();
+  refComentario = React.createRef(); refCursoAtrib = React.createRef(); refPrazoAtrib = React.createRef();
 
   async componentDidMount() {
+    this._aoRedim = () => {
+      const e = window.innerWidth < 900;
+      if (e !== this.state.estreito) this.setState({ estreito: e, ajudaAberta: false });
+    };
+    window.addEventListener("resize", this._aoRedim);
+    Promise.all([
+      fetch("./data/percursos.json").then(r => r.json()).catch(() => []),
+      fetch("./data/recursos.json").then(r => r.json()).catch(() => []),
+      fetch("./data/sessoes.json").then(r => r.json()).catch(() => [])
+    ]).then(([percursos, recursos, sessoes]) => this.setState({ percursos, recursos, sessoes }));
     const mod = await import("./digit-data.js");
     this.lib = mod;
     this.store = await mod.criarStore(mod.lerConfig(this.props));
@@ -469,13 +860,41 @@ class Component extends DCLogic {
     const cat = await this.store.catalogo();
     const prog = await this.store.meuProgresso();
     const certs = await this.store.meusCertificados();
-    let colabs = [], certsTodos = [], audit = [];
+    const medias = (this.store.mediasAvaliacoes ? await this.store.mediasAvaliacoes() : {}) || {};
+    const ranking = (this.store.rankingDepartamentos ? await this.store.rankingDepartamentos() : []) || [];
+    if (eu && eu.papel !== "admin" && this.store.atribuir) {
+      try {
+        const chaveOn = "digiEducaOnboard::" + (eu.id || eu.email);
+        if (!localStorage.getItem(chaveOn)) {
+          const jaTem = await this.store.minhasAtribuicoes();
+          if (!jaTem.length) {
+            const estDe = c => c.estado || (c.ativo ? "disponivel" : "oculto");
+            const pend = cat.cursos.filter(c => c.obrigatorio && estDe(c) === "disponivel" && !(prog[c.slug] && prog[c.slug].estado === "concluido"));
+            const prazo = new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10);
+            for (const c of pend) await this.store.atribuir(eu.id, c.slug, prazo);
+          }
+          localStorage.setItem(chaveOn, "feito");
+        }
+      } catch (e) {}
+    }
+    const minhasAtrib = this.store.minhasAtribuicoes ? await this.store.minhasAtribuicoes() : [];
+    let colabs = [], certsTodos = [], audit = [], atribsTodas = [];
     if (eu && eu.papel === "admin") {
       colabs = await this.store.colaboradores();
       certsTodos = await this.store.certificadosTodos();
       audit = await this.store.auditoria();
+      atribsTodas = this.store.atribuicoesTodas ? await this.store.atribuicoesTodas() : [];
     }
-    this.setState({ eu, cursos: cat.cursos, areas: cat.areas, progresso: prog, certs, colabs, certsTodos, audit, aCarregar: false });
+    if (eu) {
+      try {
+        const k = "digiEducaAtividade::" + (eu.id || eu.email);
+        const dias = JSON.parse(localStorage.getItem(k) || "[]");
+        const hoje = new Date().toISOString().slice(0, 10);
+        if (!dias.includes(hoje)) { dias.push(hoje); localStorage.setItem(k, JSON.stringify(dias.slice(-400))); }
+        this._atividade = dias;
+      } catch (e) { this._atividade = []; }
+    }
+    this.setState({ eu, cursos: cat.cursos, areas: cat.areas, progresso: prog, certs, colabs, certsTodos, audit, medias, ranking, minhasAtrib, atribsTodas, aCarregar: false }, () => this.talvezAbrirTour());
   }
 
   /* ---------------------------------------------------------- autenticação */
@@ -536,6 +955,215 @@ class Component extends DCLogic {
     }
   };
   sair = async () => { await this.store.sair(); this.setState({ eu: null, vista: "catalogo", erro: "" }); };
+
+  /* ------------------------------------------------------ ajuda: manual e introdução */
+  ICONES = {
+    spark: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9z"></path><path d="M19 3l.7 2.1L21.8 5.8l-2.1.7L19 8.6l-.7-2.1-2.1-.7 2.1-.7z"></path></svg>',
+    grelha: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>',
+    livro: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>',
+    visto: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>',
+    escudo: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>',
+    premio: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><polyline points="8.5 13.5 7 22 12 19 17 22 15.5 13.5"></polyline></svg>',
+    pessoa: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>',
+    pessoas: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>',
+    telemovel: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>',
+    ajuda: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>',
+    enviar: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2.5-7.5z"></path></svg>'
+  };
+  alternarAjuda = () => this.setState({ ajudaAberta: !this.state.ajudaAberta });
+  fecharAjuda = () => this.setState({ ajudaAberta: false });
+  abrirManual = () => this.setState({ ajudaAberta: false, manualAberto: true });
+  fecharManual = () => this.setState({ manualAberto: false });
+  aoPesquisar = e => this.setState({ pesquisa: e.target.value });
+
+  /* -------------------------------------------- avisos «Avisa-me quando abrir» */
+  chaveAvisos() { const eu = this.state.eu; return eu ? "digiEducaAvisos::" + (eu.id || eu.email) : null; }
+  lerAvisos() { try { return JSON.parse(localStorage.getItem(this.chaveAvisos()) || "[]"); } catch (e) { return []; } }
+  gravarAvisos(a) { try { localStorage.setItem(this.chaveAvisos(), JSON.stringify(a)); } catch (e) {} }
+  alternarAviso(slug) {
+    const a = this.lerAvisos(), i = a.indexOf(slug);
+    if (i >= 0) a.splice(i, 1); else a.push(slug);
+    this.gravarAvisos(a); this.forceUpdate();
+  }
+
+  /* ------------------------------------------------------------ sugestões */
+  abrirSugestao = () => this.setState({ ajudaAberta: false, sugestaoAberta: true, sugestaoMsg: "", sugestaoOk: false, sugestaoBusy: false });
+  fecharSugestao = () => this.setState({ sugestaoAberta: false });
+  enviarSugestao = async () => {
+    if (this.state.sugestaoBusy) return;
+    const txt = ((this.refSugestao.current && this.refSugestao.current.value) || "").trim();
+    if (!txt) { this.setState({ sugestaoMsg: "Escreve a mensagem primeiro.", sugestaoOk: false }); return; }
+    this.setState({ sugestaoBusy: true, sugestaoMsg: "" });
+    const eu = this.state.eu || {};
+    const fd = new FormData();
+    fd.append("name", eu.nome || ""); fd.append("email", eu.email || "");
+    fd.append("message", txt);
+    fd.append("_subject", "Sugestão DigiEduca · " + (eu.nome || eu.email || ""));
+    fd.append("_template", "table"); fd.append("_captcha", "false");
+    const fs = (this.refAnexos.current && this.refAnexos.current.files) || [];
+    Array.prototype.slice.call(fs, 0, 3).forEach((f, i) => fd.append("attachment" + (i ? i : ""), f, f.name));
+    try {
+      const r = await fetch("https://formsubmit.co/ajax/id@digit.com.pt", { method: "POST", body: fd, headers: { Accept: "application/json" } });
+      let j = null; try { j = await r.json(); } catch (e) {}
+      if (r.ok && j && (j.success === true || j.success === "true")) {
+        this.setState({ sugestaoBusy: false, sugestaoOk: true, sugestaoMsg: "Obrigado! Sugestão enviada." });
+        if (this.refSugestao.current) this.refSugestao.current.value = "";
+      } else this.setState({ sugestaoBusy: false, sugestaoOk: false, sugestaoMsg: "Não foi possível enviar. Tenta de novo." });
+    } catch (e) { this.setState({ sugestaoBusy: false, sugestaoOk: false, sugestaoMsg: "Não foi possível enviar. Tenta de novo." }); }
+  };
+
+  /* -------------------------------------------------- exportar progresso pessoal */
+  exportarMeuProgresso = () => {
+    const s = this.state, prog = s.progresso;
+    const linhas = s.cursos.map(c => {
+      const p = prog[c.slug]; if (!p) return null;
+      const cert = s.certs.find(x => x.curso_slug === c.slug);
+      return {
+        Curso: c.titulo, Area: c.area,
+        Estado: p.estado === "concluido" ? "Concluído" : "Em curso",
+        Modulos: (p.modulos_feitos || []).length + "/" + (c.modulos || 5),
+        Nota: p.nota != null ? p.nota + "/" + (p.total || 10) : "",
+        Certificado: cert ? cert.codigo : "",
+        Emitido: cert ? this.data(cert.emitido_em) : ""
+      };
+    }).filter(Boolean);
+    this.setState({ ajudaAberta: false });
+    if (!linhas.length) { alert("Ainda não tens progresso para exportar — começa um curso primeiro."); return; }
+    this.lib.descarregar("digieduca-o-meu-progresso-" + new Date().toISOString().slice(0, 10) + ".csv", this.lib.paraCSV(linhas));
+  };
+
+  /* ---------------------------------------- motivação, avaliações, atribuições */
+  dataCurta = d => { const dt = new Date(d + "T12:00:00"); return dt.getDate() + " " + ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"][dt.getMonth()]; };
+  streakSemanas() {
+    const dias = this._atividade || [];
+    const semanaDe = d => { const dt = new Date(d + "T12:00:00"); dt.setDate(dt.getDate() - ((dt.getDay() + 6) % 7)); return dt.toISOString().slice(0, 10); };
+    const semanas = new Set(dias.map(semanaDe));
+    let n = 0, cur = semanaDe(new Date().toISOString().slice(0, 10));
+    while (semanas.has(cur)) { n++; const d = new Date(cur + "T12:00:00"); d.setDate(d.getDate() - 7); cur = d.toISOString().slice(0, 10); }
+    return n;
+  }
+  fecharAvaliacao = () => this.setState({ avaliacaoAberta: null, avisoAvaliacao: "" });
+  guardarAvaliacao = async () => {
+    if (!this.state.avaliacaoEstrelas) { this.setState({ avisoAvaliacao: "Escolhe o número de estrelas primeiro." }); return; }
+    const comentario = ((this.refComentario.current && this.refComentario.current.value) || "").trim();
+    await this.store.avaliarCurso(this.state.avaliacaoAberta, this.state.avaliacaoEstrelas, comentario);
+    const medias = await this.store.mediasAvaliacoes();
+    this.setState({ avaliacaoAberta: null, avisoAvaliacao: "", medias });
+  };
+  fecharAtribuir = () => this.setState({ atribuirA: null });
+  fazerAtribuicao = async () => {
+    const slug = this.refCursoAtrib.current && this.refCursoAtrib.current.value;
+    const prazo = this.refPrazoAtrib.current && this.refPrazoAtrib.current.value;
+    if (!slug || !this.state.atribuirA) return;
+    await this.store.atribuir(this.state.atribuirA, slug, prazo || null);
+    const atribsTodas = await this.store.atribuicoesTodas();
+    const minhasAtrib = await this.store.minhasAtribuicoes();
+    this.setState({ atribsTodas, minhasAtrib });
+  };
+
+  manualHTML() {
+    const admin = !!(this.state.eu && this.state.eu.papel === "admin");
+    const B = x => '<b style="color:#141A33;font-weight:600">' + x + '</b>';
+    const M = [
+      { ic: "pessoa", h: "Entrar e criar conta", ps: [
+        `A conta cria-se com o teu ${B("email Digit")} — o botão ${B("@digit.com.pt")} completa o domínio por ti. É a mesma conta do ${B("DigiNote")} e do ${B("DigiSpot")}.`,
+        `Marca ${B("«Lembrar os meus dados de acesso»")} para o email ficar preenchido na próxima visita.`,
+        `Password esquecida? ${B("«Esqueceste-te da palavra-passe?»")} envia-te um email com uma ligação segura para definires uma nova.`] },
+      { ic: "grelha", h: "O teu painel", ps: [
+        `No topo do catálogo tens quatro contadores: ${B("Disponíveis")}, ${B("Concluídos")}, ${B("Em curso")} e ${B("AI Act")} (obrigatórios feitos/total).`,
+        `O progresso fica ${B("guardado na tua conta")} — entra em qualquer PC ou telemóvel e continua onde paraste.`,
+        `No menu de ajuda «?» podes ${B("exportar o teu progresso")} em CSV como cópia pessoal.`] },
+      { ic: "livro", h: "Catálogo e estados", ps: [
+        `Os cursos organizam-se por ${B("áreas")}. Cada cartão mostra a duração, a descrição e uma ${B("barra de progresso")}.`,
+        `Selos de estado: ${B("Disponível")} (aberto a todos), ${B("Em breve")} (visível mas ainda fechado), ${B("Em curso")} e ${B("Concluído")}. O selo azul ${B("Obrigatório")} marca a formação exigida.`,
+        `A ${B("pesquisa")} no topo filtra por título, descrição e área. Nos cursos ${B("Em breve")}, ${B("«Avisa-me quando abrir»")} mostra-te um aviso no portal assim que ficarem disponíveis.`] },
+      { ic: "visto", h: "Fazer um curso", ps: [
+        `Cada curso tem ${B("5 módulos")} (cerca de 10 minutos) com um ${B("quiz")} no fim de cada um.`,
+        `A ${B("avaliação final")} tem 10 perguntas; aprovas com ${B("70% (7 certas)")}.`,
+        `Podes sair a meio — ao voltares, o botão muda para ${B("«Continuar»")} e retomas no módulo onde ficaste.`] },
+      { ic: "escudo", h: "Formação obrigatória (AI Act)", ps: [
+        `Os cursos ${B("obrigatórios")} respondem ao ${B("Art. 4.º do Regulamento (UE) 2024/1689")} — a Digit tem de comprovar que todos os colaboradores os concluíram.`,
+        `Enquanto te faltarem, vês um ${B("aviso no catálogo")}; ao concluíres todos aparece a confirmação de conformidade.`] },
+      { ic: "premio", h: "Certificados", ps: [
+        `Ao aprovares a avaliação final é emitido um ${B("certificado com código único")}, guardado na tua conta.`,
+        `No separador ${B("Certificados")} podes ${B("ver e imprimir")} cada um em A4.`] }
+    ];
+    if (admin) M.push({ ic: "pessoas", h: "Administração", ps: [
+      `${B("Visão geral")}: conclusões por área, conformidade AI Act e colaboradores em atraso.`,
+      `${B("Cursos")}: muda o estado (Disponível → Em breve → Oculto) e marca os obrigatórios. ${B("Certificados")}: anula ou revalida qualquer certificado.`,
+      `${B("Auditoria")}: registo imutável de acessos, avaliações e alterações. Exporta ${B("CSV para o RH")} e o ${B("relatório PDF")} de conformidade.`,
+      `${B("Ligação Supabase")}: liga o portal à base de dados para registo real, fora do modo de demonstração.`] });
+    M.push({ ic: "enviar", h: "Sugestões", ps: [
+      `No menu de ajuda «?», ${B("«Enviar sugestão»")} manda ideias, problemas e erros — com até 3 anexos — direto para ${B("id@digit.com.pt")}.`] });
+    M.push({ ic: "telemovel", h: "No telemóvel", ps: [
+      `Abre o menu do navegador e escolhe ${B("«Adicionar ao ecrã principal»")} — instala-se como app com o ícone da Digit. (iPhone: Safari → Partilhar; Android: Chrome → menu ⋮.)`] });
+    let h = '<div style="font-size:13.5px;line-height:1.6;color:#6B77A8;margin-top:14px">Tudo o que podes fazer no DigiEduca, explicado passo a passo.</div>';
+    M.forEach(sec => {
+      h += '<div style="display:flex;gap:13px;margin-top:23px"><div style="flex:none;width:36px;height:36px;border-radius:11px;background:#EEF0FA;color:#3B5BFF;display:flex;align-items:center;justify-content:center">' + (this.ICONES[sec.ic] || "") + '</div><div style="flex:1;min-width:0"><div style="font-family:\'Spectral\',Georgia,serif;font-size:15.5px;font-weight:600;color:#141A33;margin:7px 0 6px">' + sec.h + "</div>" + sec.ps.map(p => '<div style="font-size:13.5px;line-height:1.65;color:#6B77A8;margin-bottom:6px">' + p + "</div>").join("") + "</div></div>";
+    });
+    return h;
+  }
+
+  tourPassos() {
+    const admin = !!(this.state.eu && this.state.eu.papel === "admin");
+    const p = [
+      { ic: "spark", t: "Bem-vindo ao DigiEduca!", d: "O portal de formação da Digit: cursos interativos, certificados e o teu progresso guardado na tua conta. Mostro-te o essencial num minuto." },
+      { ic: "grelha", sel: '[data-tour="kpis"]', t: "O teu painel", d: "Quatro contadores: cursos disponíveis, concluídos, em curso e o estado da tua formação obrigatória (AI Act)." },
+      { ic: "livro", sel: '[data-tour="area"]', t: "O catálogo", d: "Os cursos estão organizados por áreas. Cada cartão mostra o estado — Disponível, Em breve, Em curso ou Concluído — e os obrigatórios levam o selo azul." },
+      { ic: "visto", sel: '[data-tour="curso"]', t: "Como funciona um curso", d: "5 módulos com quiz cada um, mais uma avaliação final de 10 perguntas — aprovas com 70%. Podes sair a meio: retomas onde paraste." },
+      { ic: "escudo", t: "Formação obrigatória — AI Act", d: "Os cursos com o selo «Obrigatório» contam para o Art. 4.º do Regulamento (UE) 2024/1689. Enquanto faltarem, vês um aviso no catálogo; ao concluíres todos, ficas conforme." },
+      { ic: "premio", sel: '[data-tour="nav-certs"]', t: "Certificados", d: "Ao aprovares a avaliação final recebes um certificado com código único — vês e imprimes cada um em A4 neste separador." }
+    ];
+    if (admin) p.push({ ic: "pessoas", sel: '[data-tour="nav-admin"]', t: "Administração", d: "Acompanha a conformidade da equipa, muda o estado dos cursos, gere certificados e exporta relatórios para o RH." });
+    p.push({ ic: "ajuda", sel: '[data-tour="ajuda"]', t: "Sempre à mão", d: "Este botão reabre a introdução e o manual de utilização sempre que precisares." });
+    return p;
+  }
+  talvezAbrirTour() {
+    const eu = this.state.eu;
+    if (!eu || this.state.tourAberto) return;
+    let visto = true;
+    try { visto = localStorage.getItem("digiEducaTour::" + (eu.id || eu.email)) === "feito"; } catch (e) {}
+    if (!visto) setTimeout(() => this.abrirTour(), 500);
+  }
+  abrirTour = () => this.setState({ ajudaAberta: false, manualAberto: false, tourAberto: true, tourPasso: 0, tourRect: null, tourTip: null, vista: "catalogo" }, () => {
+    window.scrollTo(0, 0);
+    clearTimeout(this._tourT); this._tourT = setTimeout(() => this.posicionarTour(0), 120);
+  });
+  fecharTour = () => {
+    const eu = this.state.eu;
+    try { if (eu) localStorage.setItem("digiEducaTour::" + (eu.id || eu.email), "feito"); } catch (e) {}
+    this.setState({ tourAberto: false });
+  };
+  tourSeguinte = () => {
+    const n = this.tourPassos().length;
+    if (this.state.tourPasso >= n - 1) this.fecharTour();
+    else this.setState(s => ({ tourPasso: s.tourPasso + 1 }), () => this.posicionarTour(this.state.tourPasso));
+  };
+  tourAnterior = () => this.setState(s => ({ tourPasso: Math.max(0, s.tourPasso - 1) }), () => this.posicionarTour(this.state.tourPasso));
+  posicionarTour = passo => {
+    const def = this.tourPassos()[passo] || {};
+    let rect = null;
+    if (def.sel) {
+      const el = document.querySelector(def.sel);
+      if (el) {
+        const r = el.getBoundingClientRect();
+        if (r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < window.innerHeight && r.right > 0 && r.left < window.innerWidth)
+          rect = { top: r.top, left: r.left, w: r.width, h: r.height };
+      }
+    }
+    const pad = 6, tw = Math.min(352, window.innerWidth - 16), th = 235;
+    let hl = null, tip;
+    if (rect) {
+      hl = { top: Math.max(0, rect.top - pad), left: Math.max(0, rect.left - pad), w: Math.min(rect.w + pad * 2, window.innerWidth), h: rect.h + pad * 2 };
+      let top = rect.top + rect.h + 16;
+      if (top + th > window.innerHeight - 8) top = Math.max(8, rect.top - th - 16);
+      const left = Math.min(Math.max(8, rect.left + rect.w / 2 - tw / 2), Math.max(8, window.innerWidth - tw - 8));
+      tip = { top, left };
+    } else {
+      tip = { top: Math.max(16, (window.innerHeight - th) / 2), left: Math.max(8, (window.innerWidth - tw) / 2) };
+    }
+    this.setState({ tourRect: hl, tourTip: tip });
+  };
 
   guardar = (r1, r2) => {
     const url = (r1.current && r1.current.value || "").trim();
@@ -615,6 +1243,12 @@ class Component extends DCLogic {
     const s = this.state, eu = s.eu, admin = !!(eu && eu.papel === "admin");
     const estadoDe = c => c.estado || (c.ativo ? "disponivel" : "oculto");
     const cursosVisiveis = s.cursos.filter(c => estadoDe(c) !== "oculto" || admin);
+    const norm = x => String(x || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const termo = norm(s.pesquisa);
+    const cursosFiltrados = termo ? cursosVisiveis.filter(c => norm(c.titulo + " " + c.descricao + " " + c.area).includes(termo)) : cursosVisiveis;
+    const avisosGuardados = eu ? this.lerAvisos() : [];
+    const medias = s.medias || {};
+    const novos = avisosGuardados.map(sl => s.cursos.find(c => c.slug === sl)).filter(c => c && estadoDe(c) === "disponivel");
     const prog = s.progresso;
     const concluidos = Object.values(prog).filter(p => p.estado === "concluido").length;
     const emCurso = Object.values(prog).filter(p => p.estado === "em_curso").length;
@@ -622,7 +1256,7 @@ class Component extends DCLogic {
     const obrigFeitos = obrig.filter(c => prog[c.slug] && prog[c.slug].estado === "concluido").length;
 
     const areasCat = s.areas.map(a => {
-      const lista = cursosVisiveis.filter(c => c.area === a.nome).sort((x, y) => x.ordem - y.ordem);
+      const lista = cursosFiltrados.filter(c => c.area === a.nome).sort((x, y) => x.ordem - y.ordem);
       return {
         nome: a.nome, icone: a.icone, contagem: lista.length + (lista.length === 1 ? " curso" : " cursos"),
         cursos: lista.map(c => {
@@ -632,6 +1266,8 @@ class Component extends DCLogic {
           const iniciado = !!p && !feito;
           const pct = feito ? 100 : (p ? Math.round(((p.modulos_feitos || []).length / (c.modulos || 5)) * 100) : 0);
           const emBreve = est === "proximamente", oculto = est === "oculto";
+          const avisoAtivo = avisosGuardados.includes(c.slug);
+          const med = medias[c.slug];
           return {
             ...c,
             estado: oculto ? "Oculto" : emBreve ? "Em breve" : feito ? "Concluído" : iniciado ? "Em curso" : "Disponível",
@@ -641,8 +1277,18 @@ class Component extends DCLogic {
             larguraBarra: (emBreve || oculto ? 0 : pct) + "%",
             textoProgresso: emBreve ? "Disponível em breve" : oculto ? "Visível só para a administração" : feito ? "Avaliação aprovada · nota " + (p.nota != null ? p.nota + "/" + (p.total || 10) : "—") : iniciado ? (p.modulos_feitos || []).length + " de " + (c.modulos || 5) + " módulos" : (c.modulos || 5) + " módulos",
             duracao: (c.duracao_min || 10) + " min",
+            duracaoMedia: (c.duracao_min || 10) + " min" + (med && med.n ? " · ★ " + med.media.toFixed(1).replace(".", ",") : ""),
+            feito,
+            rotuloAvaliar: med && med.minha ? "A tua avaliação: " + "★".repeat(med.minha) + "☆".repeat(5 - med.minha) + " · editar" : "Avaliar este curso ☆",
+            abrirAvaliacao: () => this.setState({ avaliacaoAberta: c.slug, avaliacaoEstrelas: (med && med.minha) || 0, avisoAvaliacao: "" }),
             livre: !emBreve && (!oculto || admin),
-            bloqueado: emBreve || (oculto && !admin),
+            bloqueado: !emBreve && oculto && !admin,
+            emBreve,
+            alternarAviso: () => this.alternarAviso(c.slug),
+            textoAviso: avisoAtivo ? "✓ Aviso ativado — cancelar" : "Avisa-me quando abrir",
+            fundoAviso: avisoAtivo ? "#E9F6FF" : "#fff",
+            corAviso: avisoAtivo ? "#075985" : "#3B5BFF",
+            bordaAviso: avisoAtivo ? "#BFE4FA" : "#AFC0F5",
             acao: emBreve ? "Em breve" : oculto ? "Abrir (oculto)" : feito ? "Rever curso" : iniciado ? "Continuar" : "Iniciar curso"
           };
         })
@@ -673,6 +1319,32 @@ class Component extends DCLogic {
       }));
 
     const detalhe = s.detalhe ? s.colabs.find(p => p.id === s.detalhe) : null;
+
+    const tourArr = this.tourPassos(), tPasso = s.tourPasso || 0, tAtual = tourArr[Math.min(tPasso, tourArr.length - 1)] || {};
+
+    const hojeISO = new Date().toISOString().slice(0, 10);
+    const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+    const dispMes = s.cursos.filter(c => estadoDe(c) === "disponivel").sort((a, b) => a.ordem - b.ordem);
+    const cursoMes = dispMes.length ? dispMes[(new Date().getFullYear() * 12 + new Date().getMonth()) % dispMes.length] : null;
+    const perc = eu ? (s.percursos || []).find(p => p.departamento === eu.departamento) : null;
+    const passosBase = perc ? perc.cursos.map(sl => s.cursos.find(c => c.slug === sl)).filter(c => c && estadoDe(c) !== "oculto") : [];
+    let atualMarcado = false;
+    const passosPercurso = passosBase.map((c, i) => {
+      const done = prog[c.slug] && prog[c.slug].estado === "concluido";
+      const atual = !done && !atualMarcado; if (atual) atualMarcado = true;
+      return { num: i + 1, titulo: c.titulo, ficheiro: c.ficheiro,
+        fundo: done ? "#E4F8F0" : atual ? "#3B5BFF" : "#fff",
+        cor: done ? "#00875A" : atual ? "#fff" : "#6B77A8",
+        borda: done ? "#B8E6D3" : atual ? "#3B5BFF" : "#E7EAF6" };
+    });
+    const percFeitos = passosBase.filter(c => prog[c.slug] && prog[c.slug].estado === "concluido").length;
+    const anoAtual = String(new Date().getFullYear());
+    const META_ANUAL = 4;
+    const certsAno = s.certs.filter(c => String(c.emitido_em || "").slice(0, 4) === anoAtual).length;
+    const rank = s.ranking || [];
+    const naoConcluida = a => !(prog[a.curso_slug] && prog[a.curso_slug].estado === "concluido");
+    const atribsPendentes = (s.minhasAtrib || []).filter(naoConcluida);
+    const sess = (s.sessoes || []).filter(x => x.data >= hojeISO).sort((a, b) => a.data.localeCompare(b.data));
 
     return {
       aCarregar: s.aCarregar,
@@ -725,7 +1397,9 @@ class Component extends DCLogic {
       verAdmin: () => this.setState({ vista: "admin" }),
       estiloNavCatalogo: this.estiloNav(s.vista === "catalogo"), estiloNavCerts: this.estiloNav(s.vista === "certificados"), estiloNavAdmin: this.estiloNav(s.vista === "admin"),
 
-      subtituloCatalogo: cursosVisiveis.length + " cursos em " + areasCat.length + " áreas · o teu progresso fica registado na tua conta",
+      subtituloCatalogo: (termo
+        ? cursosFiltrados.length + (cursosFiltrados.length === 1 ? " curso" : " cursos") + " em " + areasCat.length + (areasCat.length === 1 ? " área" : " áreas") + " · resultado da pesquisa"
+        : cursosVisiveis.length + " cursos em " + areasCat.length + (areasCat.length === 1 ? " área" : " áreas") + " · o teu progresso fica registado na tua conta"),
       temPendentes: !admin && obrig.length > 0 && obrigFeitos < obrig.length,
       tudoConforme: !admin && obrig.length > 0 && obrigFeitos >= obrig.length,
       textoPendentes: (() => {
@@ -768,7 +1442,8 @@ class Component extends DCLogic {
         conformidade: p.papel === "admin" ? "—" : p.obrigatorios_concluidos + "/" + p.obrigatorios_total,
         corConformidade: p.papel === "admin" ? "#8C97C2" : (p.obrigatorios_concluidos >= p.obrigatorios_total ? "#00B87A" : "#D4880A"),
         textoPapel: p.papel === "admin" ? "Tornar colaborador" : "Tornar admin",
-        verNotas: () => this.setState({ detalhe: p.id }),
+        verNotas: () => this.setState({ detalhe: p.id, atribuirA: null }),
+        atribuirCurso: () => this.setState({ atribuirA: p.id, detalhe: null }),
         alternarPapel: async () => { await this.store.definirPapel(p.id, p.papel === "admin" ? "colaborador" : "admin"); this.carregar(); },
         remover: async () => { if (confirm("Remover " + p.nome + " do portal?")) { await this.store.removerColaborador(p.id); this.carregar(); } }
       })),
@@ -827,7 +1502,142 @@ class Component extends DCLogic {
         }));
         this.lib.descarregar("digit-certificados-" + new Date().toISOString().slice(0, 10) + ".csv", this.lib.paraCSV(linhas));
       },
-      relatorioAIAct: this.relatorioAIAct
+      relatorioAIAct: this.relatorioAIAct,
+
+      ajudaAberta: !!s.ajudaAberta, alternarAjuda: this.alternarAjuda, fecharAjuda: this.fecharAjuda,
+      abrirTour: this.abrirTour, abrirManual: this.abrirManual,
+      manualAberto: !!s.manualAberto, fecharManual: this.fecharManual, pararProp: e => e.stopPropagation(),
+      manualHtml: React.createElement("div", { dangerouslySetInnerHTML: { __html: s.manualAberto ? this.manualHTML() : "" } }),
+      tourAberto: !!s.tourAberto,
+      tourTitulo: tAtual.t || "", tourTexto: tAtual.d || "",
+      tourIcone: React.createElement("span", { style: { display: "flex" }, dangerouslySetInnerHTML: { __html: this.ICONES[tAtual.ic] || "" } }),
+      tourContagem: (tPasso + 1) + " / " + tourArr.length,
+      tourNaoPrimeiro: tPasso > 0,
+      rotuloSeguinte: tPasso >= tourArr.length - 1 ? "Começar a usar" : "Seguinte",
+      tourSeguinte: this.tourSeguinte, tourAnterior: this.tourAnterior, fecharTour: this.fecharTour,
+      tourTemHl: !!s.tourRect, tourSemHl: !s.tourRect,
+      tourHlTop: s.tourRect ? s.tourRect.top : 0, tourHlLeft: s.tourRect ? s.tourRect.left : 0,
+      tourHlW: s.tourRect ? s.tourRect.w : 0, tourHlH: s.tourRect ? s.tourRect.h : 0,
+      tourTipTop: (s.tourTip && s.tourTip.top) || 80, tourTipLeft: (s.tourTip && s.tourTip.left) || 80,
+
+      pesquisa: s.pesquisa, aoPesquisar: this.aoPesquisar,
+      semResultados: !!termo && !areasCat.length,
+      temNovosDisponiveis: novos.length > 0,
+      textoNovosDisponiveis: novos.length === 1
+        ? "O curso «" + novos[0].titulo + "» já está disponível."
+        : "Já estão disponíveis: " + novos.map(c => c.titulo).join(", ") + ".",
+      dispensarNovos: () => {
+        const sl = novos.map(c => c.slug);
+        this.gravarAvisos(this.lerAvisos().filter(x => !sl.includes(x)));
+        this.forceUpdate();
+      },
+      sugestaoAberta: !!s.sugestaoAberta, abrirSugestao: this.abrirSugestao, fecharSugestao: this.fecharSugestao,
+      enviarSugestao: this.enviarSugestao, sugestaoMsg: s.sugestaoMsg,
+      corSugestaoMsg: s.sugestaoOk ? "#00875A" : "#B02525",
+      rotuloEnviar: s.sugestaoBusy ? "A enviar…" : "Enviar",
+      refSugestao: this.refSugestao, refAnexos: this.refAnexos,
+      exportarMeuProgresso: this.exportarMeuProgresso,
+
+      menuLateral: !s.estreito, menuFundo: !!s.estreito,
+      iniciais: eu ? eu.nome.split(" ").filter(Boolean).slice(0, 2).map(p => p[0]).join("").toUpperCase() : "",
+      meuEmail: eu ? eu.email : "",
+      estiloLatCat: this.estiloLat(s.vista === "catalogo"),
+      estiloLatCerts: this.estiloLat(s.vista === "certificados"),
+      estiloLatAdmin: this.estiloLat(s.vista === "admin"),
+      recarregar: () => this.carregar(),
+      rotuloRetomar: (() => {
+        const emC = s.cursos.find(c => prog[c.slug] && prog[c.slug].estado === "em_curso" && estadoDe(c) === "disponivel");
+        const pend = obrig.find(c => !(prog[c.slug] && prog[c.slug].estado === "concluido"));
+        return (emC || pend) ? "Continuar formação" : "Explorar catálogo";
+      })(),
+      retomarFormacao: () => {
+        const emC = s.cursos.find(c => prog[c.slug] && prog[c.slug].estado === "em_curso" && estadoDe(c) === "disponivel");
+        const pend = obrig.find(c => !(prog[c.slug] && prog[c.slug].estado === "concluido"));
+        const alvo = emC || pend;
+        if (alvo) location.href = alvo.ficheiro; else this.setState({ vista: "catalogo" });
+      },
+      corNavFundoCat: s.vista === "catalogo" ? "#2563EB" : "#8C97C2",
+      corNavFundoCerts: s.vista === "certificados" ? "#2563EB" : "#8C97C2",
+      corNavFundoAdmin: s.vista === "admin" ? "#2563EB" : "#8C97C2",
+      corNavFundoAgenda: s.vista === "agenda" ? "#2563EB" : "#8C97C2",
+      corNavFundoBib: s.vista === "biblioteca" ? "#2563EB" : "#8C97C2",
+      vistaAgenda: s.vista === "agenda", vistaBiblioteca: s.vista === "biblioteca",
+      verAgenda: () => this.setState({ vista: "agenda" }), verBiblioteca: () => this.setState({ vista: "biblioteca" }),
+      estiloLatAgenda: this.estiloLat(s.vista === "agenda"), estiloLatBib: this.estiloLat(s.vista === "biblioteca"),
+
+      temCursoMes: !!cursoMes,
+      tituloCursoMes: cursoMes ? cursoMes.titulo : "", descCursoMes: cursoMes ? cursoMes.descricao : "",
+      iconeCursoMes: cursoMes ? cursoMes.icone : "", ficheiroCursoMes: cursoMes ? cursoMes.ficheiro : "#",
+      mesAtual: MESES[new Date().getMonth()],
+
+      temPercurso: passosPercurso.length > 0,
+      tituloPercurso: perc ? perc.titulo : "",
+      percursoContagem: percFeitos + " de " + passosPercurso.length + " concluídos",
+      passosPercurso,
+
+      metaTexto: certsAno + " / " + META_ANUAL,
+      metaLargura: Math.min(100, Math.round(certsAno * 100 / META_ANUAL)) + "%",
+      metaCor: certsAno >= META_ANUAL ? "#00B87A" : "#3B5BFF",
+      metaNota: certsAno >= META_ANUAL ? "Meta de " + anoAtual + " cumprida!" : "cursos concluídos em " + anoAtual + " · meta: " + META_ANUAL,
+      streakTexto: String(this.streakSemanas()),
+      temRanking: rank.length > 0,
+      rankingTop: rank.slice(0, 4).map((r, i) => ({
+        pos: (i + 1) + ".", nome: r.departamento || "—",
+        texto: (r.conclusoes || 0) + " conclusões",
+        peso: eu && r.departamento === eu.departamento ? 800 : 500,
+        cor: eu && r.departamento === eu.departamento ? "#2563EB" : "#141A33"
+      })),
+
+      temAtribuicoes: atribsPendentes.length > 0,
+      minhasAtribs: atribsPendentes.map(a => {
+        const c = s.cursos.find(x => x.slug === a.curso_slug) || {};
+        const atrasado = a.prazo && a.prazo < hojeISO;
+        return { titulo: c.titulo || a.curso_slug, ficheiro: c.ficheiro || "#",
+          textoPrazo: a.prazo ? (atrasado ? "em atraso · até " + this.data(a.prazo) : "até " + this.data(a.prazo)) : "sem prazo",
+          corPrazo: atrasado ? "#B02525" : "#0087C7" };
+      }),
+      semPrazos: !atribsPendentes.length,
+      prazosAgenda: atribsPendentes.slice().sort((a, b) => String(a.prazo || "9999").localeCompare(String(b.prazo || "9999"))).map(a => {
+        const c = s.cursos.find(x => x.slug === a.curso_slug) || {};
+        const atrasado = a.prazo && a.prazo < hojeISO;
+        return { titulo: c.titulo || a.curso_slug, ficheiro: c.ficheiro || "#",
+          dataCurta: a.prazo ? this.dataCurta(a.prazo) : "—",
+          estado: atrasado ? "Em atraso" : "Por concluir",
+          corEstado: atrasado ? "#B02525" : "#D4880A" };
+      }),
+      semSessoes: !sess.length,
+      sessoesAgenda: sess.map(x => ({ titulo: x.titulo, dataCurta: this.dataCurta(x.data), sub: (x.hora ? x.hora + " · " : "") + (x.local || "") + (x.descricao ? " — " + x.descricao : "") })),
+      gruposRecursos: (() => {
+        const g = [];
+        (s.recursos || []).forEach(r => { let x = g.find(y => y.categoria === r.categoria); if (!x) { x = { categoria: r.categoria, itens: [] }; g.push(x); } x.itens.push(r); });
+        return g;
+      })(),
+
+      avaliacaoAberta: !!s.avaliacaoAberta,
+      tituloAvaliacao: s.avaliacaoAberta ? this.tituloCurso(s.avaliacaoAberta) : "",
+      estrelasOpts: [1, 2, 3, 4, 5].map(k => ({ simbolo: k <= s.avaliacaoEstrelas ? "★" : "☆", cor: k <= s.avaliacaoEstrelas ? "#F5A524" : "#C6CDE8", escolher: () => this.setState({ avaliacaoEstrelas: k, avisoAvaliacao: "" }) })),
+      avisoAvaliacao: s.avisoAvaliacao, guardarAvaliacao: this.guardarAvaliacao, fecharAvaliacao: this.fecharAvaliacao,
+      refComentario: this.refComentario,
+
+      atribuirAberto: !!s.atribuirA,
+      atribuirNome: (s.colabs.find(p => p.id === s.atribuirA) || {}).nome || "",
+      fecharAtribuir: this.fecharAtribuir, fazerAtribuicao: this.fazerAtribuicao,
+      refCursoAtrib: this.refCursoAtrib, refPrazoAtrib: this.refPrazoAtrib,
+      opcoesCursos: s.cursos.slice().sort((a, b) => a.ordem - b.ordem).map(c => ({ slug: c.slug, titulo: c.titulo })),
+      atribuicoesDoAberto: (s.atribsTodas || []).filter(a => a.utilizador_id === s.atribuirA).map(a => {
+        const c = s.cursos.find(x => x.slug === a.curso_slug) || {};
+        return { titulo: c.titulo || a.curso_slug, prazoTexto: a.prazo ? "até " + this.data(a.prazo) : "sem prazo",
+          remover: async () => { await this.store.removerAtribuicao(a.id); this.setState({ atribsTodas: await this.store.atribuicoesTodas() }); } };
+      }),
+      semAtribuicoesAberto: !!s.atribuirA && !(s.atribsTodas || []).some(a => a.utilizador_id === s.atribuirA),
+      enviarLembretes: () => {
+        const pend = colabsSemAdmin.filter(p => p.obrigatorios_concluidos < p.obrigatorios_total);
+        if (!pend.length) { alert("Não há colaboradores com cursos obrigatórios pendentes."); return; }
+        const url = location.href.split("#")[0];
+        location.href = "mailto:?bcc=" + pend.map(p => p.email).join(",") +
+          "&subject=" + encodeURIComponent("Formação obrigatória pendente — DigiEduca") +
+          "&body=" + encodeURIComponent("Olá,\n\nTens cursos obrigatórios por concluir no DigiEduca (Art. 4.º do Regulamento (UE) 2024/1689).\nEntra em " + url + " e conclui-os, por favor.\n\nObrigado,\nAdministração Digit");
+      }
     };
   }
 
@@ -835,6 +1645,12 @@ class Component extends DCLogic {
     return "flex:1;border:0;border-radius:9px;padding:11px;font-size:13.5px;font-weight:700;cursor:pointer;background:" +
       (ativo ? "#fff" : "transparent") + ";color:" + (ativo ? "#3B5BFF" : "#7B8FD4") +
       (ativo ? ";box-shadow:0 1px 3px rgba(20,35,100,.12)" : "");
+  }
+  estiloLat(ativo) {
+    return "display:flex;align-items:center;gap:10px;width:100%;border:1px solid " + (ativo ? "#E7EAF6" : "transparent") +
+      ";border-radius:12px;padding:11px 12px;font-size:13.5px;font-weight:700;cursor:pointer;text-align:left;background:" +
+      (ativo ? "#fff" : "transparent") + ";color:" + (ativo ? "#2563EB" : "#3C4D5D") +
+      (ativo ? ";box-shadow:0 1px 4px rgba(20,35,100,.08)" : "");
   }
   estiloNav(ativo) {
     return "flex:1;border:0;border-radius:12px;padding:12px 15px;font-size:14px;font-weight:700;cursor:pointer;background:" +

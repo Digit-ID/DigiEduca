@@ -1,0 +1,90 @@
+[
+ {
+  "departamento": "Contabilidade",
+  "titulo": "Percurso Contabilidade",
+  "cursos": [
+   "literacia-ai",
+   "rgpd",
+   "encerramento-contas",
+   "iva",
+   "ia-contabilidade"
+  ]
+ },
+ {
+  "departamento": "Fiscalidade",
+  "titulo": "Percurso Fiscalidade",
+  "cursos": [
+   "literacia-ai",
+   "rgpd",
+   "calendario-fiscal",
+   "irc",
+   "irs"
+  ]
+ },
+ {
+  "departamento": "Recursos Humanos",
+  "titulo": "Percurso Recursos Humanos",
+  "cursos": [
+   "literacia-ai",
+   "rgpd",
+   "contratos-trabalho",
+   "ferias-faltas-licencas",
+   "admissoes-cessacoes"
+  ]
+ },
+ {
+  "departamento": "Processamento Salarial",
+  "titulo": "Percurso Processamento Salarial",
+  "cursos": [
+   "literacia-ai",
+   "rgpd",
+   "processamento-salarial",
+   "subsidios-beneficios",
+   "excel-intermedio"
+  ]
+ },
+ {
+  "departamento": "Tesouraria",
+  "titulo": "Percurso Tesouraria",
+  "cursos": [
+   "literacia-ai",
+   "branqueamento-capitais",
+   "excel-intermedio",
+   "power-bi",
+   "seguranca-informacao"
+  ]
+ },
+ {
+  "departamento": "I&D",
+  "titulo": "Percurso I&D",
+  "cursos": [
+   "literacia-ai",
+   "prompts-eficazes",
+   "ia-contabilidade",
+   "power-automate",
+   "seguranca-informacao"
+  ]
+ },
+ {
+  "departamento": "BPO",
+  "titulo": "Percurso BPO",
+  "cursos": [
+   "literacia-ai",
+   "bpo",
+   "comunicacao-cliente",
+   "microsoft-365",
+   "rgpd"
+  ]
+ },
+ {
+  "departamento": "Direção",
+  "titulo": "Percurso Direção",
+  "cursos": [
+   "literacia-ai",
+   "sigilo-etica",
+   "apresentacao-resultados",
+   "power-bi",
+   "gestao-tempo"
+  ]
+ }
+]

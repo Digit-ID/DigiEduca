@@ -55,7 +55,7 @@ function storeDemo() {
         }
       }
     });
-    db = { areas, cursos, perfis, progresso, certificados, avaliacoes, auditoria, sessao: null };
+    db = { areas, cursos, perfis, progresso, certificados, avaliacoes, auditoria, avaliacoesCursos: [], atribuicoes: [], sessao: null };
     gravar();
   }
 
@@ -68,7 +68,7 @@ function storeDemo() {
 
   return {
     modo: "demonstração",
-    async init() { db = ler(); if (!db || !db.cursos || !db.cursos.length) await semear(); return this; },
+    async init() { db = ler(); if (!db || !db.cursos || !db.cursos.length) await semear(); if (!db.avaliacoesCursos) db.avaliacoesCursos = []; if (!db.atribuicoes) db.atribuicoes = []; return this; },
     reiniciar: async () => { await semear(); },
     perfilAtual: () => perfil(),
     async entrar(email) {
@@ -170,6 +170,38 @@ function storeDemo() {
     },
     async revalidarCertificado(id, valido) {
       const c = db.certificados.find(x => x.id === id); if (c) { c.valido = valido; registo(valido ? "certificado_revalidado" : "certificado_anulado", "certificados", { codigo: c.codigo }); }
+    },
+    async avaliarCurso(slug, estrelas, comentario) {
+      const p = perfil(); if (!p) return;
+      db.avaliacoesCursos = db.avaliacoesCursos.filter(a => !(a.utilizador_id === p.id && a.curso_slug === slug));
+      db.avaliacoesCursos.push({ utilizador_id: p.id, curso_slug: slug, estrelas, comentario: comentario || "", criado_em: agora() });
+      registo("curso_avaliado", "avaliacoes_cursos", { curso: slug, estrelas });
+    },
+    async mediasAvaliacoes() {
+      const m = {};
+      db.avaliacoesCursos.forEach(a => { (m[a.curso_slug] = m[a.curso_slug] || []).push(a); });
+      const r = {};
+      Object.keys(m).forEach(k => { r[k] = { media: m[k].reduce((x, y) => x + y.estrelas, 0) / m[k].length, n: m[k].length }; });
+      const p = perfil();
+      if (p) db.avaliacoesCursos.filter(a => a.utilizador_id === p.id).forEach(a => { r[a.curso_slug].minha = a.estrelas; });
+      return r;
+    },
+    async atribuir(userId, slug, prazo) {
+      db.atribuicoes.push({ id: "a" + Date.now() + Math.random().toString(36).slice(2, 6), utilizador_id: userId, curso_slug: slug, prazo: prazo || null, criado_em: agora() });
+      registo("curso_atribuido", "atribuicoes", { a: userId, curso: slug, prazo: prazo || null });
+    },
+    async removerAtribuicao(id) { db.atribuicoes = db.atribuicoes.filter(a => a.id !== id); registo("atribuicao_removida", "atribuicoes", { id }); },
+    async minhasAtribuicoes() { const p = perfil(); return p ? db.atribuicoes.filter(a => a.utilizador_id === p.id) : []; },
+    async atribuicoesTodas() { return db.atribuicoes.slice(); },
+    async rankingDepartamentos() {
+      const m = {};
+      db.perfis.filter(p => p.papel === "colaborador").forEach(p => {
+        const d = p.departamento || "—";
+        m[d] = m[d] || { departamento: d, conclusoes: 0, colaboradores: 0 };
+        m[d].colaboradores++;
+        m[d].conclusoes += db.progresso.filter(x => x.utilizador_id === p.id && x.estado === "concluido").length;
+      });
+      return Object.values(m).sort((a, b) => b.conclusoes - a.conclusoes);
     }
   };
 }
@@ -302,7 +334,33 @@ function storeSupabase(url, chave) {
     async alternarObrigatorio(slug, obrigatorio) { erro(await sb.from("cursos").update({ obrigatorio }).eq("slug", slug)); audit("curso_obrigatoriedade", "cursos", { curso: slug, obrigatorio }); },
     async definirPapel(id, papel) { erro(await sb.from("perfis").update({ papel }).eq("id", id)); audit("papel_alterado", "perfis", { id, papel }); },
     async removerColaborador(id) { erro(await sb.from("perfis").update({ ativo: false }).eq("id", id)); audit("colaborador_desativado", "perfis", { id }); },
-    async revalidarCertificado(id, valido) { erro(await sb.from("certificados").update({ valido }).eq("id", id)); audit(valido ? "certificado_revalidado" : "certificado_anulado", "certificados", { id }); }
+    async revalidarCertificado(id, valido) { erro(await sb.from("certificados").update({ valido }).eq("id", id)); audit(valido ? "certificado_revalidado" : "certificado_anulado", "certificados", { id }); },
+    async avaliarCurso(slug, estrelas, comentario) {
+      if (!meu) return;
+      erro(await sb.from("avaliacoes_cursos").upsert({ utilizador_id: meu.id, curso_slug: slug, estrelas, comentario: comentario || "" }, { onConflict: "utilizador_id,curso_slug" }));
+      audit("curso_avaliado", "avaliacoes_cursos", { curso: slug, estrelas });
+    },
+    async mediasAvaliacoes() {
+      try {
+        const rows = erro(await sb.from("avaliacoes_cursos").select("curso_slug,estrelas,utilizador_id"));
+        const m = {};
+        rows.forEach(a => { (m[a.curso_slug] = m[a.curso_slug] || []).push(a); });
+        const r = {};
+        Object.keys(m).forEach(k => {
+          r[k] = { media: m[k].reduce((x, y) => x + y.estrelas, 0) / m[k].length, n: m[k].length };
+          const minha = m[k].find(a => meu && a.utilizador_id === meu.id);
+          if (minha) r[k].minha = minha.estrelas;
+        });
+        return r;
+      } catch (e) { return {}; }
+    },
+    async atribuir(userId, slug, prazo) { erro(await sb.from("atribuicoes").insert({ utilizador_id: userId, curso_slug: slug, prazo: prazo || null })); audit("curso_atribuido", "atribuicoes", { a: userId, curso: slug, prazo: prazo || null }); },
+    async removerAtribuicao(id) { erro(await sb.from("atribuicoes").delete().eq("id", id)); audit("atribuicao_removida", "atribuicoes", { id }); },
+    async minhasAtribuicoes() { if (!meu) return []; try { return erro(await sb.from("atribuicoes").select("*").eq("utilizador_id", meu.id)); } catch (e) { return []; } },
+    async atribuicoesTodas() { try { return erro(await sb.from("atribuicoes").select("*")); } catch (e) { return []; } },
+    async rankingDepartamentos() {
+      try { return erro(await sb.from("ranking_departamentos").select("*")).sort((a, b) => b.conclusoes - a.conclusoes); } catch (e) { return []; }
+    }
   };
 }
 

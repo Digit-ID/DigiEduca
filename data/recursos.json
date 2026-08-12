@@ -1,0 +1,50 @@
+[
+ {
+  "categoria": "Fiscal",
+  "titulo": "Portal das Finanças",
+  "descricao": "Serviços da Autoridade Tributária: declarações, pagamentos, consultas.",
+  "url": "https://www.portaldasfinancas.gov.pt"
+ },
+ {
+  "categoria": "Fiscal",
+  "titulo": "e-Fatura",
+  "descricao": "Consulta e validação de faturas comunicadas à AT.",
+  "url": "https://faturas.portaldasfinancas.gov.pt"
+ },
+ {
+  "categoria": "Fiscal",
+  "titulo": "OCC — Ordem dos Contabilistas Certificados",
+  "descricao": "Normas, formação e comunicados da Ordem.",
+  "url": "https://www.occ.pt"
+ },
+ {
+  "categoria": "Recursos Humanos",
+  "titulo": "Segurança Social Direta",
+  "descricao": "Inscrições, remunerações e apoios da Segurança Social.",
+  "url": "https://app.seg-social.pt"
+ },
+ {
+  "categoria": "Recursos Humanos",
+  "titulo": "ACT — Autoridade para as Condições do Trabalho",
+  "descricao": "Legislação laboral, comunicações obrigatórias e fichas técnicas.",
+  "url": "https://portal.act.gov.pt"
+ },
+ {
+  "categoria": "Compliance & Legal",
+  "titulo": "Diário da República Eletrónico",
+  "descricao": "Legislação consolidada e publicações oficiais.",
+  "url": "https://diariodarepublica.pt"
+ },
+ {
+  "categoria": "Compliance & Legal",
+  "titulo": "Regulamento (UE) 2024/1689 — AI Act",
+  "descricao": "Texto integral do regulamento europeu da IA (EUR-Lex, PT).",
+  "url": "https://eur-lex.europa.eu/legal-content/PT/TXT/?uri=CELEX:32024R1689"
+ },
+ {
+  "categoria": "Compliance & Legal",
+  "titulo": "CNPD — Comissão Nacional de Proteção de Dados",
+  "descricao": "Orientações e deliberações sobre RGPD.",
+  "url": "https://www.cnpd.pt"
+ }
+]
