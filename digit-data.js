@@ -41,7 +41,7 @@ function storeDemo() {
     const perfis = [{ id: "u-admin", email: "id@digit.com.pt", nome: "Administração Digit", departamento: "Direção", papel: "admin", ativo: true, criado_em: diasAtras(120) }];
     NOMES_DEMO.forEach((n, i) => perfis.push({ id: "u" + i, email: emailDe(n), nome: n, departamento: DEPARTAMENTOS[i % DEPARTAMENTOS.length], papel: "colaborador", ativo: true, criado_em: diasAtras(90 - i) }));
     const progresso = [], certificados = [], avaliacoes = [], auditoria = [];
-    perfis.filter(p => p.papel === "colaborador").forEach(p => {
+    if (cursos.length) perfis.filter(p => p.papel === "colaborador").forEach(p => {
       const s = semente(p.nome);
       const n = s % 7;
       for (let k = 0; k < n; k++) {
@@ -232,7 +232,10 @@ function storeSupabase(url, chave) {
       sb = createClient(url, chave, { auth: { storage: arm } });
       recuperacao = /type=recovery/.test(location.hash) || /type=recovery/.test(location.search);
       const { data } = await sb.auth.getSession();
-      if (data && data.session && !recuperacao) meu = erro(await sb.from("perfis").select("*").eq("id", data.session.user.id).single());
+      if (data && data.session && !recuperacao) {
+        try { meu = erro(await sb.from("perfis").select("*").eq("id", data.session.user.id).single()); }
+        catch (e) { console.warn("Não foi possível ler o perfil da sessão:", e.message); meu = null; }
+      }
       return this;
     },
     perfilAtual: () => meu,
@@ -379,7 +382,14 @@ export function gravarConfig(url, chave) {
 export async function criarStore(cfg) {
   if (cfg && cfg.url && cfg.chave) {
     try { return await storeSupabase(cfg.url, cfg.chave).init(); }
-    catch (e) { console.warn("Supabase indisponível, a usar modo de demonstração:", e.message); }
+    catch (e) {
+      console.warn("Supabase: erro ao iniciar:", e.message);
+      /* Só cai para demonstração se o Supabase for inalcançável — nunca por erros de
+         permissões/RLS, para não esconder as contas reais atrás de contas fictícias. */
+      const rede = /failed to fetch|networkerror|load failed|fetch/i.test(e.message || "");
+      if (!rede) { try { return await storeSupabase(cfg.url, cfg.chave).init(); } catch (e2) {} }
+      if (rede) console.warn("Supabase indisponível, a usar modo de demonstração.");
+    }
   }
   return await storeDemo().init();
 }
