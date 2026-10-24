@@ -235,7 +235,7 @@ function storeSupabase(url, chave) {
       if (data && data.session && !recuperacao) {
         try { meu = erro(await sb.from("perfis").select("*").eq("id", data.session.user.id).single()); }
         catch (e) { console.warn("Não foi possível ler o perfil da sessão:", e.message); meu = null; }
-        if (meu && meu.ativo === false) { try { await sb.auth.signOut(); } catch (e) {} meu = null; }
+        if (meu && (meu.ativo === false || (Array.isArray(meu.apps_bloqueadas) && meu.apps_bloqueadas.includes("digieduca")))) { try { await sb.auth.signOut(); } catch (e) {} meu = null; }
       }
       return this;
     },
@@ -244,6 +244,7 @@ function storeSupabase(url, chave) {
       const d = erro(await sb.auth.signInWithPassword({ email: String(email).trim().toLowerCase(), password }));
       meu = erro(await sb.from("perfis").select("*").eq("id", d.user.id).single());
       if (meu && meu.ativo === false) { try { await sb.auth.signOut(); } catch (e) {} meu = null; throw new Error("Conta desativada. Fala com a administração."); }
+      if (meu && Array.isArray(meu.apps_bloqueadas) && meu.apps_bloqueadas.includes("digieduca")) { try { await sb.auth.signOut(); } catch (e) {} meu = null; throw new Error("Não tens acesso ao DigiEduca. Fala com a administração."); }
       audit("sessao_iniciada", "perfis", { email: meu.email });
       return meu;
     },
