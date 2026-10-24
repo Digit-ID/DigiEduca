@@ -235,6 +235,7 @@ function storeSupabase(url, chave) {
       if (data && data.session && !recuperacao) {
         try { meu = erro(await sb.from("perfis").select("*").eq("id", data.session.user.id).single()); }
         catch (e) { console.warn("Não foi possível ler o perfil da sessão:", e.message); meu = null; }
+        if (meu && meu.ativo === false) { try { await sb.auth.signOut(); } catch (e) {} meu = null; }
       }
       return this;
     },
@@ -242,6 +243,7 @@ function storeSupabase(url, chave) {
     async entrar(email, password) {
       const d = erro(await sb.auth.signInWithPassword({ email: String(email).trim().toLowerCase(), password }));
       meu = erro(await sb.from("perfis").select("*").eq("id", d.user.id).single());
+      if (meu && meu.ativo === false) { try { await sb.auth.signOut(); } catch (e) {} meu = null; throw new Error("Conta desativada. Fala com a administração."); }
       audit("sessao_iniciada", "perfis", { email: meu.email });
       return meu;
     },
